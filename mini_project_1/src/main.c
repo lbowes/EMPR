@@ -29,33 +29,43 @@ void turnOffLED(uint32_t led_num) {
 }
 
 
-void delay() {
+void TEMP_delay1Second() {
     uint32_t count = 0;
     uint32_t i = 0;
     uint32_t j = 0;
 
     for(i = 0xFFFFF000; i < 0xFFFFFFFF; i++) {
-        for(j = 0XFFFFFF00; j < 0xFFFFFFFF; j++)
+        for(j = 0XFFFFF900; j < 0xFFFFFFFF; j++)
             count++;
     }
 }
 
+
+void cycleAllLEDsOn() {
+    turnOnLED(LED_0);
+    TEMP_delay1Second();
+    turnOffLED(LED_0);
+
+    turnOnLED(LED_1);
+    TEMP_delay1Second();
+    turnOffLED(LED_1);
+
+    turnOnLED(LED_2);
+    TEMP_delay1Second();
+    turnOffLED(LED_2);
+
+    turnOnLED(LED_3);
+    TEMP_delay1Second();
+    turnOffLED(LED_3);
+}
+
+
 int main() {
     initGPIO();
 
-    while(1) {
-        delay();
-        turnOnLED(LED_0);
-
-        delay();
-        turnOnLED(LED_1);
-
-        delay();
-        turnOnLED(LED_2);
-
-        delay();
-        turnOnLED(LED_3);
-    }
+    uint8_t i = 0;
+    for(i = 0; i < 2; i++)
+        cycleAllLEDsOn();
 
     return 0;
 }
