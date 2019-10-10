@@ -3,14 +3,12 @@
 #define OUTPUT 1
 #define INPUT 0
 
-#define ON 1
-#define OFF 0
-
 #define LED_PORT_NUM 1
 #define LED_0 0x00040000 // (bit 20)
 #define LED_1 0x00100000 // (bit 23)
 #define LED_2 0x00200000 // (bit 24)
 #define LED_3 0x00800000 // (bit 25)
+
 
 void initGPIO() {
     // Set all LED GPIO pins as output
@@ -20,12 +18,16 @@ void initGPIO() {
     GPIO_SetDir(LED_PORT_NUM, LED_3, OUTPUT);
 }
 
-void setLED(uint32_t led_num, uint8_t state) {
-    if(state == ON)
-        GPIO_SetValue(LED_PORT_NUM, led_num);
-    else
-        GPIO_ClearValue(LED_PORT_NUM, led_num);
+
+void turnOnLED(uint32_t led_num) {
+	GPIO_SetValue(LED_PORT_NUM, led_num);
 }
+
+
+void turnOffLED(uint32_t led_num) {
+    GPIO_ClearValue(LED_PORT_NUM, led_num);
+}
+
 
 void delay() {
     uint32_t count = 0;
@@ -41,20 +43,18 @@ void delay() {
 int main() {
     initGPIO();
 
-    setLED(LED_0, ON);
-
     while(1) {
         delay();
-        setLED(LED_0, ON);
+        turnOnLED(LED_0);
 
         delay();
-        setLED(LED_1, ON);
+        turnOnLED(LED_1);
 
         delay();
-        setLED(LED_2, ON);
+        turnOnLED(LED_2);
 
         delay();
-        setLED(LED_3, ON);
+        turnOnLED(LED_3);
     }
 
     return 0;
