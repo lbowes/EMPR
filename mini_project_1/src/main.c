@@ -4,68 +4,63 @@
 #define INPUT 0
 
 #define LED_PORT_NUM 1
-#define LED_0 0x00040000 // (bit 20)
-#define LED_1 0x00100000 // (bit 23)
-#define LED_2 0x00200000 // (bit 24)
-#define LED_3 0x00800000 // (bit 25)
+#define NUMBER_OF_LEDS 4
 
 
-void initGPIO() {
+uint32_t LEDBitStates[NUMBER_OF_LEDS] = {
+    0x00040000,
+    0x00100000,
+    0x00200000,
+    0x00800000
+};
+
+
+void ppl_initGPIO() {
     // Set all LED GPIO pins as output
-    GPIO_SetDir(LED_PORT_NUM, LED_0, OUTPUT);
-    GPIO_SetDir(LED_PORT_NUM, LED_1, OUTPUT);
-    GPIO_SetDir(LED_PORT_NUM, LED_2, OUTPUT);
-    GPIO_SetDir(LED_PORT_NUM, LED_3, OUTPUT);
+    uint8_t ledIdx = 0;
+    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++)
+        GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], OUTPUT);
 }
 
 
-void turnOnLED(uint32_t led_num) {
-	GPIO_SetValue(LED_PORT_NUM, led_num);
+void ppl_turnOnLED(uint8_t led_num) {
+    GPIO_SetValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
 
 
-void turnOffLED(uint32_t led_num) {
-    GPIO_ClearValue(LED_PORT_NUM, led_num);
+void ppl_turnOffLED(uint8_t led_num) {
+    GPIO_ClearValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
 
 
 void TEMP_delay1Second() {
     uint32_t count = 0;
     uint32_t i = 0;
-    uint32_t j = 0;
 
     for(i = 0xFFFFF000; i < 0xFFFFFFFF; i++) {
+        uint32_t j = 0;
         for(j = 0XFFFFF900; j < 0xFFFFFFFF; j++)
             count++;
     }
 }
 
 
-void cycleAllLEDsOn() {
-    turnOnLED(LED_0);
-    TEMP_delay1Second();
-    turnOffLED(LED_0);
-
-    turnOnLED(LED_1);
-    TEMP_delay1Second();
-    turnOffLED(LED_1);
-
-    turnOnLED(LED_2);
-    TEMP_delay1Second();
-    turnOffLED(LED_2);
-
-    turnOnLED(LED_3);
-    TEMP_delay1Second();
-    turnOffLED(LED_3);
+void TEMP_cycleAllLEDsOn() {
+    uint8_t ledIdx = 0;
+    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
+        ppl_turnOnLED(ledIdx);
+        TEMP_delay1Second();
+        ppl_turnOffLED(ledIdx);
+    }
 }
 
 
 int main() {
-    initGPIO();
+    ppl_initGPIO();
 
     uint8_t i = 0;
     for(i = 0; i < 2; i++)
-        cycleAllLEDsOn();
+        TEMP_cycleAllLEDsOn();
 
     return 0;
 }
