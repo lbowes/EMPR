@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 
+PROJECT_NAME := MiniProject1
+PROJECT_ROOT_DIR := .
+BUILD_DIR := ./build/
+BIN_OUTPUT_DIR := ./bin/
+
 # Ensure consistent environment
 SHELL := /bin/bash
 PATH := /opt/york/cs/net/bin:$(PATH)
@@ -9,7 +14,7 @@ PKG=/opt/york/cs/net
 
 # Specify the commands needed from the tool chain, CC is the C-compiler,
 # OBJCOPY converts the resulting program binary into a format we can load
-# into the MBED board 
+# into the MBED board
 ARCH=arm-none-eabi
 CC=$(ARCH)-gcc
 OBJCOPY=$(ARCH)-objcopy
@@ -46,19 +51,28 @@ LDFLAGS=$(CMSISFL) -static -mcpu=cortex-m3 -mthumb -mthumb-interwork \
 LDFLAGS+=-L$(CMSIS)/lib -lDriversLPC17xxgnu
 
 # Name of the binary being built
-EXECNAME = bin/main
+EXECNAME = $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
 
 # Source files provided by the user to build the project
-OBJ = main.o 
+SOURCE_FILES = $(shell find $(PROJECT_ROOT_DIR) -name "*.c")
+OBJECTS = $(patsubst %.c, $(BUILD_DIR)%.o, $(notdir $(SOURCE_FILES)))
 
 # Commands handled by this makefile
-all: main
+all: $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
 	@echo "Build finished"
 
-main: $(OBJ)
-	mkdir -p bin # prevent error "No such file or directory" during linking
-	$(CC) -o $(EXECNAME) $(OBJ) $(LDFLAGS)
+$(BUILD_DIR)%.o: %.c
+	@echo Compiling $(notdir $<)
+	$(CC) -o $(EXECNAME) $(OBJECTS) $(LDFLAGS)
+
+$(BIN_OUTPUT_DIR)$(PROJECT_NAME): $(OBJECTS)
+	$(CC) -o $(EXECNAME) $(OBJECTS) $(LDFLAGS)
 	$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
+
+# main: $(OBJ)
+# 	mkdir -p bin # prevent error "No such file or directory" during linking
+# 	$(CC) -o $(EXECNAME) $(OBJ) $(LDFLAGS)
+# 	$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
 
 # make clean - Clean out the source tree ready to re-build the project
 clean:
