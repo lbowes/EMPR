@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 PROJECT_NAME := MiniProject1
-PROJECT_ROOT_DIR := .
+PROJECT_SRC_DIRS := ./src/ ./src/subFolder/
 BUILD_DIR := ./build/
 BIN_OUTPUT_DIR := ./bin/
 
@@ -55,24 +55,22 @@ EXECNAME = $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
 
 # Source files provided by the user to build the project
 SOURCE_FILES = $(shell find $(PROJECT_ROOT_DIR) -name "*.c")
+VPATH := $(sort $(dir $(PROJECT_SRC_DIRS)))
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)%.o, $(notdir $(SOURCE_FILES)))
 
+print-%  : ; @echo $* = $($*)
+
 # Commands handled by this makefile
-all: $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
-	@echo "Build finished"
+all: $(EXECNAME)
+	@echo Done.
+	@$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
 
 $(BUILD_DIR)%.o: %.c
 	@echo Compiling $(notdir $<)
-	$(CC) -o $(EXECNAME) $(OBJECTS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
-$(BIN_OUTPUT_DIR)$(PROJECT_NAME): $(OBJECTS)
-	$(CC) -o $(EXECNAME) $(OBJECTS) $(LDFLAGS)
-	$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
-
-# main: $(OBJ)
-# 	mkdir -p bin # prevent error "No such file or directory" during linking
-# 	$(CC) -o $(EXECNAME) $(OBJ) $(LDFLAGS)
-# 	$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
+$(EXECNAME): $(OBJECTS)
+	@$(CC) $^ -o $@ $(LDFLAGS)
 
 # make clean - Clean out the source tree ready to re-build the project
 clean:

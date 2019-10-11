@@ -55,7 +55,7 @@ void TEMP_cycleAllLEDsOn() {
 
 
 int main() {
-    initGPIO();
+    setAllLEDGPIOsToOutput();
 
     uint8_t i = 0;
     const uint8_t cycleCount = 2;
