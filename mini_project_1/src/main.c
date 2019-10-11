@@ -15,8 +15,7 @@ uint32_t LEDBitStates[NUMBER_OF_LEDS] = {
 };
 
 
-void ppl_initGPIO() {
-    // Set all LED GPIO pins as output
+void ppl_setAllLEDGPIOsToOutput() {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++)
         GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], OUTPUT);
@@ -59,6 +58,7 @@ int main() {
     ppl_initGPIO();
 
     uint8_t i = 0;
+    const uint8_t cycleCount = 2;
     for(i = 0; i < 2; i++)
         TEMP_cycleAllLEDsOn();
 
