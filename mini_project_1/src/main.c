@@ -15,19 +15,19 @@ uint32_t LEDBitStates[NUMBER_OF_LEDS] = {
 };
 
 
-void ppl_setAllLEDGPIOsToOutput() {
+void setAllLEDGPIOsToOutput() {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++)
         GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], OUTPUT);
 }
 
 
-void ppl_turnOnLED(uint8_t led_num) {
+void turnOnLED(uint8_t led_num) {
     GPIO_SetValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
 
 
-void ppl_turnOffLED(uint8_t led_num) {
+void turnOffLED(uint8_t led_num) {
     GPIO_ClearValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
 
@@ -47,15 +47,15 @@ void TEMP_delay1Second() {
 void TEMP_cycleAllLEDsOn() {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
-        ppl_turnOnLED(ledIdx);
+        turnOnLED(ledIdx);
         TEMP_delay1Second();
-        ppl_turnOffLED(ledIdx);
+        turnOffLED(ledIdx);
     }
 }
 
 
 int main() {
-    ppl_initGPIO();
+    initGPIO();
 
     uint8_t i = 0;
     const uint8_t cycleCount = 2;
