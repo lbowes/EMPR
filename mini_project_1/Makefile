@@ -1,7 +1,10 @@
 #!/usr/bin/make -f
 
 PROJECT_NAME := MiniProject1
-PROJECT_SRC_DIRS := ./src/ ./src/subFolder/
+
+PROJECT_SRC_DIRS := \
+	./src/ \
+
 BUILD_DIR := ./build/
 BIN_OUTPUT_DIR := ./bin/
 
