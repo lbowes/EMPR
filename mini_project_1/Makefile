@@ -4,6 +4,7 @@ PROJECT_NAME := MiniProject1
 
 PROJECT_SRC_DIRS := \
 	./src/ \
+	./../../common_utils/ \
 
 BUILD_DIR := ./build/
 BIN_OUTPUT_DIR := ./bin/
