@@ -1,4 +1,4 @@
-#include "LED_Utils.h"
+#include "LEDs.h"
 #include "Constants.h"
 
 #include <lpc17xx_gpio.h>
@@ -15,18 +15,18 @@ static uint32_t LEDBitStates[NUMBER_OF_LEDS] = {
 };
 
 
-void LED_init(void) {
+void LEDs_init(void) {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++)
         GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], OUTPUT);
 }
 
 
-void LED_turnOn(uint8_t led_num) {
+void LEDs_turnOn(uint8_t led_num) {
     GPIO_SetValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
 
 
-void LED_turnOff(uint8_t led_num) {
+void LEDs_turnOff(uint8_t led_num) {
     GPIO_ClearValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }

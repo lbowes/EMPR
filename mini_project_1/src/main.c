@@ -5,8 +5,8 @@
 // • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
 // • Print: “Finished count” on the terminal screen.
 
-#include <LED_Utils.h>
-#include <UART_Utils.h>
+#include <common_utils/LED_Utils.h>
+#include <common_utils/UART_Utils.h>
 
 #include <stdint.h>
 

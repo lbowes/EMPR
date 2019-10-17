@@ -1,13 +1,25 @@
 #!/usr/bin/make -f
 
-PROJECT_NAME := MiniProject1
 
+# ==============================================================================
+# Name of the current project
+PROJECT_NAME := mini_project_1
+
+# 'EMPR' directory
+PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))..
+
+# Source directories for this project, relative to the PROJECT_ROOT_DIR
 PROJECT_SRC_DIRS := \
-	./src/ \
-	./../../common_utils/ \
+	$(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/src/ \
+	$(PROJECT_ROOT_DIR)/common_utils/ \
 
-BUILD_DIR := ./build/
-BIN_OUTPUT_DIR := ./bin/
+# Build (object) directory for this project relative to the PROJECT_ROOT_DIR
+BUILD_DIR := $(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/build
+
+# Ouptut binary directory for this project relative to the PROJECT_ROOT_DIR
+BIN_OUTPUT_DIR := $(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/bin
+# ==============================================================================
+
 
 # Ensure consistent environment
 SHELL := /bin/bash
@@ -45,7 +57,7 @@ LDSCRIPT = $(CMSIS)/lib/ldscript_rom_gnu.ld
 CFLAGS=-mcpu=cortex-m3  -mthumb  -Wall  -O0  -mapcs-frame  -D__thumb2__=1 \
   -msoft-float  -gdwarf-2  -mno-sched-prolog  -fno-hosted  -mtune=cortex-m3 \
   -march=armv7-m  -mfix-cortex-m3-ldrd   -ffunction-sections  -fdata-sections \
-          -D__RAM_MODE__=0 $(CMSISINCLUDES) -I.
+          -D__RAM_MODE__=0 $(CMSISINCLUDES) -I$(PROJECT_ROOT_DIR)
 
 LDFLAGS=$(CMSISFL) -static -mcpu=cortex-m3 -mthumb -mthumb-interwork \
 	   -Wl,--start-group -L$(THUMB2GNULIB) -L$(THUMB2GNULIB2) \
@@ -54,17 +66,19 @@ LDFLAGS=$(CMSISFL) -static -mcpu=cortex-m3 -mthumb -mthumb-interwork \
 
 LDFLAGS+=-L$(CMSIS)/lib -lDriversLPC17xxgnu
 
-# Name of the binary being built
-EXECNAME = $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
+# Path to the output binary to be built
+EXECNAME = $(BIN_OUTPUT_DIR)/$(PROJECT_NAME)
 
 # Source files provided by the user to build the project
 SOURCE_FILES = $(shell find $(PROJECT_ROOT_DIR) -name "*.c")
 VPATH := $(sort $(dir $(PROJECT_SRC_DIRS)))
-OBJECTS = $(patsubst %.c, $(BUILD_DIR)%.o, $(notdir $(SOURCE_FILES)))
+OBJECTS = $(patsubst %.c, $(BUILD_DIR)\%.o, $(notdir $(SOURCE_FILES)))
 
+# Debug print function to output the value of Makefile variables e.g
+# make print-EXECNAME
 print-%  : ; @echo $* = $($*)
 
-# Commands handled by this makefile
+# make
 all: $(EXECNAME)
 	@echo Done.
 	@$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
@@ -83,6 +97,8 @@ clean:
 	rm -f *.d */*.d *.srec */*.a bin/*.map
 	rm -f *.elf *.wrn bin/*.bin log *.hex
 	rm -f $(EXECNAME)
+
+complete: | clean all install
 
 # make install - Installs the resulting binary file to the MBED board, remember
 # to sync the file systems, so the copy finishes
