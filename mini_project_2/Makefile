@@ -24,6 +24,8 @@
 # |-- build
 # MakeFile
 #
+# For help with configuring these variables, use the `make print-VARIABLE_NAME`
+# rule defined below.
 #
 # To use the Makefile to update the project:
 # 1. Make sure the MBED board is mounted at /media/$(USER)/MBED
@@ -115,11 +117,10 @@ print-%  : ; @echo $* = $($*)
 
 # make
 all: $(EXECNAME)
-	@echo Done.
 	@$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
 
 $(BUILD_DIR)%.o: %.c
-	@echo Compiling $(notdir $<)
+	@echo Compiling $(notdir $<)...
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(EXECNAME): $(OBJECTS)
@@ -127,11 +128,12 @@ $(EXECNAME): $(OBJECTS)
 
 # make clean - Clean out the source tree ready to re-build the project
 clean:
-	rm -f `find . | grep \~`
-	rm -f *.swp *.o */*.o */*/*.o  *.log
-	rm -f *.d */*.d *.srec */*.a bin/*.map
-	rm -f *.elf *.wrn bin/*.bin log *.hex
-	rm -f $(EXECNAME)
+	@echo Cleaning old..._copy
+	@rm -f `find . | grep \~`
+	@rm -f *.swp *.o */*.o */*/*.o  *.log
+	@rm -f *.d */*.d *.srec */*.a bin/*.map
+	@rm -f *.elf *.wrn bin/*.bin log *.hex
+	@rm -f $(EXECNAME)
 
 complete: | clean all install
 
@@ -141,7 +143,7 @@ complete: | clean all install
 USER:=$(shell whoami)
 
 install:
-	@echo "Copying " $(EXECNAME) "to the MBED file system"
-	cp $(EXECNAME).bin /media/$(USER)/MBED &
-	sync
-	@echo "Now press the reset button on all MBED file systems"
+	@echo "Copying " $(PROJECT_NAME) "to the MBED file system (press reset \
+	button)"
+	@cp $(EXECNAME).bin /media/$(USER)/MBED &
+	@sync
