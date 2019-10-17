@@ -5,8 +5,8 @@
 // • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
 // • Print: “Finished count” on the terminal screen.
 
-#include <common_utils/LED_Utils.h>
-#include <common_utils/UART_Utils.h>
+#include <common_utils/LEDs.h>
+#include <common_utils/UART.h>
 
 #include <stdint.h>
 
@@ -29,16 +29,16 @@ void delay() {
 void TEMP_cycleAllLEDsOn() {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
-        LED_turnOn(ledIdx);
+        LEDs_turnOn(ledIdx);
         delay();
-        LED_turnOff(ledIdx);
+        LEDs_turnOff(ledIdx);
     }
 }
 
 
 int main() {
     // Initialisation
-    LED_init();
+    LEDs_init();
     UART_init();
 
     // Run

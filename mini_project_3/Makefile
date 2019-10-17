@@ -1,24 +1,60 @@
 #!/usr/bin/make -f
 
+# ------------------ README ------------------
+# As input this Makefile is configured with:
+#
+# - PROJECT_NAME:
+#   The project name
+#   e.g "mini_project_1"
+#
+# - PROJECT_ROOT_DIR:
+#   A project 'root' directory (logically the directory storing the mini
+#   projects)
+#   e.g "EMPR"
+#
+# - PROJECT_SRC_DIRS:
+#   A list of source directories relative to PROJECT_ROOT_DIR
+#   e.g $(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/src/my_sub_dir
+#
+# ...with the prerequisite that the project has the following structure:
+#
+# PROJECT_ROOT_DIR
+# |-- [nested source directories]
+# |-- bin
+# |-- build
+# MakeFile
+#
+#
+# To use the Makefile to update the project:
+# 1. Make sure the MBED board is mounted at /media/$(USER)/MBED
+# 2. Run `make complete`
+#    This removes all old object files from the `build` directory, recompiles
+#    any changed source code, leaving the output in the `bin` directory and
+#    drops the final .bin file onto the MBED board.
+
+# CONFIGURE
 # ==============================================================================
 # Name of the current project
 PROJECT_NAME := mini_project_3
 
 # 'EMPR' directory
-PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))..
+PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
 
 # Source directories for this project, relative to the PROJECT_ROOT_DIR
 PROJECT_SRC_DIRS := \
-	$(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/src/ \
-	$(PROJECT_ROOT_DIR)/common_utils/ \
-
-# Build (object) directory for this project relative to the PROJECT_ROOT_DIR
-BUILD_DIR := $(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/build
-
-# Ouptut binary directory for this project relative to the PROJECT_ROOT_DIR
-BIN_OUTPUT_DIR := $(PROJECT_ROOT_DIR)/$(PROJECT_NAME)/bin
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/ \
+	$(PROJECT_ROOT_DIR)common_utils/ \
 # ==============================================================================
 
+
+
+
+
+# Build (object) directory for this project relative to the PROJECT_ROOT_DIR
+BUILD_DIR := $(PROJECT_ROOT_DIR)$(PROJECT_NAME)/build/
+
+# Ouptut binary directory for this project relative to the PROJECT_ROOT_DIR
+BIN_OUTPUT_DIR := $(PROJECT_ROOT_DIR)$(PROJECT_NAME)/bin/
 
 # Ensure consistent environment
 SHELL := /bin/bash
@@ -66,12 +102,12 @@ LDFLAGS=$(CMSISFL) -static -mcpu=cortex-m3 -mthumb -mthumb-interwork \
 LDFLAGS+=-L$(CMSIS)/lib -lDriversLPC17xxgnu
 
 # Path to the output binary to be built
-EXECNAME = $(BIN_OUTPUT_DIR)/$(PROJECT_NAME)
+EXECNAME = $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
 
 # Source files provided by the user to build the project
 SOURCE_FILES = $(shell find $(PROJECT_ROOT_DIR) -name "*.c")
 VPATH := $(sort $(dir $(PROJECT_SRC_DIRS)))
-OBJECTS = $(patsubst %.c, $(BUILD_DIR)\%.o, $(notdir $(SOURCE_FILES)))
+OBJECTS = $(patsubst %.c, $(BUILD_DIR)%.o, $(notdir $(SOURCE_FILES)))
 
 # Debug print function to output the value of Makefile variables e.g
 # make print-EXECNAME
