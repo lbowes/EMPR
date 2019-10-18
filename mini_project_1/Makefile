@@ -120,10 +120,12 @@ all: $(EXECNAME)
 	@$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
 
 $(BUILD_DIR)%.o: %.c
+	@mkdir -p ./build
 	@echo Compiling $(notdir $<)...
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(EXECNAME): $(OBJECTS)
+	@mkdir -p ./bin
 	@$(CC) $^ -o $@ $(LDFLAGS)
 
 # make clean - Clean out the source tree ready to re-build the project
