@@ -48,7 +48,7 @@ static uint32_t stringLength(const char* str)
     // ( loop through bytes until a null character is found, and keep track of a count)
 {
     uint32_t i = 0;
-    while (*pStr) {
+    while (*str) {
         ++i;
     }
     return i;
@@ -69,3 +69,9 @@ void TextOutput_debugMsg(const char* functionName, const char* msg) {
 void TextOutput_memeText(void) {
 
 }
+
+
+void TextOutput_shutdown(void) {
+
+}
+

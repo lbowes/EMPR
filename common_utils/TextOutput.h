@@ -5,11 +5,13 @@
 #include <stdint.h>
 
 
-void UART_init(void);
+void TextOutput_init(void);
 
-int UART_print(const char* msg);
-void UART_debugMsg(const char* functionName, const char* msg);
-void UART_memeText(void);
+int TextOutput_print(const char* msg);
+void TextOutput_debugMsg(const char* functionName, const char* msg);
+void TextOutput_memeText(void);
+
+void TextOutput_shutdown(void);
 
 
 #endif // EMPR_UART_UTILS_H_

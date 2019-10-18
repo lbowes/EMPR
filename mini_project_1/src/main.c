@@ -6,7 +6,7 @@
 // • Print: “Finished count” on the terminal screen.
 
 #include <common_utils/LEDs.h>
-#include <common_utils/UART.h>
+#include <common_utils/TextOutput.h>
 
 #include <stdint.h>
 
@@ -39,21 +39,24 @@ void TEMP_cycleAllLEDsOn() {
 int main() {
     // Initialisation
     LEDs_init();
-    UART_init();
+    TextOutput_init();
 
     // Run
-    UART_print("Starting count");
+    TextOutput_print("Starting count");
 
     // temp - testing LED cycling
     // ==========================
     uint8_t i = 0;
     const uint8_t cycleCount = 2;
     for(i = 0; i < cycleCount; i++)
-
         TEMP_cycleAllLEDsOn();
     // ==========================
-    UART_print("Finished count");
+
+    //TextOutput_print("Finished count");
+
     LEDs_debug(3);
+
+    TextOutput_shutdown();
 
     return 0;
 }
