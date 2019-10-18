@@ -1,7 +1,5 @@
 #include "LCDDisplay.h"
-#include <stdbool.h>
-#include <lpc17xx_i2c.h>
-#include <lpc17xx_pinsel.h>
+
 static uint32_t I2CAddress = 0x38;
 
 // This LCD has 2X8 bit registers
@@ -29,12 +27,12 @@ static uint8_t initWrite[12] = {0x00,0x34,0x0c,0x06,0x35,0x04,0x10,0x42,0x9f,0x3
 static uint8_t test[5] = {0x00,0x80,0x40,0x64};
 
 
-void sendData(I2C_M_SETUP_Type* setup, uint8_t* Data, uint32_t dataLength)
+void sendData(I2C_M_SETUP_Type* setup,uint8_t* Data, uint32_t dataLength)
 {
 	setup->sl_addr7bit = 0x38;
 
 	setup->tx_data = Data;
-	setup->tx_length = TRLength;
+	setup->tx_length = dataLength;
 	setup->tx_count = 0;
 
 	setup->rx_data = NULL;
@@ -64,17 +62,18 @@ void LCDDisplay_init(void)
     // Initialise I2C
     I2C_Init(LPC_I2C1,100000);
     I2C_Cmd(LPC_I2C1,ENABLE);
-    I2C_M_SETUP_Type config ;
+    I2C_M_SETUP_Type setup ;
     setupPins();
     
-    sendData()
+    sendData(&setup,&initWrite[0],12);
 
     // Send data through the I2C port
-    Status a = I2C_MasterTransferData(LPC_I2C1,&config,I2C_TRANSFER_POLLING);
-    
+    Status a = I2C_MasterTransferData(LPC_I2C1,&setup,I2C_TRANSFER_POLLING);
+    sendData(&setup,&test,5);
+    I2C_MasterTransferData(LPC_I2C1,&setup,I2C_TRANSFER_POLLING);
     // Loop
     
-    I2C_MasterTransferData(LPC_I2C1,&tes,I2C_TRANSFER_POLLING);
+    // I2C_MasterTransferData(LPC_I2C1,&tes,I2C_TRANSFER_POLLING);
 
 
     // Clear Screen
