@@ -20,8 +20,9 @@ void delay() {
     uint32_t j = 0;
 
     for(i = ONE_SECOND; i < 0xFFFFFFFF; i++) {
-        for(j = ONE_SECOND; j < 0xFFFFFFFF; j++)
+        for(j = ONE_SECOND; j < 0xFFFFFFFF; j++) {
             count++;
+        }
     }
 }
 
@@ -34,7 +35,6 @@ void TEMP_cycleAllLEDsOn() {
         LEDs_turnOff(ledIdx);
     }
 }
-
 
 int main() {
     // Initialisation
@@ -49,10 +49,11 @@ int main() {
     uint8_t i = 0;
     const uint8_t cycleCount = 2;
     for(i = 0; i < cycleCount; i++)
+
         TEMP_cycleAllLEDsOn();
     // ==========================
-
     UART_print("Finished count");
+    LEDs_debug(3);
 
     return 0;
 }
