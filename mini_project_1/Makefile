@@ -117,6 +117,7 @@ print-%  : ; @echo $* = $($*)
 
 # make
 all: $(EXECNAME)
+	@mkdir -p ./src
 	@$(OBJCOPY) -I elf32-little -O binary $(EXECNAME) $(EXECNAME).bin
 
 $(BUILD_DIR)%.o: %.c
