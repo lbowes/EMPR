@@ -7,12 +7,19 @@ static uint32_t I2CAddress = 0x38;
 // Instruction reg and data Reg
 // Top 2 bytes have impact
 
-// First  bit  control byte 0 last control byte
+// First  bit  control byte
+// 0 last control byte
 // 1 another control byte follows after data
 // Second bit
 // 0 instruction reg
 // 1 data reg
-// bits 5-0 is the data
+// bits 5-0 is always 0
+// Control byte has only 4 commands
+// 00h Last control byte instruction
+// 40h Last control byte data
+// 80h Another control byte will follow and instuction
+// C0h Another control byte will follow and data
+
 
 
 // DO NOT CHANGE this!!!!
