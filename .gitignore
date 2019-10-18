@@ -1,4 +1,8 @@
 **/bin
 **/build
+<<<<<<< HEAD
 .idea
 **/.idea
+=======
+.idea
+>>>>>>> Ignore .idea
