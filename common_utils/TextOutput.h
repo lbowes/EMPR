@@ -7,10 +7,9 @@
 
 void UART_init(void);
 
-void UART_clearScreen();
-void UART_print(const char* msg);
+int UART_print(const char* msg);
 void UART_debugMsg(const char* functionName, const char* msg);
-void UART_memeText();
+void UART_memeText(void);
 
 
 #endif // EMPR_UART_UTILS_H_

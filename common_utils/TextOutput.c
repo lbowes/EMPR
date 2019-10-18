@@ -1,0 +1,71 @@
+#include "TextOutput.h"
+#include "lpc17xx_uart.h"
+#include "lpc17xx_pinsel.h"
+
+// Copied from https://www-users.cs.york.ac.uk/~nep/teach/empr/serialEx/serial.c
+void TextOutput_init(void) {
+    UART_CFG_Type UARTConfigStruct;			// UART Configuration structure variable
+    UART_FIFO_CFG_Type UARTFIFOConfigStruct;	// UART FIFO configuration Struct variable
+    PINSEL_CFG_Type PinCfg;				// Pin configuration for UART
+    /*
+     * Initialize UART pin connect
+     */
+    PinCfg.Funcnum = 1;
+    PinCfg.OpenDrain = 0;
+    PinCfg.Pinmode = 0;
+    // USB serial first
+    PinCfg.Portnum = 0;
+    PinCfg.Pinnum = 2;
+    PINSEL_ConfigPin(&PinCfg);
+    PinCfg.Pinnum = 3;
+    PINSEL_ConfigPin(&PinCfg);
+
+    /* Initialize UART Configuration parameter structure to default state:
+     * - Baudrate = 9600bps
+     * - 8 data bit
+     * - 1 Stop bit
+     * - None parity
+     */
+    UART_ConfigStructInit(&UARTConfigStruct);
+    /* Initialize FIFOConfigStruct to default state:
+     * - FIFO_DMAMode = DISABLE
+     * - FIFO_Level = UART_FIFO_TRGLEV0
+     * - FIFO_ResetRxBuf = ENABLE
+     * - FIFO_ResetTxBuf = ENABLE
+     * - FIFO_State = ENABLE
+     */
+    UART_FIFOConfigStructInit(&UARTFIFOConfigStruct);
+    // Built the basic structures, lets start the devices/
+    // USB serial
+    UART_Init((LPC_UART_TypeDef *)LPC_UART0, &UARTConfigStruct);		// Initialize UART0 peripheral with given to corresponding parameter
+    UART_FIFOConfig((LPC_UART_TypeDef *)LPC_UART0, &UARTFIFOConfigStruct);	// Initialize FIFO for UART0 peripheral
+    UART_TxCmd((LPC_UART_TypeDef *)LPC_UART0, ENABLE);			// Enable UART Transmit
+}
+
+
+static uint32_t stringLength(const char* str)
+    // Calculates the length of a string represented as internally as a char*
+    // ( loop through bytes until a null character is found, and keep track of a count)
+{
+    uint32_t i = 0;
+    while (*pStr) {
+        ++i;
+    }
+    return i;
+}
+
+
+int TextOutput_print(const char* msg) {
+    const uint32_t msgLength = stringLength(msg);
+    return(UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING));
+}
+
+
+void TextOutput_debugMsg(const char* functionName, const char* msg) {
+
+}
+
+
+void TextOutput_memeText(void) {
+
+}
