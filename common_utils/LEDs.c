@@ -30,3 +30,15 @@ void LEDs_turnOn(uint8_t led_num) {
 void LEDs_turnOff(uint8_t led_num) {
     GPIO_ClearValue(LED_PORT_NUM, LEDBitStates[led_num]);
 }
+
+void LEDs_debug(uint32_t message) {
+    uint32_t testNum = message;
+    uint32_t led_val = 0;
+    testNum = testNum << 18;
+    led_val = LEDBitStates[0] & (testNum);
+    led_val += LEDBitStates[1] & (testNum << 1);
+    led_val += LEDBitStates[2] & (testNum << 1); 
+    led_val += LEDBitStates[3] & (testNum << 2);
+    GPIO_SetValue(LED_PORT_NUM, led_val);
+}
+
