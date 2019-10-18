@@ -27,35 +27,24 @@ void delay() {
 }
 
 
-void TEMP_cycleAllLEDsOn() {
-    uint8_t ledIdx = 0;
-    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
-        LEDs_turnOn(ledIdx);
-        delay();
-        LEDs_turnOff(ledIdx);
-    }
-}
-
 int main() {
     // Initialisation
     LEDs_init();
     TextOutput_init();
 
     // Run
-    TextOutput_print("Starting count");
+    TextOutput_print("\rStarting count\n");
 
-    // temp - testing LED cycling
-    // ==========================
     uint8_t i = 0;
-    const uint8_t cycleCount = 2;
-    for(i = 0; i < cycleCount; i++)
-        TEMP_cycleAllLEDsOn();
-    // ==========================
+    uint8_t maxVal = 1 << NUMBER_OF_LEDS;
+    for(i = 0; i < maxVal; i++) {
+        LEDs_debug(i);
+        delay();
+    }
 
-    //TextOutput_print("Finished count");
+    TextOutput_print("\rFinished count\n");
 
-    LEDs_debug(3);
-
+    // Shutdown close
     TextOutput_shutdown();
 
     return 0;

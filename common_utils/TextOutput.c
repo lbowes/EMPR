@@ -45,13 +45,15 @@ void TextOutput_init(void) {
 
 static uint32_t stringLength(const char* str)
     // Calculates the length of a string represented as internally as a char*
-    // ( loop through bytes until a null character is found, and keep track of a count)
+    // (loop through bytes until a null character is found, and keep track of the count)
 {
-    uint32_t i = 0;
-    while (*str) {
-        ++i;
+    int count = 0;
+
+    while (*(str + count) != '\0') {
+        ++count;
     }
-    return i;
+
+    return count;
 }
 
 
