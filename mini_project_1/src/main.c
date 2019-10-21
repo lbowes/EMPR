@@ -47,7 +47,6 @@ int main() {
         delay();
     }
     TextOutput_println("Finished count");
-    TextOutput_debugMsg("someFunction", "something is broken!");
 
     // Shutdown
     TextOutput_shutdown();

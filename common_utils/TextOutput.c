@@ -43,6 +43,8 @@ void TextOutput_init(void) {
     UART_Init((LPC_UART_TypeDef *)LPC_UART0, &UARTConfigStruct);
     UART_FIFOConfig((LPC_UART_TypeDef *)LPC_UART0, &UARTFIFOConfigStruct);
     UART_TxCmd((LPC_UART_TypeDef *)LPC_UART0, ENABLE);
+
+    TextOutput_clearScreen();
 }
 
 
@@ -67,6 +69,12 @@ void TextOutput_println(const char* msg) {
     const uint32_t msgLength = strlen(msg);
     UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING);
     TextOutput_resetCursor();
+}
+
+
+void TextOutput_clearScreen(void) {
+    const char* clearScr = "\033[2J\033[1;1H";
+    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)clearScr, 10, BLOCKING);
 }
 
 
