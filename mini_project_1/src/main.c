@@ -33,7 +33,7 @@ int main() {
     TextOutput_init();
 
     // Run
-    TextOutput_print("\rStarting count\n");
+    TextOutput_print("Starting count");
 
     uint8_t i = 0;
     uint8_t maxVal = 1 << NUMBER_OF_LEDS;

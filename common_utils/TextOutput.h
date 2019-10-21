@@ -7,7 +7,9 @@
 
 void TextOutput_init(void);
 
-int TextOutput_print(const char* msg);
+// screen /dev/ttyACM0
+void TextOutput_print(const char* msg);
+void TextOutput_println(const char* msg);
 void TextOutput_debugMsg(const char* functionName, const char* msg);
 void TextOutput_memeText(void);
 

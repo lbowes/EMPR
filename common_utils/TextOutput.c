@@ -2,6 +2,9 @@
 #include "lpc17xx_uart.h"
 #include "lpc17xx_pinsel.h"
 
+#include <string.h>
+
+
 // Copied from https://www-users.cs.york.ac.uk/~nep/teach/empr/serialEx/serial.c
 void TextOutput_init(void) {
     UART_CFG_Type UARTConfigStruct;			// UART Configuration structure variable
@@ -43,23 +46,14 @@ void TextOutput_init(void) {
 }
 
 
-static uint32_t stringLength(const char* str)
-    // Calculates the length of a string represented as internally as a char*
-    // (loop through bytes until a null character is found, and keep track of the count)
-{
-    int count = 0;
-
-    while (*(str + count) != '\0') {
-        ++count;
-    }
-
-    return count;
+void TextOutput_print(const char* msg) {
+    const uint32_t msgLength = strlen(msg);
+    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING);
 }
 
 
-int TextOutput_print(const char* msg) {
-    const uint32_t msgLength = stringLength(msg);
-    return(UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING));
+void TextOutput_println(const char* msg) {
+
 }
 
 
@@ -76,4 +70,3 @@ void TextOutput_memeText(void) {
 void TextOutput_shutdown(void) {
 
 }
-
