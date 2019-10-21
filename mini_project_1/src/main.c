@@ -12,12 +12,6 @@
 
 
 #define ONE_SECOND 0xFFFFF800
-uint32_t interrupt_count  = 0;
-void SysTick_Handler(void) 
-{
-    LEDs_debug(4);
-    interrupt_count++;
-}
 
 void delay() {
     uint32_t count = 0;
@@ -47,23 +41,14 @@ int main() {
     UART_init();
 
     // Run
-    UART_print("Starting count");
 
     // temp - testing LED cycling
     // ==========================
     uint8_t i = 0;
     const uint8_t cycleCount = 2;
     for(i = 0; i < cycleCount; i++)
-
+ {
         TEMP_cycleAllLEDsOn();
     // ==========================
-    UART_print("Finished count");
-    Delay_oneMS();
-    /*while (interrupt_count < 16) {
-        while (interrupt_flag != 0) {
-        
-        }
-        Delay_oneMS();
-    }
-    return 0;*/
+ }
 }
