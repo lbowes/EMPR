@@ -9,6 +9,7 @@
 #include <common_utils/TextOutput.h>
 
 #include <stdint.h>
+#include <stdio.h>
 
 
 #define ONE_SECOND 0xFFFFF800
@@ -33,18 +34,22 @@ int main() {
     TextOutput_init();
 
     // Run
-    TextOutput_print("Starting count");
-
+    TextOutput_println("Starting count");
     uint8_t i = 0;
-    uint8_t maxVal = 1 << NUMBER_OF_LEDS;
-    for(i = 0; i < maxVal; i++) {
-        LEDs_debug(i);
+    for(i = 0; i < (1 << NUMBER_OF_LEDS); i++) {
+        LEDs_debugBinary(i);
+
+        // Convert the current LED number to a string
+        char i_str[3];
+        sprintf(i_str, "%d", i);
+
+        TextOutput_println(i_str);
         delay();
     }
+    TextOutput_println("Finished count");
+    TextOutput_debugMsg("someFunction", "something is broken!");
 
-    TextOutput_print("\rFinished count\n");
-
-    // Shutdown close
+    // Shutdown
     TextOutput_shutdown();
 
     return 0;

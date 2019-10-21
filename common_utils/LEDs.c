@@ -32,7 +32,7 @@ void LEDs_turnOff(uint8_t led_num) {
 }
 
 
-void LEDs_debug(uint32_t debugValue) {
+void LEDs_debugBinary(uint32_t debugValue) {
     uint32_t led_val = 0;
     debugValue = debugValue << 18;
 
