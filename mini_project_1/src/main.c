@@ -6,9 +6,10 @@
 // • Print: “Finished count” on the terminal screen.
 
 #include <common_utils/LEDs.h>
-#include <common_utils/UART.h>
+#include <common_utils/TextOutput.h>
 
 #include <stdint.h>
+#include <stdio.h>
 
 
 #define ONE_SECOND 0xFFFFF800
@@ -27,33 +28,28 @@ void delay() {
 }
 
 
-void TEMP_cycleAllLEDsOn() {
-    uint8_t ledIdx = 0;
-    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
-        LEDs_turnOn(ledIdx);
-        delay();
-        LEDs_turnOff(ledIdx);
-    }
-}
-
 int main() {
     // Initialisation
     LEDs_init();
-    UART_init();
+    TextOutput_init();
 
     // Run
-    UART_print("Starting count");
-
-    // temp - testing LED cycling
-    // ==========================
+    TextOutput_println("Starting count");
     uint8_t i = 0;
-    const uint8_t cycleCount = 2;
-    for(i = 0; i < cycleCount; i++)
+    for(i = 0; i < (1 << NUMBER_OF_LEDS); i++) {
+        LEDs_debugBinary(i);
 
-        TEMP_cycleAllLEDsOn();
-    // ==========================
-    UART_print("Finished count");
-    LEDs_debug(3);
+        // Convert the current LED number to a string
+        char i_str[3];
+        sprintf(i_str, "%d", i);
+
+        TextOutput_println(i_str);
+        delay();
+    }
+    TextOutput_println("Finished count");
+
+    // Shutdown
+    TextOutput_shutdown();
 
     return 0;
 }

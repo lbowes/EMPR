@@ -32,9 +32,15 @@ void LEDs_turnOff(uint8_t led_num) {
 }
 
 
-void LEDs_debug(uint32_t debugValue) {
+void LEDs_debugBinary(uint32_t debugValue) {
     uint32_t led_val = 0;
     debugValue = debugValue << 18;
+
+    uint8_t ledIdx = 0;
+    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
+        GPIO_ClearValue(LED_PORT_NUM, LEDBitStates[ledIdx]);
+    }
+
     led_val = LEDBitStates[0] & (debugValue);
     led_val += LEDBitStates[1] & (debugValue << 1);
     led_val += LEDBitStates[2] & (debugValue << 1);
