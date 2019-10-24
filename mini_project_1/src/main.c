@@ -5,9 +5,12 @@
 // • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
 // • Print: “Finished count” on the terminal screen.
 #include <common_utils/LEDs.h>
-#include <common_utils/UART.h>
 #include <common_utils/Delay.h>
 #include <stdint.h>
+#include <common_utils/TextOutput.h>
+#include <stdio.h>
+
+
 #define ONE_SECOND 0xFFFFF800
 
 int count = 0;
@@ -15,7 +18,7 @@ int ledIndex = 16;
 
 void cycleLEDs(void) {
     if (count == 10) {
-        LEDs_debug(ledIndex++);
+        LEDs_debugBinary(ledIndex++);
         count = 0;
         Delay_TenMS();
     }
@@ -24,7 +27,6 @@ void cycleLEDs(void) {
         count++;
     }
 }
-
 
 void myInterrupt(void) {
     if (ledIndex < 16) {
@@ -48,5 +50,4 @@ int main(void)
         }
     }   
     return 1;
-    
 }

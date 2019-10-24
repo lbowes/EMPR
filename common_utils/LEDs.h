@@ -12,6 +12,6 @@
 void LEDs_init(void);
 void LEDs_turnOn(uint8_t led_num);
 void LEDs_turnOff(uint8_t led_num);
-void LEDs_debug(uint32_t message);
+void LEDs_debugBinary(uint32_t debugValue);
 
 #endif // EMPR_LED_UTILS_H_
