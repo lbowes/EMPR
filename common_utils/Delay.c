@@ -6,7 +6,7 @@ void SysTick_Handler(void) {
     myInterrupt();
 }
 void Delay_TenMS(void) {
-    SYSTICK_InternalInit(10);
+    SYSTICK_InternalInit(100);
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
 }

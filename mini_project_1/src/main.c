@@ -11,22 +11,42 @@
 #define ONE_SECOND 0xFFFFF800
 
 int count = 0;
-void myInterrupt(void) {
-    if (count == 20) {
-    LEDs_turnOn(count % 3);
-    count = 0;
+int ledIndex = 16;
+
+void cycleLEDs(void) {
+    if (count == 10) {
+        LEDs_debug(ledIndex++);
+        count = 0;
+        Delay_TenMS();
     }
-    else{
-    Delay_TenMS();
-    count += 1;
+    else {
+        Delay_TenMS();
+        count++;
     }
-    return 0;
 }
+
+
+void myInterrupt(void) {
+    if (ledIndex < 16) {
+        cycleLEDs();
+    } else {
+    }
+}
+
+
+
 int main(void)
-{   
+{
     LEDs_init();
-    Delay_TenMS();
-    LEDs_turnOn(1);
-    while(1);
+    int i = 0;
+    ledIndex = 16;
+    while(i < 2) {
+        if (ledIndex == 16) {
+            ledIndex = 0;
+            cycleLEDs();
+            i++;
+        }
+    }   
     return 1;
+    
 }
