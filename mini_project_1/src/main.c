@@ -4,52 +4,50 @@
 // • Display the 4-bit (0-15) number on the LEDs with each number displayed for about 1 second under the control of timer-based interrupts.
 // • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
 // • Print: “Finished count” on the terminal screen.
-
 #include <common_utils/LEDs.h>
-#include <common_utils/TextOutput.h>
-
+#include <common_utils/Delay.h>
 #include <stdint.h>
+#include <common_utils/TextOutput.h>
 #include <stdio.h>
 
 
 #define ONE_SECOND 0xFFFFF800
 
+int count = 0;
+int ledIndex = 16;
 
-void delay() {
-    uint32_t count = 0;
-    uint32_t i = 0;
-    uint32_t j = 0;
+void cycleLEDs(void) {
+    if (count == 10) {
+        LEDs_debugBinary(ledIndex++);
+        count = 0;
+        Delay_TenMS();
+    }
+    else {
+        Delay_TenMS();
+        count++;
+    }
+}
 
-    for(i = ONE_SECOND; i < 0xFFFFFFFF; i++) {
-        for(j = ONE_SECOND; j < 0xFFFFFFFF; j++) {
-            count++;
-        }
+void myInterrupt(void) {
+    if (ledIndex < 16) {
+        cycleLEDs();
+    } else {
     }
 }
 
 
-int main() {
-    // Initialisation
+
+int main(void)
+{
     LEDs_init();
-    TextOutput_init();
-
-    // Run
-    TextOutput_println("Starting count");
-    uint8_t i = 0;
-    for(i = 0; i < (1 << NUMBER_OF_LEDS); i++) {
-        LEDs_debugBinary(i);
-
-        // Convert the current LED number to a string
-        char i_str[3];
-        sprintf(i_str, "%d", i);
-
-        TextOutput_println(i_str);
-        delay();
-    }
-    TextOutput_println("Finished count");
-
-    // Shutdown
-    TextOutput_shutdown();
-
-    return 0;
+    int i = 0;
+    ledIndex = 16;
+    while(i < 2) {
+        if (ledIndex == 16) {
+            ledIndex = 0;
+            cycleLEDs();
+            i++;
+        }
+    }   
+    return 1;
 }
