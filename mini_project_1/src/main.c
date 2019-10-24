@@ -19,9 +19,11 @@ void cycleLEDs(void) {
     if (count == 10) {
         LEDs_debugBinary(ledIndex++);
 
+        // Print LED number to the console
+        char i_str[3];
+        sprintf(i_str, "%d", ledIndex);
+        TextOutput_println(i_str);
 
-
-        TextOuptut_print()
         count = 0;
         Delay_TenMS();
     }
@@ -40,10 +42,14 @@ void myInterrupt(void) {
 
 
 int main(void) {
+    // Initialisation
     LEDs_init();
     TextOutput_init();
 
     ledIndex = 16;
+
+    // Running
+    TextOutput_print("Starting count...");
 
     int i = 0;
     while(i < 2) {
@@ -53,6 +59,8 @@ int main(void) {
             i++;
         }
     }
+
+    TextOutput_print("Finished count.");
 
     return 1;
 }
