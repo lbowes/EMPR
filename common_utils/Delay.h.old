@@ -1,0 +1,5 @@
+#ifndef EMPR_DELAY_UTILS_H_
+#define EMPR_DELAY_UTILS_H_
+void Delay_TenMS(void);
+void Delay_Interrupt(void);
+#endif //EMPR_DELAY_UTILS_H
