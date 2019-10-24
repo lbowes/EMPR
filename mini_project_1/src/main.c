@@ -6,18 +6,27 @@
 // • Print: “Finished count” on the terminal screen.
 #include <common_utils/LEDs.h>
 #include <common_utils/UART.h>
-//#include <common_utils/Delay.h>
+#include <common_utils/Delay.h>
 #include <stdint.h>
 #define ONE_SECOND 0xFFFFF800
 
-//void myInterrupt(void) {
-  //  LEDs_turnOn(2);
-
-//}
+int count = 0;
+void myInterrupt(void) {
+    if (count == 20) {
+    LEDs_turnOn(count % 3);
+    count = 0;
+    }
+    else{
+    Delay_TenMS();
+    count += 1;
+    }
+    return 0;
+}
 int main(void)
-{
-  //  Delay_TenMS();
-  LEDs_turnOn(1);
-  while(1);
-  return 1;
+{   
+    LEDs_init();
+    Delay_TenMS();
+    LEDs_turnOn(1);
+    while(1);
+    return 1;
 }
