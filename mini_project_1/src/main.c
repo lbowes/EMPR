@@ -11,14 +11,17 @@
 #include <stdio.h>
 
 
-#define ONE_SECOND 0xFFFFF800
-
 int count = 0;
 int ledIndex = 16;
+
 
 void cycleLEDs(void) {
     if (count == 10) {
         LEDs_debugBinary(ledIndex++);
+
+
+
+        TextOuptut_print()
         count = 0;
         Delay_TenMS();
     }
@@ -28,26 +31,28 @@ void cycleLEDs(void) {
     }
 }
 
+
 void myInterrupt(void) {
     if (ledIndex < 16) {
         cycleLEDs();
-    } else {
     }
 }
 
 
-
-int main(void)
-{
+int main(void) {
     LEDs_init();
-    int i = 0;
+    TextOutput_init();
+
     ledIndex = 16;
+
+    int i = 0;
     while(i < 2) {
         if (ledIndex == 16) {
             ledIndex = 0;
             cycleLEDs();
             i++;
         }
-    }   
+    }
+
     return 1;
 }
