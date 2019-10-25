@@ -9,58 +9,32 @@
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
-
-
 int count = 0;
-int ledIndex = 16;
+int ledIndex = 0;
+char stringIndex[3];
 
-
-void cycleLEDs(void) {
+void Interrupt_tenMS(void) {
+    count++;
     if (count == 10) {
-        LEDs_debugBinary(ledIndex++);
-
-        // Print LED number to the console
-        char i_str[3];
-        sprintf(i_str, "%d", ledIndex);
-        TextOutput_println(i_str);
-
         count = 0;
-        Delay_TenMS();
-    }
-    else {
-        Delay_TenMS();
-        count++;
-    }
-}
-
-
-void myInterrupt(void) {
-    if (ledIndex < 16) {
-        cycleLEDs();
+        sprintf(stringIndex, "%d", ledIndex);
+        TextOutput_print(stringIndex);
+        LEDs_debugBinary(ledIndex++);
+        if (ledIndex == 16) {
+            
+            TextOutput_print("Count Finished");
+            ledIndex = 0;
+            Delay_Disable();
+        }
     }
 }
 
 
 int main(void) {
-    // Initialisation
-    LEDs_init();
+    // Initialisating
     TextOutput_init();
-
-    ledIndex = 16;
-
-    // Running
-    TextOutput_print("Starting count...");
-
-    int i = 0;
-    while(i < 2) {
-        if (ledIndex == 16) {
-            ledIndex = 0;
-            cycleLEDs();
-            i++;
-        }
-    }
-
-    TextOutput_print("Finished count.");
-
+    TextOutput_print("Starting count");
+    LEDs_init();
+    Delay_TenMS();
     return 1;
 }
