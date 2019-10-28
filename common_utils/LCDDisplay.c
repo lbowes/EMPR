@@ -28,11 +28,22 @@ static uint32_t I2CAddress = 0x38;
 static uint32_t initWrite[10] = {0x00, 0x34, 0x0c, 0x06, 0x35, 0x10, 0x42, 0x9f, 0x34, 0x02};
 
 void LCDDisplay_init(void) {
-    //
+    // Setup for I2C pins
+    PINSEL_CFG_Type PinCFG;
+	PinCFG.Funcnum = 3;
+	PinCFG.OpenDrain = PINSEL_PINMODE_NORMAL;
+	PinCFG.Pinmode = PINSEL_PINMODE_PULLUP;
+
+	PinCFG.Portnum =0;
+	PinCFG.Pinnum = 0;
+	PINSEL_ConfigPin(&PinCFG);
+	PinCFG.Pinnum = 1;
+	PINSEL_ConfigPin(&PinCFG);
+    
+    // Initialise I2C
     I2C_INIT(LPC_I2C1,100000);
     I2C_Cmd(LPC_I2C1,ENABLE);
     I2C_M_SETUP_Type config ;
-//    = {I2CAddress, initWrite,10,0,NULL,0,0,2,0,0,0}
     config.sl_addr7bit= I2CAddress;
     config.tx_data= initWrite;
     config.tx_length=10;
@@ -40,18 +51,39 @@ void LCDDisplay_init(void) {
     config.rx_data = NULL;
     config.rx_length = 0;
     config.rx_count = 0;
-
     config.retransmissions_max = 2;
 
+    // Send data through the I2C port 
     I2C_MasterTransferData(LPC_I2C1,&config,I2C_TRANSFER_POLLING);
-// Clear Screen
+    
+    
+    // Clear Screen
 }
 
-void LCDDisplay_clear(void) {
+void LCDDisplay_clear(unsigned int line_number) {
 
 }
 
 
-void LCDDisplay_print(const char* msg, bool ) {
+int LCDDisplay_print(const char* msg,unsigned int line_number ) {
+    // Get message size
+    unsigned int message_size;
+    message_size = strlen(msg);
+    // Lets perform some checks
+    // If line_number is not 1 or 0 we will return -1 to show an error
+    if (line_number!=LINE_1 || line_number!=LINE_2)
+    {
+        return -1
+    }
+    // If messageSize is 0 then we assume you want to clear the screen
+    if (message_size==0){
+        LCDDisplay_clear(line_number);
+    }
+    
+    // Convert msg to byte array
+    
+
+    // We successfully sent data to the LCD display send success code
+    return 0
 
 }
