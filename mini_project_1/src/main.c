@@ -13,20 +13,24 @@ int count = 0;
 int ledIndex = 0;
 char stringIndex[3];
 
+void Interrupt_oneS(void) {
+    TextOutput_print("One second");
+
+}
 void Interrupt_tenMS(void) {
-    count++;
-    if (count == 10) {
-        count = 0;
+            
         sprintf(stringIndex, "%d", ledIndex);
         TextOutput_print(stringIndex);
         LEDs_debugBinary(ledIndex++);
+        if (ledIndex == 16) {
+            ledIndex = 0;
+            }
         if (ledIndex == 16) {
             
             TextOutput_print("Count Finished");
             ledIndex = 0;
             Delay_Disable();
         }
-    }
 }
 
 
