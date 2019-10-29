@@ -25,9 +25,27 @@ static uint32_t I2CAddress = 0x38;
 
 // DO NOT CHANGE this!!!!
 // Setup bold face
-static uint32_t initWrite[10] = {0x00, 0x34, 0x0c, 0x06, 0x35, 0x10, 0x42, 0x9f, 0x34, 0x02};
+static uint8_t initWrite[12] = {0x00,0x34,0x0c,0x06,0x35,0x04,0x10,0x42,0x9f,0x34,0x02};
+static uint8_t test[5] = {0x00,0x80,0x40,0x64};
 
-void LCDDisplay_init(void) {
+
+void sendData(I2C_M_SETUP_Type* setup, uint8_t* Data, uint32_t dataLength)
+{
+	setup->sl_addr7bit = 0x38;
+
+	setup->tx_data = Data;
+	setup->tx_length = TRLength;
+	setup->tx_count = 0;
+
+	setup->rx_data = NULL;
+	setup->rx_length = 0;
+	setup->rx_count = 0;
+
+	setup->retransmissions_max = 2;
+}
+
+void setupPins(void)
+{
     // Setup for I2C pins
     PINSEL_CFG_Type PinCFG;
 	PinCFG.Funcnum = 3;
@@ -35,28 +53,30 @@ void LCDDisplay_init(void) {
 	PinCFG.Pinmode = PINSEL_PINMODE_PULLUP;
 
 	PinCFG.Portnum =0;
-	PinCFG.Pinnum = 0;
+	PinCFG.Pinnum = 9;
 	PINSEL_ConfigPin(&PinCFG);
-	PinCFG.Pinnum = 1;
+	PinCFG.Pinnum = 10;
 	PINSEL_ConfigPin(&PinCFG);
-    
+}
+
+void LCDDisplay_init(void) 
+{
     // Initialise I2C
-    I2C_INIT(LPC_I2C1,100000);
+    I2C_Init(LPC_I2C1,100000);
     I2C_Cmd(LPC_I2C1,ENABLE);
     I2C_M_SETUP_Type config ;
-    config.sl_addr7bit= I2CAddress;
-    config.tx_data= initWrite;
-    config.tx_length=10;
-    config.tx_count=0;
-    config.rx_data = NULL;
-    config.rx_length = 0;
-    config.rx_count = 0;
-    config.retransmissions_max = 2;
+    setupPins();
+    
+    sendData()
 
-    // Send data through the I2C port 
-    I2C_MasterTransferData(LPC_I2C1,&config,I2C_TRANSFER_POLLING);
+    // Send data through the I2C port
+    Status a = I2C_MasterTransferData(LPC_I2C1,&config,I2C_TRANSFER_POLLING);
     
+    // Loop
     
+    I2C_MasterTransferData(LPC_I2C1,&tes,I2C_TRANSFER_POLLING);
+
+
     // Clear Screen
 }
 
@@ -73,17 +93,17 @@ int LCDDisplay_print(const char* msg,unsigned int line_number ) {
     // If line_number is not 1 or 0 we will return -1 to show an error
     if (line_number!=LINE_1 || line_number!=LINE_2)
     {
-        return -1
+        return -1;
     }
     // If messageSize is 0 then we assume you want to clear the screen
     if (message_size==0){
         LCDDisplay_clear(line_number);
     }
-    
+
     // Convert msg to byte array
-    
+
 
     // We successfully sent data to the LCD display send success code
-    return 0
+    return 0;
 
 }
