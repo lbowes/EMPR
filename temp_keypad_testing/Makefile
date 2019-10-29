@@ -37,7 +37,7 @@
 # CONFIGURE
 # ==============================================================================
 # Name of the current project
-PROJECT_NAME := keypad_testing
+PROJECT_NAME := temp_keypad_testing
 
 # 'EMPR' directory
 PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
