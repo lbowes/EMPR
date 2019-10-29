@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
+#include <common_utils/I2C.h>
 int count = 0;
 int ledIndex = 0;
 char stringIndex[3];
@@ -33,8 +34,16 @@ void Interrupt_tenMS(void) {
 int main(void) {
     // Initialisating
     TextOutput_init();
-    TextOutput_print("Starting count");
-    LEDs_init();
-    Delay_TenMS();
+    TextOutput_print("Starting init");
+    i2c_init();
+    TextOutput_print("Init done");
+    uint8_t data[1]={0x00};
+    char buff[100];
+    if (i2c_send_data(32,&data[0],1)==SUCCESS){
+        TextOutput_print("Done m8");
+    }
+    TextOutput_print("Don m8");
+    // LEDs_init();
+    // Delay_TenMS();
     return 1;
 }
