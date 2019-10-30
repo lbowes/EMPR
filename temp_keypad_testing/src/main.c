@@ -37,12 +37,21 @@ int main() {
     // Bus sniffer program
     // 1. Configure mbed pins to act as I2C pins
     // (function 3 at pins P0.0 (mbed 9 / MPU 46) and P0.1 (mbed 10 / MPU 47))
+    PINSEL_CFG_Type PinCFG;
+	PinCFG.Funcnum = 3;
+	PinCFG.OpenDrain = PINSEL_PINMODE_NORMAL;
+	PinCFG.Pinmode = PINSEL_PINMODE_PULLUP;
 
-    // 2. Set the I2C controller clock rate
+	PinCFG.Portnum = 0;
+	PinCFG.Pinnum = 0;
+	PINSEL_ConfigPin(&PinCFG);
+	PinCFG.Pinnum = 1;
+	PINSEL_ConfigPin(&PinCFG);
+
+    // Initialise the I2C
     I2C_Init(LPC_I2C1, 100000);
-
-    // 3. Enable the I2C bus controller
     I2C_Cmd(LPC_I2C1, ENABLE);
+
 
     return 0;
 }
