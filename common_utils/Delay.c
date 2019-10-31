@@ -1,12 +1,13 @@
-#include "Delay.h"
 #include "lpc17xx_libcfg_default.h"
 #include "lpc17xx_systick.h"
 #include "InterruptFunctions.h"
+#include "Delay.h"
 
-uint32_t elapsed_Tick = 0x0;
 
-void SysTick_Handler(void) 
-{
+static uint32_t elapsed_Tick = 0x0;
+
+
+void SysTick_Handler(void) {
     elapsed_Tick++;
     if ((elapsed_Tick % 0x02) == 0) {
         Interrupt_tenMS();
@@ -18,7 +19,6 @@ void SysTick_Handler(void)
         Interrupt_hundredMS();
         elapsed_Tick = 0;
     }
-    
 }
 
 
@@ -27,7 +27,6 @@ void Delay_tenMS(void) {
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
 }
-
 
 
 void Delay_disable(void) {
