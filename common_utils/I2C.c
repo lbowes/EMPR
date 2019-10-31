@@ -17,22 +17,22 @@ void i2c_init(void){
 	PinCFG.Pinnum = 1;
 	PINSEL_ConfigPin(&PinCFG);
 }
+
+
 // Send data through I2C
 Status i2c_send_data(uint8_t address,uint8_t* Data, uint32_t dataLength)
 {
 	// Setup data structure
-    I2C_M_SETUP_Type setup;
-	setup.sl_addr7bit = address;
-
-	setup.tx_data = &Data[0];
-	setup.tx_length = dataLength;
-	setup.tx_count = 0;
-
-	setup.rx_data = NULL;
-	setup.rx_length = 0;
-	setup.rx_count = 0;
-
-	setup.retransmissions_max = 2;
+    I2C_M_SETUP_Type Setup;
+	
+	Setup.sl_addr7bit = address;
+	Setup.tx_data = &Data[0];
+	Setup.tx_length = dataLength;
+	Setup.tx_count = 0;
+	Setup.rx_data = NULL;
+	Setup.rx_length = 0;
+	Setup.rx_count = 0;
+	Setup.retransmissions_max = 2;
 
 	// Return if SUCCESS =1 or ERROR=0
     return I2C_MasterTransferData(LPC_I2C1,&setup,I2C_TRANSFER_POLLING);
