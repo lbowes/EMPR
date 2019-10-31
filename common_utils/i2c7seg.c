@@ -8,17 +8,50 @@
 
 
 
+//Turns off all 7seg displays
 
 
-int send_data(uint8_t addr, uint8_t[7] Data){
-	
-	done = i2c_send_data(uint8_t addr,uint8_t* Data, uint32_t 7);
-	if (done == SUCCESS){
-		return 1;
-	}
-	else{
-		return 0;
-	}
+static void display(data)
+{
+    Status data = i2c_send_data(0x38,data,sizeof(data));
 
 }
-	
+
+static 
+
+void seven_seg_off (void)
+{
+    uint8_t data[6] = {0x00,0xF7,0x00,0x00,0x00,0x00};
+    display(data);
+
+}
+
+
+void set_colon(state)
+{
+    uint8_t data[6] = {0x00,0xF7,0x00,0x80,0x80,0x00};
+    display(data);
+}
+
+
+void set_decimal_point(state)
+{
+    uint8_t data[6] = {0x00,0xF7,0x00,0x80,0x80,0x00};
+    Status data = i2c_send_data(0x38,data,sizeof(data));
+
+}
+
+
+
+
+void set_values(int digit_one, int digit_two, int digit_three, int digit_four, char colon_state, char decimal_state, char topdot_state)
+{
+    int numbers[10] = {0x3f,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x67,0x3F};
+    uint8_t data[6];
+    if(colon_state = "on"){
+        data = {0x00,0xF7,numbers[digit_one],numbers[digit_two],numbers[digit_three],numbers[digit_four]};
+        display(data);
+    }
+
+
+}
