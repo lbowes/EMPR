@@ -24,5 +24,13 @@
 #define EMPR_KEY_ASTERISK 0xE
 #define EMPR_KEY_HASH     0xF
 
+// I2C address
+#define LCD_I2C_ADDRESS 0x38
+#define KEYBOARD_I2C_ADDRESS 0x21
+#define SEVEN_SEGMENT_DISPLAY_I2C_ADDRESS 0x35
+#define EEPROM_I2C_ADDRESS 0x50
+#define GPIO_I2C_ADDRESS 0x20
+
+// UART address
 
 #endif // EMPR_CONSTANTS_H_

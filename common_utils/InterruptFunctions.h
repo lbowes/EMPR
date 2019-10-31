@@ -1,1 +1,1 @@
-void myInterrupt(void);
+void Interrupt_tenMS(void);

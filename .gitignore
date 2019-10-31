@@ -1,4 +1,9 @@
 **/bin
 **/build
+.idea
 **/.idea
+<<<<<<< HEAD
 **/.vscode
+=======
+playground/
+>>>>>>> 5000918f853168f565bf1270e2899f4c74ca6eb3
