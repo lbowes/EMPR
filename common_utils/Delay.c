@@ -2,29 +2,27 @@
 #include "lpc17xx_libcfg_default.h"
 #include "lpc17xx_systick.h"
 #include "InterruptFunctions.h"
-#define PERIOD_10MS 0x02
-#define PERIOD_1S 0x14
-#define BITMASK (PERIOD_10MS | PERIOD_1S)
-uint32_t Elapsed_Tick = 0x0;
-uint32_t Comparator;
+
+uint32_t elapsed_Tick = 0x0;
+
 void SysTick_Handler(void) 
 {
-    Elapsed_Tick++;
-    if ((Elapsed_Tick % 0x02) == 0) {
+    elapsed_Tick++;
+    if ((elapsed_Tick % 0x02) == 0) {
         Interrupt_tenMS();
     }
-    if ((Elapsed_Tick % 0x07) == 0) {
+    if ((elapsed_Tick % 0x07) == 0) {
         Interrupt_fiftyMS();
     }
-    if ((Elapsed_Tick % 0x14) == 0) {
+    if ((elapsed_Tick % 0x14) == 0) {
         Interrupt_oneS();
-        Elapsed_Tick = 0;
+        elapsed_Tick = 0;
     }
     
 }
 
 
-void Delay_TenMS(void) {
+void Delay_tenMS(void) {
     SYSTICK_InternalInit(50);
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
@@ -32,7 +30,7 @@ void Delay_TenMS(void) {
 
 
 
-void Delay_Disable(void) {
+void Delay_disable(void) {
     SYSTICK_IntCmd(0);
     SYSTICK_Cmd(0);
 }

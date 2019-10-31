@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
+
 int count = 0;
 int ledIndex = 0;
 char stringIndex[3];
@@ -31,6 +32,6 @@ int main(void) {
     TextOutput_init();
     TextOutput_print("Starting count");
     LEDs_init();
-    Delay_TenMS();
+    Delay_tenMS();
     return 1;
 }
