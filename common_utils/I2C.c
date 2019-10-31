@@ -10,7 +10,6 @@ void i2c_init(void){
 	PinCFG.Funcnum = 3;
 	PinCFG.OpenDrain = PINSEL_PINMODE_NORMAL;
 	PinCFG.Pinmode = PINSEL_PINMODE_PULLUP;
-
 	PinCFG.Portnum =0;
 	PinCFG.Pinnum = 0;
 	PINSEL_ConfigPin(&PinCFG);
