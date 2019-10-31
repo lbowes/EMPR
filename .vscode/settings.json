@@ -3,6 +3,7 @@
         "lpc17xx_i2c.h": "c",
         "lpc17xx.h": "c",
         "lpc_types.h": "c",
-        "lpc17xx_pinsel.h": "c"
+        "lpc17xx_pinsel.h": "c",
+        "stdint.h": "c"
     }
 }
