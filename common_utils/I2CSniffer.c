@@ -44,7 +44,7 @@ void I2CSniffer_run(void) {
     TextOutput_print("Completed pin setup.");
 
     int queryAddress = 0;
-    for (queryAddress; queryAddress < 128; queryAddress++) {
+    for (queryAddress = 0; queryAddress < 128; queryAddress++) {
         I2C_M_SETUP_Type setup;
         uint8_t data[1] = { 0x00 };
         I2CSniffer_sendData(&setup, queryAddress, data, 1);
