@@ -6,10 +6,12 @@
 // • Print: “Finished count” on the terminal screen.
 #include <common_utils/LEDs.h>
 #include <common_utils/Delay.h>
+
+#include <common_utils/I2CSniffer.h>
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
-#include <common_utils/I2C.h>
+
 int count = 0;
 int ledIndex = 0;
 char stringIndex[3];
@@ -32,8 +34,14 @@ void Interrupt_tenMS(void) {
 
 
 int main(void) {
+
+    sniffer();
+    // LCDDisplay_init();
     // Initialisating
-    TextOutput_init();
-    i2c_init();
+    // TextOutput_init();
+    // TextOutput_print("Starting count");
+    // LEDs_init();
+    // Delay_TenMS();
+    return 1;
 
 }
