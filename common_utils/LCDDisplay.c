@@ -25,7 +25,7 @@ static uint32_t I2CAddress = 0x38;
 
 // DO NOT CHANGE this!!!!
 // Setup bold face
-static uint8_t initWrite[12] = {0x00,0x34,0x0c,0x06,0x35,0x04,0x10,0x42,0x9f,0x34,0x02};
+static uint8_t initWrite[11] = {0x00,0x34,0x0c,0x06,0x35,0x04,0x10,0x42,0x9f,0x34,0x02};
 static uint8_t test[5] = {0x00,0x80,0x40,0x64};
 
 
@@ -34,7 +34,8 @@ static uint8_t test[5] = {0x00,0x80,0x40,0x64};
 void LCDDisplay_init(void) 
 {
     // Lets write the first bits to get the lcd configured
-    i2c_send_data(I2CAddress,&initWrite,12);
+    i2c_send_data(I2CAddress,initWrite,sizeof(initWrite));
+    i2c_send_data(I2CAddress,test,sizeof(test));
 }
 
 void LCDDisplay_clear(unsigned int line_number) {
