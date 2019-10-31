@@ -1,6 +1,5 @@
 **/bin
 **/build
-.idea
 **/.idea
 **/.vscode
-playground
+**/playground
