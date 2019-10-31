@@ -15,15 +15,15 @@ int ledIndex = 0;
 char stringIndex[3];
 
 void Interrupt_fiftyMS(void) {
-    TextOutput_print("Half a second");
+    TextOutput_print("50MS");
 
 }
-void Interrupt_oneS(void) {
-    TextOutput_print("One second");
+void Interrupt_hundredMS(void) {
+    TextOutput_print("100MS");
 
 }
 void Interrupt_tenMS(void) {
-    TextOutput_print("One centisecond");
+    TextOutput_print("10MS");
 }
 
 

@@ -15,7 +15,7 @@ void SysTick_Handler(void)
         Interrupt_fiftyMS();
     }
     if ((elapsed_Tick % 0x14) == 0) {
-        Interrupt_oneS();
+        Interrupt_hundredMS();
         elapsed_Tick = 0;
     }
     
@@ -23,7 +23,7 @@ void SysTick_Handler(void)
 
 
 void Delay_tenMS(void) {
-    SYSTICK_InternalInit(50);
+    SYSTICK_InternalInit(5);
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
 }
