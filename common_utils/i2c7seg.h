@@ -1,5 +1,5 @@
+#include <stdint.h>
 
 
-void init_i2c(void)
 
-int send_data(uint8_t);
+int send_7seg_data(uint8_t[7]);
