@@ -3,6 +3,8 @@
 
 #include <lpc17xx_i2c.h>
 #include <LPC17xx.h>
+#include <lpc17xx_pinsel.h>
+#include <lpc_types.h>
 
 int main() {
     // Polling keys
