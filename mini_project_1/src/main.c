@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
+#include <common_utils/I2C.h>
 int count = 0;
 int ledIndex = 0;
 char stringIndex[3];
@@ -33,8 +34,6 @@ void Interrupt_tenMS(void) {
 int main(void) {
     // Initialisating
     TextOutput_init();
-    TextOutput_print("Starting count");
-    LEDs_init();
-    Delay_TenMS();
-    return 1;
+    i2c_init();
+
 }
