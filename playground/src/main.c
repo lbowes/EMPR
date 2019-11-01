@@ -13,16 +13,11 @@
 
 
 
-int main(void) {
-
-    // Init everything
-    i2c_init();
+void main(void) {
     TextOutput_init();
-    LEDs_init();
-    keypad_init();
-    LCDDisplay_init();
-    // End init
+    uint8_t data[2] = {0x00,0xF7};
+    Status done = i2c_send_data(0x38,data,sizeof(data));
+    uint8_t data2[5] = {0x00,0xFF,0xFF,0xFF,0xFF};
 
-    return 1;
-
+    done = i2c_send_data(0x38,data2,sizeof(data2));
 }
