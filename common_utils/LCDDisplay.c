@@ -79,7 +79,7 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     message[0] = 0x40;
     int index = 0;
     char character;
-    for (index; index <= message_size; index++)
+    for (index <= message_size; index++)
     {
         character= msg[index];
         switch (character)
