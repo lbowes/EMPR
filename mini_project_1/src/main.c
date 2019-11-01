@@ -10,22 +10,15 @@
 
 #include <stdint.h>
 #include <common_utils/TextOutput.h>
-#include <common_utils/I2C.h>
+#include <common_utils/i2c7seg.h>
 #include <stdio.h>
 
 
 void main(void) {
-    
-    TextOutput_init();
-	i2c_init();
-    uint8_t data[6] = {0x00,0xF7,0x00,0x00,0x00,0x00};
-    Status done = i2c_send_data(0x38,data,sizeof(data));
-    uint8_t data2[6] = {0x04,0x01};
-    done = i2c_send_data(0x38,data2,sizeof(data2));
-    if (done==SUCCESS){
-        TextOutput_print("working");
-    }
-    else{
-        TextOutput_print("na");
-    }
+
+	init_i2c();
+	int i;
+	for (i ; i<128 ; i++){
+
+
 }

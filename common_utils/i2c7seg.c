@@ -1,5 +1,6 @@
 
 #include "i2c7seg.h"
+#include <common_utils/TextOutput.h>
 #include <LPC17xx.h>
 #include <lpc_types.h>
 #include <lpc17xx_i2c.h>
