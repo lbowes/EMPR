@@ -2,7 +2,8 @@
 #include "I2C.h"
 #include <string.h> 
 #include "Constants.h"
-
+#include <math.h>
+#include <stdio.h>
 // This LCD has 2X8 bit registers
 // Instruction reg and data Reg
 // Top 2 bytes have impact
@@ -34,6 +35,24 @@ void LCDDisplay_init(void)
 
     LCDDisplay_clear(LINE_1);
     LCDDisplay_clear(LINE_2);
+}
+
+
+int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress){
+    char space=' ';
+    char hash='#';
+    char progress_bar[16]={};
+    char progress_bar_hashes[12]={};
+    memset(progress_bar,space,12);
+    int number_of_hashes= int((double) progress/10.0);
+    memset(progress_bar,hash,number_of_hashes+1);
+    progress_bar_hashes[0]='[';
+    progress_bar_hashes[11]=']';
+    strcpy(progress_bar,progress_bar_hashes);
+    sprintf(progress_bar,"%s%d%%",progress_bar_hashes,progress);
+    LCDDisplay_print(progress_bar);
+    
+
 }
 
 void LCDDisplay_clear(unsigned int line_number)
