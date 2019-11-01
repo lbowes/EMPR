@@ -1,6 +1,6 @@
 #include "LCDDisplay.h"
 #include "I2C.h"
-#include <string.h> 
+#include <string.h>
 #include "Constants.h"
 
 // This LCD has 2X8 bit registers
@@ -57,9 +57,9 @@ void LCDDisplay_clear(unsigned int line_number)
 
 int LCDDisplay_print(const char *msg, unsigned int line_number)
 {
-    
+
     // Get message size
-    unsigned int message_size=0;
+    unsigned int message_size = 0;
     message_size = strlen(msg);
     // Lets perform some checks
     // If line_number is not 1 or 0 we will return -1 to show an error
@@ -81,42 +81,43 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     char character;
     for (index <= message_size; index++)
     {
-        character= msg[index];
+        character = msg[index];
         switch (character)
         {
         case 0x20:
-            character=0xA0;
+            character = 0xA0;
             break;
         case 0x30 ... 0x39:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x41 ... 0x5A:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x3A ... 0x3F:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x21 ... 0x23:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x25 ... 0x2F:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         default:
             break;
         }
         message[index + 1] = character;
     }
-    
+
     if (line_number == LINE_1)
     {
         LCDDisplay_clear(LINE_1);
         i2c_send_data(LCD_I2C_ADDRESS, line_1, sizeof(line_1));
     }
-    else if (line_number == LINE_2){
+    else if (line_number == LINE_2)
+    {
         LCDDisplay_clear(LINE_2);
         i2c_send_data(LCD_I2C_ADDRESS, line_2, sizeof(line_2));
     }
-    i2c_send_data(LCD_I2C_ADDRESS, message, sizeof(message));    
+    i2c_send_data(LCD_I2C_ADDRESS, message, sizeof(message));
     return 0;
 }

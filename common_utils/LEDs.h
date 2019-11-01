@@ -1,11 +1,9 @@
 #ifndef EMPR_LED_UTILS_H_
 #define EMPR_LED_UTILS_H_
 
-
 #include <stdint.h>
 
 #define NUMBER_OF_LEDS 4
-
 
 // ----- Public functions -----
 //

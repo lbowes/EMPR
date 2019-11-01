@@ -4,9 +4,9 @@
 
 #include <string.h>
 
-
 // Copied from https://www-users.cs.york.ac.uk/~nep/teach/empr/serialEx/serial.c
-void TextOutput_init(void) {
+void TextOutput_init(void)
+{
     UART_CFG_Type UARTConfigStruct;
     UART_FIFO_CFG_Type UARTFIFOConfigStruct;
     PINSEL_CFG_Type PinCfg;
@@ -47,42 +47,39 @@ void TextOutput_init(void) {
     TextOutput_clearScreen();
 }
 
-
 static void TextOutput_resetCursor(void)
-    // TODO: A more efficient implementation of  this function would involve
-    // pre/appending the return and newline characters to the message passed in
-    // and then only call UART_Send(...) once.
+// TODO: A more efficient implementation of  this function would involve
+// pre/appending the return and newline characters to the message passed in
+// and then only call UART_Send(...) once.
 {
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)"\n", 1, BLOCKING);
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)"\r", 1, BLOCKING);
+    UART_Send((LPC_UART_TypeDef *)LPC_UART0, (uint8_t *)"\n", 1, BLOCKING);
+    UART_Send((LPC_UART_TypeDef *)LPC_UART0, (uint8_t *)"\r", 1, BLOCKING);
 }
 
-
-void TextOutput_print(const char* msg) {
+void TextOutput_print(const char *msg)
+{
     const uint32_t msgLength = strlen(msg);
     TextOutput_resetCursor();
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING);
+    UART_Send((LPC_UART_TypeDef *)LPC_UART0, (uint8_t *)msg, msgLength, BLOCKING);
 }
 
-
-void TextOutput_println(const char* msg) {
+void TextOutput_println(const char *msg)
+{
     const uint32_t msgLength = strlen(msg);
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)msg, msgLength, BLOCKING);
+    UART_Send((LPC_UART_TypeDef *)LPC_UART0, (uint8_t *)msg, msgLength, BLOCKING);
     TextOutput_resetCursor();
 }
 
-
-void TextOutput_clearScreen(void) {
-    const char* clearScr = "\033[2J\033[1;1H";
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)clearScr, 10, BLOCKING);
+void TextOutput_clearScreen(void)
+{
+    const char *clearScr = "\033[2J\033[1;1H";
+    UART_Send((LPC_UART_TypeDef *)LPC_UART0, (uint8_t *)clearScr, 10, BLOCKING);
 }
 
-
-void TextOutput_memeText(void) {
-
+void TextOutput_memeText(void)
+{
 }
 
-
-void TextOutput_shutdown(void) {
-
+void TextOutput_shutdown(void)
+{
 }

@@ -9,5 +9,4 @@ void keypad_init(void);
 
 bool keypad_isKeyPressed(uint8_t character);
 
-
 #endif // EMPR_KEYPAD_UTILS_H_
