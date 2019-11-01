@@ -1,6 +1,6 @@
 #include "LCDDisplay.h"
 #include "I2C.h"
-#include <string.h> 
+#include <string.h>
 #include "Constants.h"
 #include <math.h>
 #include <stdio.h>
@@ -37,22 +37,20 @@ void LCDDisplay_init(void)
     LCDDisplay_clear(LINE_2);
 }
 
-
-int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress){
-    char space=' ';
-    char hash='#';
-    char progress_bar[16]={};
-    char progress_bar_hashes[12]={};
-    memset(progress_bar,space,12);
-    int number_of_hashes= int((double) progress/10.0);
-    memset(progress_bar,hash,number_of_hashes+1);
-    progress_bar_hashes[0]='[';
-    progress_bar_hashes[11]=']';
-    strcpy(progress_bar,progress_bar_hashes);
-    sprintf(progress_bar,"%s%d%%",progress_bar_hashes,progress);
+int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress)
+{
+    char space = ' ';
+    char hash = '#';
+    char progress_bar[16] = {};
+    char progress_bar_hashes[12] = {};
+    memset(progress_bar, space, 12);
+    int number_of_hashes = int((double)progress / 10.0);
+    memset(progress_bar, hash, number_of_hashes + 1);
+    progress_bar_hashes[0] = '[';
+    progress_bar_hashes[11] = ']';
+    strcpy(progress_bar, progress_bar_hashes);
+    sprintf(progress_bar, "%s%d%%", progress_bar_hashes, progress);
     LCDDisplay_print(progress_bar);
-    
-
 }
 
 void LCDDisplay_clear(unsigned int line_number)
@@ -76,9 +74,9 @@ void LCDDisplay_clear(unsigned int line_number)
 
 int LCDDisplay_print(const char *msg, unsigned int line_number)
 {
-    
+
     // Get message size
-    unsigned int message_size=0;
+    unsigned int message_size = 0;
     message_size = strlen(msg);
     // Lets perform some checks
     // If line_number is not 1 or 0 we will return -1 to show an error
@@ -100,42 +98,43 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     char character;
     for (index <= message_size; index++)
     {
-        character= msg[index];
+        character = msg[index];
         switch (character)
         {
         case 0x20:
-            character=0xA0;
+            character = 0xA0;
             break;
         case 0x30 ... 0x39:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x41 ... 0x5A:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x3A ... 0x3F:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x21 ... 0x23:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         case 0x25 ... 0x2F:
-            character=character+0x80;
+            character = character + 0x80;
             break;
         default:
             break;
         }
         message[index + 1] = character;
     }
-    
+
     if (line_number == LINE_1)
     {
         LCDDisplay_clear(LINE_1);
         i2c_send_data(LCD_I2C_ADDRESS, line_1, sizeof(line_1));
     }
-    else if (line_number == LINE_2){
+    else if (line_number == LINE_2)
+    {
         LCDDisplay_clear(LINE_2);
         i2c_send_data(LCD_I2C_ADDRESS, line_2, sizeof(line_2));
     }
-    i2c_send_data(LCD_I2C_ADDRESS, message, sizeof(message));    
+    i2c_send_data(LCD_I2C_ADDRESS, message, sizeof(message));
     return 0;
 }
