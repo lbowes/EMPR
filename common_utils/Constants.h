@@ -5,5 +5,13 @@
 #define OUTPUT 1
 #define INPUT 0
 
+// I2C address
+#define LCD_I2C_ADDRESS 0x3B
+#define KEYBOARD_I2C_ADDRESS 0x21
+#define SEVEN_SEGMENT_DISPLAY_I2C_ADDRESS 0x35
+#define EEPROM_I2C_ADDRESS 0x50
+#define GPIO_I2C_ADDRESS 0x20
+
+// UART address
 
 #endif // EMPR_CONSTANTS_H_
