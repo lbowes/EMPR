@@ -29,6 +29,7 @@
 // • Stage 2, with a pause of 1 second and a clear LCD screen after each of the two print operations.
 // • Finally stage 3 above is executed.
 
+
 int main() {
     return 0;
 }
