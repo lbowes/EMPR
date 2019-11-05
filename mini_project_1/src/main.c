@@ -7,48 +7,37 @@
 //   binary.
 // • Print: “Finished count” on the terminal screen.
 
+#include <common_utils/Interrupts.h>
 #include <common_utils/LEDs.h>
-#include <common_utils/Delay.h>
-#include <common_utils/I2CSniffer.h>
 #include <common_utils/TextOutput.h>
 
-#include <stdint.h>
-#include <stdio.h>
+
+static uint8_t ledDebugValue = 0;
+static uint8_t cycleCount = 0;
 
 
-static int count = 0;
-static int ledIndex = 0;
+void Interrupts_handleAll() {
+    RUN_EVERY(500) {
+        LEDs_debugBinary(ledDebugValue);
+        ledDebugValue++;
+        TextOutput_println("iteration");
 
+        if(ledDebugValue % 16 == 0) {
+            cycleCount++;
+        }
 
-void Interrupt_fiftyMS(void) {
-    TextOutput_print("50MS");
-}
-
-
-void Interrupt_hundredMS(void) {
-    TextOutput_print("100MS");
-}
-
-
-void Interrupt_tenMS(void) {
-    if (count == 10) {
-        count = 0;
-        char stringIndex[3];
-        sprintf(stringIndex, "%d", ledIndex);
-        TextOutput_print(stringIndex);
-        LEDs_debugBinary(ledIndex++);
-
-        if (ledIndex == 16) {
-            TextOutput_print("Count Finished");
-            ledIndex = 0;
-            Delay_disable();
+        if(cycleCount >= 2) {
+            Interrupts_stop();
         }
     }
-
-    count++;
 }
 
 
 int main(void) {
+    LEDs_init();
+    TextOutput_init();
+
+    Interrupts_start();
+
     return 0;
 }

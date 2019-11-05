@@ -1,9 +1,6 @@
-#include <common_utils/I2C.h>
 #include <common_utils/Interrupts.h>
 #include <common_utils/LEDs.h>
 #include <common_utils/TextOutput.h>
-#include <common_utils/Keypad.h>
-#include <common_utils/LCDDisplay.h>
 
 
 static uint8_t ledDebugValue = 0;
