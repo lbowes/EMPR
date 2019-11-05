@@ -35,7 +35,7 @@ void Interrupt_tenMS(void) {
 
 int main(void) {
 
-    sniffer();
+    I2CSniffer_run();
     // LCDDisplay_init();
     // Initialisating
     // TextOutput_init();
