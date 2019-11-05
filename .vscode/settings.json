@@ -2,6 +2,7 @@
     "files.associations": {
         "i2csniffer.h": "c",
         "stdio.h": "c",
-        "interruptfunctions.h": "c"
+        "interruptfunctions.h": "c",
+        "leds.h": "c"
     }
 }
