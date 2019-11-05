@@ -8,6 +8,8 @@
         "lcddisplay.h": "c",
         "lpc17xx_libcfg_default.h": "c",
         "lpc17xx_systick.h": "c",
-        "interrupts.h": "c"
+        "interrupts.h": "c",
+        "textoutput.h": "c",
+        "stdbool.h": "c"
     }
 }

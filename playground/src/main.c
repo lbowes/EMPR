@@ -6,23 +6,32 @@
 #include <common_utils/LCDDisplay.h>
 
 
-void Interrupt_everyTenMS() {
-
-}
-
-
-void Interrupt_everyFiftyMS() {
-    TextOutput_print("50MS");
-}
+static uint8_t ledDebugValue = 0;
+static uint8_t cycleCount = 0;
 
 
-void Interrupt_everyHundredMS() {
-    TextOutput_print("100MS");
+void Interrupts_handleAll() {
+    RUN_EVERY(500) {
+        LEDs_debugBinary(ledDebugValue);
+        ledDebugValue++;
+        TextOutput_println("iteration");
+
+        if(ledDebugValue % 16 == 0) {
+            cycleCount++;
+        }
+
+        if(cycleCount >= 2) {
+            Interrupts_stop();
+        }
+    }
 }
 
 
 int main(void) {
+    LEDs_init();
     TextOutput_init();
+
     Interrupts_start();
+
     return 0;
 }
