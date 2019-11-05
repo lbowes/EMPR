@@ -17,6 +17,16 @@ static int count = 0;
 static int ledIndex = 0;
 
 
+void Interrupt_fiftyMS(void) {
+    TextOutput_print("50MS");
+}
+
+
+void Interrupt_hundredMS(void) {
+    TextOutput_print("100MS");
+}
+
+
 void Interrupt_tenMS(void) {
     if (count == 10) {
         count = 0;
@@ -28,7 +38,7 @@ void Interrupt_tenMS(void) {
         if (ledIndex == 16) {
             TextOutput_print("Count Finished");
             ledIndex = 0;
-            Delay_Disable();
+            Delay_disable();
         }
     }
 
