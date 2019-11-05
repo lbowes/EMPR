@@ -40,20 +40,25 @@ void I2CSniffer_run(void) {
     I2C_Init(LPC_I2C1, 100000);
     I2C_Cmd(LPC_I2C1, ENABLE);
 
-    setupPins();
-    TextOutput_print("Completed pin setup.");
+    I2CSniffer_setupPins();
 
     int queryAddress = 0;
-    for (queryAddress; queryAddress < 128; queryAddress++) {
+    uint8_t numDevicesFound = 0;
+    for (queryAddress = 0; queryAddress < 128; queryAddress++) {
         I2C_M_SETUP_Type setup;
         uint8_t data[1] = { 0x00 };
-        sendData(&setup, queryAddress, data, 1);
+        I2CSniffer_sendData(&setup, queryAddress, data, 1);
 
         Status deviceDetected = I2C_MasterTransferData(LPC_I2C1, &setup, I2C_TRANSFER_POLLING);
         if (deviceDetected) {
-            char notifcation[100];
+            char notifcation[128];
             sprintf(notifcation, "Device found at address %d", queryAddress);
             TextOutput_print(notifcation);
+            numDevicesFound++;
         }
     }
+
+    char foundDevicesMsg[128];
+    sprintf(foundDevicesMsg, "Completed: Found %d devices.", numDevicesFound);
+    TextOutput_print(foundDevicesMsg);
 }
