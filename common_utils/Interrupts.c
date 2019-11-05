@@ -31,6 +31,6 @@ void Interrupts_start(void) {
 
 
 void Interrupts_stop(void) {
-    SYSTICK_IntCmd(0);
-    SYSTICK_Cmd(0);
+    SYSTICK_IntCmd(DISABLE);
+    SYSTICK_Cmd(DISABLE);
 }
