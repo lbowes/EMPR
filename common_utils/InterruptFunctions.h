@@ -2,9 +2,9 @@
 #define EMPR_INTERRUPTFUNCTIONS_H_
 
 
-void Interrupt_hundredMS(void);
-void Interrupt_tenMS(void);
-void Interrupt_fiftyMS(void);
+void Interrupt_everyTenMS(void);
+void Interrupt_everyFiftyMS(void);
+void Interrupt_everyHundredMS(void);
 
 
 #endif // EMPR_INTERRUPTFUNCTIONS_H_
