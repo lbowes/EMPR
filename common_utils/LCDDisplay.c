@@ -44,13 +44,12 @@ int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress)
     char progress_bar[16] = {};
     char progress_bar_hashes[12] = {};
     memset(progress_bar, space, 12);
-    int number_of_hashes = int((double)progress / 10.0);
+    int number_of_hashes = (int) progress / 10.0;
     memset(progress_bar, hash, number_of_hashes + 1);
-    progress_bar_hashes[0] = '[';
-    progress_bar_hashes[11] = ']';
-    strcpy(progress_bar, progress_bar_hashes);
-    sprintf(progress_bar, "%s%d%%", progress_bar_hashes, progress);
-    LCDDisplay_print(progress_bar);
+    progress_bar[0] = '[';
+    progress_bar[11] = ']';
+    sprintf(progress_bar, "%s%d%%", progress_bar, progress);
+    return LCDDisplay_print(progress_bar,line_number);
 }
 
 void LCDDisplay_clear(unsigned int line_number)
@@ -96,7 +95,7 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     message[0] = 0x40;
     int index = 0;
     char character;
-    for (index <= message_size; index++)
+    for (index; index <= message_size; index++)
     {
         character = msg[index];
         switch (character)
@@ -118,6 +117,12 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
             break;
         case 0x25 ... 0x2F:
             character = character + 0x80;
+            break;
+        case 0x5B:
+            character = character + 0x2F;
+            break;
+        case 0x5D:
+            character = character - 0x09;
             break;
         default:
             break;
