@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // Overview
 // The final mini project requires you to become familiar with the system’s analogue-to-digital
 // (ADC) and digital-to-analogue (DAC) converter facilities and its PWM controllers.
@@ -44,7 +42,6 @@
 // review sheet and then request formative feedback and sign-off from the lecturer (Nick Pears).
 
 
->>>>>>> 7f8185732ecebfa001333a98ccfab2200742f5c9
 int main() {
     return 0;
 }
