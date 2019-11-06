@@ -1,34 +1,21 @@
 #include "I2CSniffer.h"
 
+#include <common_utils/TextOutput.h>
+#include <common_utils/I2C.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 
-static void I2CSniffer_setupPins(void) {
-    PINSEL_CFG_Type PinCFG;
-	PinCFG.Funcnum = 3;
-	PinCFG.OpenDrain = PINSEL_PINMODE_NORMAL;
-	PinCFG.Pinmode = PINSEL_PINMODE_PULLUP;
-
-	PinCFG.Portnum =0;
-	PinCFG.Pinnum = 0;
-	PINSEL_ConfigPin(&PinCFG);
-	PinCFG.Pinnum = 1;
-	PINSEL_ConfigPin(&PinCFG);
+static bool I2CSniffer_deviceExistsAt(int address) {
+    uint8_t dummy_data[1] = { 0x00 };
+    return i2c_send_data(address, &dummy_data[0], 1) == SUCCESS;
 }
 
 
-static void I2CSniffer_sendData(I2C_M_SETUP_Type* setup, int address, uint8_t* Data, uint32_t dataLength) {
-	setup->sl_addr7bit = address;
-
-	setup->tx_data = Data;
-	setup->tx_length = dataLength;
-	setup->tx_count = 0;
-
-	setup->rx_data = NULL;
-	setup->rx_length = 0;
-	setup->rx_count = 0;
-
-	setup->retransmissions_max = 2;
+static void I2CSniffer_reportDeviceFoundAt(uint8_t address) {
+    char notifcation[128];
+    sprintf(notifcation, "Device found at address %d", address);
+    TextOutput_print(notifcation);
 }
 
 
@@ -36,24 +23,14 @@ void I2CSniffer_run(void) {
     TextOutput_init();
     TextOutput_print("Starting sniffer...");
 
-    // Initialise I2C
-    I2C_Init(LPC_I2C1, 100000);
-    I2C_Cmd(LPC_I2C1, ENABLE);
+    i2c_init();
 
-    I2CSniffer_setupPins();
-
-    int queryAddress = 0;
+    uint8_t queryAddress = 0;
     uint8_t numDevicesFound = 0;
-    for (queryAddress = 0; queryAddress < 128; queryAddress++) {
-        I2C_M_SETUP_Type setup;
-        uint8_t data[1] = { 0x00 };
-        I2CSniffer_sendData(&setup, queryAddress, data, 1);
+    for(queryAddress = 0; queryAddress < 128; queryAddress++) {
+        if(I2CSniffer_deviceExistsAt(queryAddress)) {
+            I2CSniffer_reportDeviceFoundAt(queryAddress);
 
-        Status deviceDetected = I2C_MasterTransferData(LPC_I2C1, &setup, I2C_TRANSFER_POLLING);
-        if (deviceDetected) {
-            char notifcation[128];
-            sprintf(notifcation, "Device found at address %d", queryAddress);
-            TextOutput_print(notifcation);
             numDevicesFound++;
         }
     }

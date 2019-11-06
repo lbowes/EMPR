@@ -8,6 +8,7 @@
 
 
 void i2c_init(void);
+
 Status i2c_send_data(uint8_t address, uint8_t* data, uint32_t dataLength);
 
 
