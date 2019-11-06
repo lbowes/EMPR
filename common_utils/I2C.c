@@ -1,7 +1,6 @@
 #include "I2C.h"
 
 
-// setup pins
 void i2c_init(void) {
 	// Initialise I2C
     I2C_Init(LPC_I2C1, 100000);

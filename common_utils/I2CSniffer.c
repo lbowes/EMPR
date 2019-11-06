@@ -7,8 +7,8 @@
 
 
 static bool I2CSniffer_deviceExistsAt(int address) {
-    uint8_t dummy_data[1] = { 0x00 };
-    return i2c_send_data(address, &dummy_data[0], 1) == SUCCESS;
+    uint8_t dummyData[1] = { 0x00 };
+    return i2c_send_data(address, &dummyData[0], 1) == SUCCESS;
 }
 
 
