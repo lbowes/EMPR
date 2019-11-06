@@ -5,9 +5,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-void keypad_init(void);
 
-bool keypad_isKeyPressed(uint8_t character);
+void Keypad_init(void);
+
+bool Keypad_isKeyPressed(uint8_t character);
 
 
 #endif // EMPR_KEYPAD_UTILS_H_

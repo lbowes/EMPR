@@ -1,10 +1,10 @@
 #include "Keypad.h"
 
 
-void keypad_init(void) {
+void Keypad_init(void) {
 
 }
 
-bool keypad_isKeyPressed(uint8_t character) {
+bool Keypad_isKeyPressed(uint8_t character) {
     return false;
 }
