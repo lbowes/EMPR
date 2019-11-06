@@ -1,7 +1,8 @@
 #ifndef EMPR_KEYPAD_UTILS_H_
 #define EMPR_KEYPAD_UTILS_H_
 
-// TODO
+#include <common_utils/Constants.h>
+
 #include <stdint.h>
 #include <stdbool.h>
 
