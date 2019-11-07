@@ -2,6 +2,11 @@
 
 #include <lpc17xx_pinsel.h>
 
+//temp
+#include <common_utils/TextOutput.h>
+#include <stdio.h>
+//
+
 
 void i2c_init(void) {
 	// Initialise I2C
@@ -42,6 +47,19 @@ Status i2c_receiveDataFrom(uint8_t address, uint8_t* dataDest, uint32_t dataLeng
 
 	// Set the MSB of this to 1 to specify that this is a read operation
 	read.sl_addr7bit = address | 0x80;
+
+	//0x21
+	//00100001
+	//10100001
+	//128 33
+
+	// temp
+	char msg[3];
+    sprintf(msg, "%d", read.sl_addr7bit);
+    TextOutput_println(msg);
+	//
+
+
 	read.tx_data = NULL;
 	read.tx_length = 0;
 	read.tx_count = 0;
