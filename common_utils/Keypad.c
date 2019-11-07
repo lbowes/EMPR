@@ -27,12 +27,23 @@ bool Keypad_isKeyDown(uint8_t key) {
         TextOutput_println("ERROR receiving keypad state byte.");
     }
 
+
     // TODO: Fix logic in here
-    uint8_t rowIdx = 0;
-    for(rowIdx = 0; rowIdx < EMPR_KEYPAD_ROWS; rowIdx++) {
-        rowIdx = ~(rowIdx << 4);
+    
+    //uint8_t val = ~(1 << 5);
+    // 0010 0000
+    // 11011111
+
+    //char msg[128];
+    //sprintf(msg, "Val: %d", val);
+    //TextOutput_print(msg);
+
+    uint8_t i = 0;
+    for(i = 0; i < EMPR_KEYPAD_ROWS; i++) {
+        uint8_t rowIdx = ~(1 << (4 + i));
         uint8_t selectedKey = keyDownStateByte[0] & rowIdx;
-        return selectedKey == key;
+        if(selectedKey == key)
+            return true;
     }
 
     return false;
