@@ -10,6 +10,7 @@
 #include <common_utils/Interrupts.h>
 #include <common_utils/LEDs.h>
 #include <common_utils/TextOutput.h>
+#include <stdio.h>
 
 
 static uint8_t ledDebugValue = 0;
@@ -17,17 +18,25 @@ static uint8_t cycleCount = 0;
 
 
 void Interrupts_handleAll() {
-    RUN_EVERY(500) {
+    RUN_EVERY(1000) {
         LEDs_debugBinary(ledDebugValue);
-        ledDebugValue++;
-        TextOutput_println("iteration");
+        char printNum[3];
+        sprintf(printNum, "%d", ledDebugValue);
+        TextOutput_println(printNum);
 
+
+        ledDebugValue++;
         if(ledDebugValue % 16 == 0) {
+            ledDebugValue = 0;
             cycleCount++;
         }
 
         if(cycleCount >= 2) {
+            
+            TextOutput_println("Ending count!");
+
             Interrupts_stop();
+            LEDs_debug_Binary(0);
         }
     }
 }
@@ -36,8 +45,7 @@ void Interrupts_handleAll() {
 int main(void) {
     LEDs_init();
     TextOutput_init();
-
+    TextOutput_println("Starting count!");
     Interrupts_start();
-
     return 0;
 }
