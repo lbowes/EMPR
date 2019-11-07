@@ -45,21 +45,7 @@ Status i2c_send_data(uint8_t address, uint8_t* dataSource, uint32_t dataLength) 
 Status i2c_receiveDataFrom(uint8_t address, uint8_t* dataDest, uint32_t dataLength) {
 	I2C_M_SETUP_Type read;
 
-	// Set the MSB of this to 1 to specify that this is a read operation
 	read.sl_addr7bit = address | 0x80;
-
-	//0x21
-	//00100001
-	//10100001
-	//128 33
-
-	// temp
-	char msg[3];
-    sprintf(msg, "%d", read.sl_addr7bit);
-    TextOutput_println(msg);
-	//
-
-
 	read.tx_data = NULL;
 	read.tx_length = 0;
 	read.tx_count = 0;
