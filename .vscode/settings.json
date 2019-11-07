@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "i2csniffer.h": "c",
+        "stdio.h": "c",
+        "interruptfunctions.h": "c",
+        "leds.h": "c",
+        "keypad.h": "c",
+        "lcddisplay.h": "c",
+        "lpc17xx_libcfg_default.h": "c",
+        "lpc17xx_systick.h": "c",
+        "interrupts.h": "c",
+        "textoutput.h": "c",
+        "stdbool.h": "c"
+    }
+}

@@ -1,21 +1,19 @@
-// #include <stdbool.h>
-// #include <lpc17xx_i2c.h>
-// #include <lpc17xx_pinsel.h>
-// #ifndef EMPR_LDCDISPLAY_H_
-// #define EMPR_LDCDISPLAY_H_
-// #define LINE_1 0
-// #define LINE_2 1
-// // TODO
-// // #include <lpkdjfx_lcddriver.h>
-// // #include <someOtherDriverHeader.h>
+#include <stdbool.h>
+#include <lpc17xx_i2c.h>
+#include <lpc17xx_pinsel.h>
+#ifndef EMPR_LDCDISPLAY_H_
+#define EMPR_LDCDISPLAY_H_
+#define LINE_1 0
+#define LINE_2 1
+// TODO
+// #include <lpkdjfx_lcddriver.h>
+// #include <someOtherDriverHeader.h>
 
-// void LCDDisplay_init(void); // TODO: might pass in more options
-// // Takes in a line number of what you want to clear
-// void LCDDisplay_clear(unsigned int line_number);
-// // This function returns 0 if successfully executed otherwise it will show -numbers for errors
-// int LCDDisplay_print(const char* msg, unsigned int line_number);
-// // Sends data
-// void sendData(I2C_M_SETUP_Type* setup,int address, uint8_t* Data, uint32_t dataLength);
-// // sets up pins
-// void setupPins(void);
-// #endif // EMPR_LDCDISPLAY_H_
+void LCDDisplay_init(void);
+// Takes in a line number of what you want to clear
+void LCDDisplay_clear(unsigned int line_number);
+// This function returns 0 if successfully executed otherwise it will show -numbers for errors
+int LCDDisplay_print(const char *msg, unsigned int line_number);
+// Outputs a progress bar on a line takes between 0 and 100
+int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress);
+#endif // EMPR_LDCDISPLAY_H_

@@ -1,60 +1,35 @@
-// MP1 demonstration: This demonstration requires a program that will
-// execute the following:
-// • Print: “Starting count” on the terminal screen.
-// • Display the 4-bit (0-15) number on the LEDs with each number displayed for about 1 second under the control of timer-based interrupts.
-// • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
-// • Print: “Finished count” on the terminal screen.
+// Overview
+// The second mini project requires that you understand how to use I/O devices
+// connected to the MPU’s i2c bus.
 
-#include <common_utils/LEDs.h>
-#include <common_utils/UART.h>
-#include <common_utils/LCDDisplay.h>
+// Stage 1:
+// Write a program that determines how many devices are connected to the i2c bus. Your
+// program should print out “X devices connected to i2c bus” on the terminal, where X
+// is the number of devices and it should list the i2c addresses at which devices are
+// present.
 
-#include <stdint.h>
+// Stage 2:
+// Write a program that writes “Hello World” on a single line on the
+// small LCD display connected to the i2c bus. Modify your program to write
+// each word on a separate line on the LCD display.
 
+// Stage 3:
+// Write a program that allows you to enter characters on your keypad
+// and display the results on the small LCD. Try to develop your system so that
+// it is responsive to key presses (no key presses missed) but also does not accept
+// spurious multiple characters (eg. ‘22’ when only ‘2’was intended).
 
-#define ONE_SECOND 0xFFFFF800
+// Stage 4:
+// Optional extra: Write a program that allows you to enter some
+// numbers on the keypad and add, multiply, divide or subtract them, displaying
+// the data entry and results on the LCD (i.e. a simple calculator).
 
-
-void delay() {
-    uint32_t count = 0;
-    uint32_t i = 0;
-    uint32_t j = 0;
-
-    for(i = ONE_SECOND; i < 0xFFFFFFFF; i++) {
-        for(j = ONE_SECOND; j < 0xFFFFFFFF; j++)
-            count++;
-    }
-}
-
-
-void TEMP_cycleAllLEDsOn() {
-    uint8_t ledIdx = 0;
-    for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++) {
-        LEDs_turnOn(ledIdx);
-        delay();
-        LEDs_turnOff(ledIdx);
-    }
-}
+// MP2 demonstration: Integrate your work into a single program that executes:
+// • Stage 1, followed by a pause of 1 second.
+// • Stage 2, with a pause of 1 second and a clear LCD screen after each of the two print operations.
+// • Finally stage 3 above is executed.
 
 
 int main() {
-    // Initialisation
-    LEDs_init();
-    UART_init();
-    // LCDDisplay_init();
-
-    // Run
-    UART_print("Starting count");
-
-    // temp - testing LED cycling
-    // ==========================
-    uint8_t i = 0;
-    const uint8_t cycleCount = 2;
-    for(i = 0; i < cycleCount; i++)
-        TEMP_cycleAllLEDsOn();
-    // ==========================
-
-    UART_print("Finished count");
-
     return 0;
 }
