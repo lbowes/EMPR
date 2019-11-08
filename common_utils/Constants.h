@@ -3,31 +3,41 @@
 
 
 // Generic
-#define EMPR_INPUT        0x0
-#define EMPR_OUTPUT       0x1
+#define EMPR_INPUT        0
+#define EMPR_OUTPUT       1
 
 // Keys
-#define EMPR_KEY_0        0x0
-#define EMPR_KEY_1        0x1
-#define EMPR_KEY_2        0x2
-#define EMPR_KEY_3        0x3
-#define EMPR_KEY_4        0x4
-#define EMPR_KEY_5        0x5
-#define EMPR_KEY_6        0x6
-#define EMPR_KEY_7        0x7
-#define EMPR_KEY_8        0x8
-#define EMPR_KEY_9        0x9
-#define EMPR_KEY_A        0xA
-#define EMPR_KEY_B        0xB
-#define EMPR_KEY_C        0xC
-#define EMPR_KEY_D        0xD
-#define EMPR_KEY_ASTERISK 0xE
-#define EMPR_KEY_HASH     0xF
+// Top row
+#define EMPR_KEY_1        0b01110111
+#define EMPR_KEY_2        0b10110111
+#define EMPR_KEY_3        0b11010111
+#define EMPR_KEY_A        0b11100111
+
+// Upper middle row
+#define EMPR_KEY_4        0b01111011
+#define EMPR_KEY_5        0b10111011
+#define EMPR_KEY_6        0b11011011
+#define EMPR_KEY_B        0b11101011
+
+// Lower middle row
+#define EMPR_KEY_7        0b01111101
+#define EMPR_KEY_8        0b10111101
+#define EMPR_KEY_9        0b11011101
+#define EMPR_KEY_C        0b11101101
+
+// Bottom row
+#define EMPR_KEY_0        0b01111110
+#define EMPR_KEY_D        0b10111110
+#define EMPR_KEY_ASTERISK 0b11011110
+#define EMPR_KEY_HASH     0b11101110
+
+#define EMPR_KEYPAD_ROWS  4
+#define EMPR_KEYPAD_COLS  EMPR_KEYPAD_ROWS
 
 // I2C address
 #define LCD_I2C_ADDRESS 0x3B
-#define KEYBOARD_I2C_ADDRESS 0x21
-#define SEVEN_SEGMENT_DISPLAY_I2C_ADDRESS 0x38
+#define KEYPAD_I2C_ADDRESS 0x21
+#define SEVEN_SEGMENT_DISPLAY_I2C_ADDRESS 0x35
 #define EEPROM_I2C_ADDRESS 0x50
 #define GPIO_I2C_ADDRESS 0x20
 
