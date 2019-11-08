@@ -32,7 +32,6 @@ void Interrupts_handleAll() {
     }
 }
 
-
 int main(void) {
     LEDs_init();
     TextOutput_init();
