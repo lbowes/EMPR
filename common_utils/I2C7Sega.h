@@ -1,7 +1,7 @@
 #ifndef EMPR_I2C7SEG_H_
 #define EMPR_I2C7SEG_H_
 #include <stdint.h>
-
+ 
 //initialises the 7segment display
 void init_7seg(void);
 
