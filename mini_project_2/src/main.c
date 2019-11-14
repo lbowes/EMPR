@@ -43,11 +43,9 @@ int main() {
     I2CSniffer_run();
 
     LCDDisplay_init();
-#if ONE_LINE_HELLO_WORLD
-    LCDDisplay_print("Hello", LINE_1);
-#else
-    LCDDisplay_print("World", LINE_1);
-#endif
+
+    LCDDisplay_print("Hello ", LINE_1);
+    LCDDisplay_print("World", ONE_LINE_HELLO_WORLD ? LINE_1 : LINE_2);
 
     return 0;
 }

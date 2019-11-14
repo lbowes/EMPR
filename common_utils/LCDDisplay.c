@@ -71,6 +71,7 @@ void LCDDisplay_clear(unsigned int line_number)
     }
 }
 
+
 int LCDDisplay_print(const char *msg, unsigned int line_number)
 {
 
