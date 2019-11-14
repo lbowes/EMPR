@@ -40,7 +40,7 @@ Status i2c_send_data(uint8_t address, uint8_t* dataSource, uint32_t dataLength) 
 Status i2c_receiveDataFrom(uint8_t address, uint8_t* dataDest, uint32_t dataLength) {
 	I2C_M_SETUP_Type read;
 
-    uint32_t readBit = 0x80;
+    const uint32_t readBit = 0x80;
 	read.sl_addr7bit = address | readBit;
 	read.tx_data = NULL;
 	read.tx_length = 0;
