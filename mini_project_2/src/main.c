@@ -29,7 +29,25 @@
 // • Stage 2, with a pause of 1 second and a clear LCD screen after each of the two print operations.
 // • Finally stage 3 above is executed.
 
+#include <common_utils/I2CSniffer.h>
+#include <common_utils/LCDDisplay.h>
+
+
+#define ONE_LINE_HELLO_WORLD 1
+
+
+Interrupts_handleAll() { }
+
 
 int main() {
+    I2CSniffer_run();
+
+    LCDDisplay_init();
+#if ONE_LINE_HELLO_WORLD
+    LCDDisplay_print("Hello", LINE_1);
+#else
+    LCDDisplay_print("World", LINE_1);
+#endif
+
     return 0;
 }
