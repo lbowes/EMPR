@@ -37,7 +37,7 @@
 # CONFIGURE
 # ==============================================================================
 # Name of the current project
-PROJECT_NAME := mini_project_2
+PROJECT_NAME := playground
 
 # 'EMPR' directory
 PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
