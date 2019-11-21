@@ -6,18 +6,17 @@
 // • Print: “Finished count” on the terminal screen.
 #include <common_utils/LEDs.h>
 #include <common_utils/Keypad.h>
+#include<common_utils/adc.h>
+#include<common_utils/DAC.h>
+#include <common_utils/TextOutput.h>
 
 
-Interrupts_handleAll() { }
 
-
-int main(void) {
-    Keypad_init();
-    LEDs_init();
-
-    while(1) {
-        LEDs_debugBinary(Keypad_isKeyDown(EMPR_KEY_0));
-    }
-
-    return 0;
+void main(void) {
+    TextOutput_init();
+    DAC_init();
+    
+    adc_init();
+    DAC_set_mVoltage(1000);
+   
 }

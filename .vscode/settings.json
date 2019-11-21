@@ -11,6 +11,7 @@
         "interrupts.h": "c",
         "textoutput.h": "c",
         "stdbool.h": "c",
-        "constants.h": "c"
+        "constants.h": "c",
+        "dac.h": "c"
     }
 }
