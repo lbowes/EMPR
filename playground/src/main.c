@@ -1,23 +1,24 @@
-// MP1 demonstration: This demonstration requires a program that will
-// execute the following:
-// • Print: “Starting count” on the terminal screen.
-// • Display the 4-bit (0-15) number on the LEDs with each number displayed for about 1 second under the control of timer-based interrupts.
-// • Simultaneously display the 0-15 count on the terminal screen in decimal, hexadecimal and binary.
-// • Print: “Finished count” on the terminal screen.
-#include <common_utils/LEDs.h>
-#include <common_utils/Keypad.h>
+// #include "common_utils/DAC.h"
 
+#include <math.h>
+#include "common_utils/DAC.h"
+#include "common_utils/Interrupts.h"
+#include "common_utils/LEDs.h"
+uint32_t tick = 0;
 
-Interrupts_handleAll() { }
+Interrupts_handleAll() { 
+    RUN_EVERY(100000000); {
+    DAC_set_low(); 
+        LEDs_debugBinary(15);
+    }
+}
 
 
 int main(void) {
-    Keypad_init();
     LEDs_init();
-
-    while(1) {
-        LEDs_debugBinary(Keypad_isKeyDown(EMPR_KEY_0));
-    }
-
+    LEDs_debugBinary(3);
+    DAC_init();
+    DAC_set_maxVoltage();
+    Interrupts_start();
     return 0;
 }
