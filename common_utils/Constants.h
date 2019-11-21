@@ -27,6 +27,10 @@
 #define EMPR_KEYPAD_ROWS  4
 #define EMPR_KEYPAD_COLS  EMPR_KEYPAD_ROWS
 
+// LCD display
+#define LINE_1 0
+#define LINE_2 1
+
 // I2C address
 #define LCD_I2C_ADDRESS 0x3B
 #define KEYPAD_I2C_ADDRESS 0x21

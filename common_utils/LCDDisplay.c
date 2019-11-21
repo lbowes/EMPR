@@ -1,7 +1,8 @@
 #include "LCDDisplay.h"
 #include "I2C.h"
-#include <string.h>
 #include "Constants.h"
+
+#include <string.h>
 #include <math.h>
 #include <stdio.h>
 // This LCD has 2X8 bit registers

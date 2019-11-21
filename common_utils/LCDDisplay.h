@@ -1,14 +1,6 @@
 #ifndef EMPR_LDCDISPLAY_H_
 #define EMPR_LDCDISPLAY_H_
 
-#include <stdbool.h>
-#include <lpc17xx_i2c.h>
-#include <lpc17xx_pinsel.h>
-
-
-#define LINE_1 0
-#define LINE_2 1
-
 
 void LCDDisplay_init(void);
 
