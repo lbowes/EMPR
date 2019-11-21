@@ -2,7 +2,10 @@
 #include "lpc17xx_uart.h"
 #include "lpc17xx_pinsel.h"
 
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h>
 
 
 // Copied from https://www-users.cs.york.ac.uk/~nep/teach/empr/serialEx/serial.c
@@ -72,14 +75,20 @@ void TextOutput_println(const char* msg) {
 }
 
 
-void TextOutput_clearScreen(void) {
-    const char* clearScr = "\033[2J\033[1;1H";
-    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)clearScr, 10, BLOCKING);
+void TextOutput_printInteger(int integer) {
+    uint32_t numDigits = integer ? floor(log10(abs(integer))) + 1 : 1;
+
+    if(numDigits) {
+        char decimalAsString[numDigits + 1];
+        sprintf(decimalAsString, "%d", integer);
+        TextOutput_print(decimalAsString);
+    }
 }
 
 
-void TextOutput_memeText(void) {
-
+void TextOutput_clearScreen(void) {
+    const char* clearScr = "\033[2J\033[1;1H";
+    UART_Send((LPC_UART_TypeDef*)LPC_UART0, (uint8_t*)clearScr, 10, BLOCKING);
 }
 
 
