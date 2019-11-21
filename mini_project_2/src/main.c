@@ -5,7 +5,7 @@
 // Stage 1:
 // Write a program that determines how many devices are connected to the i2c bus. Your
 // program should print out “X devices connected to i2c bus” on the terminal, where X
-// is the number of devices and it should list the i2c addresses at which devices are
+// is the number of devices and it should list thme i2c addresses at which devices are
 // present.
 
 // Stage 2:
@@ -36,14 +36,13 @@
 #define ONE_LINE_HELLO_WORLD 1
 
 
-Interrupts_handleAll() { }
+void Interrupts_handleAll() { }
 
 
 int main() {
     I2CSniffer_run();
 
     LCDDisplay_init();
-
     LCDDisplay_print("Hello ", LINE_1);
     LCDDisplay_print("World", ONE_LINE_HELLO_WORLD ? LINE_1 : LINE_2);
 
