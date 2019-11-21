@@ -21,8 +21,6 @@ static void I2CSniffer_reportDeviceFoundAt(uint8_t address) {
 
 void I2CSniffer_run(void) {
     TextOutput_init();
-    TextOutput_print("Starting sniffer...");
-
     i2c_init();
 
     uint8_t queryAddress = 0;
@@ -36,6 +34,6 @@ void I2CSniffer_run(void) {
     }
 
     char foundDevicesMsg[128];
-    sprintf(foundDevicesMsg, "Completed: Found %d devices.", numDevicesFound);
+    sprintf(foundDevicesMsg, "%d devices connected to i2c bus", numDevicesFound);
     TextOutput_print(foundDevicesMsg);
 }
