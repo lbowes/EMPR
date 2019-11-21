@@ -80,7 +80,7 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     message_size = strlen(msg);
     // Lets perform some checks
     // If line_number is not 1 or 0 we will return -1 to show an error
-    if (line_number != LINE_1 && line_number != LINE_2)
+    if (line_number != LINE_1 || line_number != LINE_2)
     {
         return -1;
     }
