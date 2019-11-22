@@ -33,18 +33,34 @@
 #include <common_utils/LCDDisplay.h>
 #include <common_utils/Constants.h>
 
-#define ONE_LINE_HELLO_WORLD 1
-
 
 void Interrupts_handleAll() { }
 
 
+void aPauseOfOneSecond() {
+
+}
+
+
 int main() {
+    // Stage 1
     I2CSniffer_run();
 
+    aPauseOf1Second();
+
+    // Stage 2
     LCDDisplay_init();
-    LCDDisplay_print("Hello ", LINE_1);
-    LCDDisplay_print("World", ONE_LINE_HELLO_WORLD ? LINE_1 : LINE_2);
+    LCDDisplay_print("Hello world", LINE_1);
+
+    aPauseOf1Second();
+
+    LCDDisplay_print("Hello", LINE_2);
+    LCDDisplay_print("World", LINE_1);
+
+    aPauseOf1Second();
+
+    // Stage 3
+
 
     return 0;
 }
