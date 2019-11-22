@@ -8,7 +8,7 @@
 #define RUN_EVERY(x) if(Interrupts_every(x))
 
 
-void Interrupts_start(void (*callback)());
+void Interrupts_start(void);
 void Interrupts_stop(void);
 bool Interrupts_every(uint32_t ms);
 
