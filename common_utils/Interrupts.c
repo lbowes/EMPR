@@ -6,13 +6,19 @@
 static uint32_t elapsedMs = 0;
 
 
+static void (*interruptHandler)();
+
+
 void SysTick_Handler(void) {
-    Interrupts_handleAll();
+    interruptHandler();
+    //Interrupts_handleAll();
     elapsedMs++;
 }
 
 
-void Interrupts_start(void) {
+void Interrupts_start(void (*callback)()) {
+    interruptHandler = callback;
+
     SYSTICK_InternalInit(1);
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
