@@ -32,17 +32,29 @@
 #include <common_utils/I2CSniffer.h>
 #include <common_utils/LCDDisplay.h>
 #include <common_utils/Constants.h>
+#include <common_utils/Keypad.h>
+#include <common_utils/Interrupts.h>
+#include <stdbool.h>
+#include <RealTimeClock.h>
 
+bool everySecond = false;
 
-void Interrupts_handleAll() { }
-
-
-void aPauseOfOneSecond() {
-
+void Interrupts_handleAll()
+{
+    RUN_EVERY(1000)
+    {
+        everySecond = !everySecond;
+    }
 }
 
+void aPauseOfOneSecond()
+{
+    bool previousSecond=everySecond;
+    while (previousSecond==everySecond){} 
+}
 
-int main() {
+int main()
+{
     // Stage 1
     I2CSniffer_run();
 
@@ -60,7 +72,27 @@ int main() {
     aPauseOf1Second();
 
     // Stage 3
-
+    // Init the keypad
+    Keypad_init();
+    // Clear the LCD
+    LCDDisplay_clear(LINE_1);
+    LCDDisplay_clear(LINE_2);
+    // Loop through keys
+    uint8_t keys[] = {EMPR_KEY_0, EMPR_KEY_1, EMPR_KEY_2, EMPR_KEY_3, EMPR_KEY_4, EMPR_KEY_5, EMPR_KEY_6, EMPR_KEY_7, EMPR_KEY_8, EMPR_KEY_9, EMPR_KEY_A, EMPR_KEY_B, EMPR_KEY_C, EMPR_KEY_D};
+    // While loop it
+    while (true)
+    {
+        for (int index = 0; index < sizeof(keys); index++)
+        {
+            if (Keypad_isKeyDown(keys[index]))
+            {
+                aPauseOf1Second();
+                char string[4];
+                sprintf(string, "%d", index);
+                LCDDisplay_print(string, LINE_1);
+            }
+        }
+    }
 
     return 0;
 }
