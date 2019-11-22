@@ -34,27 +34,30 @@
 #include <common_utils/Constants.h>
 #include <common_utils/Keypad.h>
 #include <common_utils/Interrupts.h>
+#include <common_utils/TextOutput.h>
 #include <stdbool.h>
-#include <RealTimeClock.h>
+#include <stdio.h>
 
 bool everySecond = false;
 
 void Interrupts_handleAll()
 {
-    RUN_EVERY(1000)
-    {
-        everySecond = !everySecond;
-    }
+   RUN_EVERY(1000)
+   {
+       everySecond = !everySecond;
+   }
 }
 
-void aPauseOfOneSecond()
+void aPauseOf1Second()
 {
-    bool previousSecond=everySecond;
-    while (previousSecond==everySecond){} 
+    bool previousSecond = everySecond;
+    while (previousSecond == everySecond) { }
 }
 
 int main()
 {
+    Interrupts_start();
+
     // Stage 1
     I2CSniffer_run();
 
@@ -82,7 +85,8 @@ int main()
     // While loop it
     while (true)
     {
-        for (int index = 0; index < sizeof(keys); index++)
+        int index = 0;
+        for (index = 0; index < sizeof(keys); index++)
         {
             if (Keypad_isKeyDown(keys[index]))
             {
