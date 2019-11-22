@@ -32,17 +32,20 @@
 #include <common_utils/I2CSniffer.h>
 #include <common_utils/LCDDisplay.h>
 #include <common_utils/Constants.h>
-
+#include <common_utils/TextOutput.h>
 
 void Interrupts_handleAll() { }
 
 
-void aPauseOfOneSecond() {
-
+void aPauseOf1Second() {
+    TextOutput_println("1 second delay");
 }
 
 
 int main() {
+    TextOutput_init();
+    TextOutput_println("1 second delay");
+
     // Stage 1
     I2CSniffer_run();
 
