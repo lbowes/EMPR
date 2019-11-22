@@ -10,13 +10,13 @@
 #include<common_utils/DAC.h>
 #include <common_utils/TextOutput.h>
 
-
+void Interrupts_handleAll(){}
 
 void main(void) {
     TextOutput_init();
     DAC_init();
     
     adc_init();
-    DAC_set_mVoltage(1000);
+    DAC_set_mVoltage(1200);
    
 }

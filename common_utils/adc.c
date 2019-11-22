@@ -16,7 +16,7 @@ void adc_init(void)
 
     PINSEL_ConfigPin(&pin_config);
 
-    ADC_Init(LPC_ADC, 70000);
+    ADC_Init(LPC_ADC, 190000);
 
     ADC_ChannelCmd(LPC_ADC, ADC_CHANNEL_1, ENABLE);
 
@@ -34,9 +34,9 @@ void ADC_IRQHandler(void)
     
     
     uint16_t anologue_val = ADC_ChannelGetData(LPC_ADC, ADC_CHANNEL_1);
-    char buffer[100];
-    sprintf(buffer, "%d",anologue_val);
-    TextOutput_print(buffer);
+    
+
+    TextOutput_printInteger(anologue_val *0.78);
 
 
 }
