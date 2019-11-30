@@ -1,7 +1,8 @@
 #include "LCDDisplay.h"
 #include "I2C.h"
-#include <string.h>
 #include "Constants.h"
+
+#include <string.h>
 #include <math.h>
 #include <stdio.h>
 // This LCD has 2X8 bit registers
@@ -71,9 +72,9 @@ void LCDDisplay_clear(unsigned int line_number)
     }
 }
 
+
 int LCDDisplay_print(const char *msg, unsigned int line_number)
 {
-
     // Get message size
     unsigned int message_size = 0;
     message_size = strlen(msg);

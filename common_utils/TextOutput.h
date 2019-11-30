@@ -7,11 +7,10 @@
 
 void TextOutput_init(void);
 
-// screen /dev/ttyACM0
 void TextOutput_print(const char* msg);
 void TextOutput_println(const char* msg);
+void TextOutput_printInteger(int integer);
 void TextOutput_clearScreen();
-void TextOutput_memeText(void);
 
 void TextOutput_shutdown(void);
 

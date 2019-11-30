@@ -5,7 +5,7 @@
 // Stage 1:
 // Write a program that determines how many devices are connected to the i2c bus. Your
 // program should print out “X devices connected to i2c bus” on the terminal, where X
-// is the number of devices and it should list the i2c addresses at which devices are
+// is the number of devices and it should list thme i2c addresses at which devices are
 // present.
 
 // Stage 2:
@@ -29,7 +29,74 @@
 // • Stage 2, with a pause of 1 second and a clear LCD screen after each of the two print operations.
 // • Finally stage 3 above is executed.
 
+#include <common_utils/I2CSniffer.h>
+#include <common_utils/LCDDisplay.h>
+#include <common_utils/Constants.h>
+#include <common_utils/Keypad.h>
+#include <common_utils/Interrupts.h>
+#include <common_utils/TextOutput.h>
+#include <stdbool.h>
+#include <stdio.h>
 
-int main() {
+bool everySecond = false;
+
+void Interrupts_handleAll()
+{
+   RUN_EVERY(1000)
+   {
+       everySecond = !everySecond;
+   }
+}
+
+void aPauseOf1Second()
+{
+    bool previousSecond = everySecond;
+    while (previousSecond == everySecond) { }
+}
+
+int main()
+{
+    Interrupts_start();
+
+    // Stage 1
+    I2CSniffer_run();
+
+    aPauseOf1Second();
+
+    // Stage 2
+    LCDDisplay_init();
+    LCDDisplay_print("Hello world", LINE_1);
+
+    aPauseOf1Second();
+
+    LCDDisplay_print("Hello", LINE_2);
+    LCDDisplay_print("World", LINE_1);
+
+    aPauseOf1Second();
+
+    // Stage 3
+    // Init the keypad
+    Keypad_init();
+    // Clear the LCD
+    LCDDisplay_clear(LINE_1);
+    LCDDisplay_clear(LINE_2);
+    // Loop through keys
+    uint8_t keys[] = {EMPR_KEY_0, EMPR_KEY_1, EMPR_KEY_2, EMPR_KEY_3, EMPR_KEY_4, EMPR_KEY_5, EMPR_KEY_6, EMPR_KEY_7, EMPR_KEY_8, EMPR_KEY_9, EMPR_KEY_A, EMPR_KEY_B, EMPR_KEY_C, EMPR_KEY_D};
+    // While loop it
+    while (true)
+    {
+        int index = 0;
+        for (index = 0; index < sizeof(keys); index++)
+        {
+            if (Keypad_isKeyDown(keys[index]))
+            {
+                aPauseOf1Second();
+                char string[4];
+                sprintf(string, "%d", index);
+                LCDDisplay_print(string, LINE_1);
+            }
+        }
+    }
+
     return 0;
 }

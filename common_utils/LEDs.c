@@ -18,7 +18,7 @@ static uint32_t LEDBitStates[NUMBER_OF_LEDS] = {
 void LEDs_init(void) {
     uint8_t ledIdx = 0;
     for(ledIdx = 0; ledIdx < NUMBER_OF_LEDS; ledIdx++)
-        GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], OUTPUT);
+        GPIO_SetDir(LED_PORT_NUM, LEDBitStates[ledIdx], EMPR_OUTPUT);
 }
 
 

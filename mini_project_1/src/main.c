@@ -41,11 +41,12 @@ void Interrupts_handleAll() {
     }
 }
 
-
 int main(void) {
     LEDs_init();
     TextOutput_init();
-    TextOutput_println("Starting count!");
+
+    TextOutput_println("Starting count");
+
     Interrupts_start();
     return 0;
 }
