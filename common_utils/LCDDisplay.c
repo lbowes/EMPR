@@ -45,12 +45,12 @@ int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress)
     char progress_bar[16] = {};
     char progress_bar_hashes[12] = {};
     memset(progress_bar, space, 12);
-    int number_of_hashes = (int) progress / 10.0;
+    int number_of_hashes = (int)progress / 10.0;
     memset(progress_bar, hash, number_of_hashes + 1);
     progress_bar[0] = '[';
     progress_bar[11] = ']';
     sprintf(progress_bar, "%s%d%%", progress_bar, progress);
-    return LCDDisplay_print(progress_bar,line_number);
+    return LCDDisplay_print(progress_bar, line_number);
 }
 
 void LCDDisplay_clear(unsigned int line_number)
@@ -71,7 +71,6 @@ void LCDDisplay_clear(unsigned int line_number)
         i2c_send_data(LCD_I2C_ADDRESS, line_2, sizeof(line_2));
     }
 }
-
 
 int LCDDisplay_print(const char *msg, unsigned int line_number)
 {

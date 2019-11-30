@@ -2,11 +2,11 @@
 
 #include <lpc17xx_pinsel.h>
 
-
-void i2c_init(void) {
+void i2c_init(void)
+{
 	// Initialise I2C
-    I2C_Init(LPC_I2C1, 100000);
-    I2C_Cmd(LPC_I2C1, ENABLE);
+	I2C_Init(LPC_I2C1, 100000);
+	I2C_Cmd(LPC_I2C1, ENABLE);
 
 	// Setup pins
 	PINSEL_CFG_Type PinCFG;
@@ -20,9 +20,9 @@ void i2c_init(void) {
 	PINSEL_ConfigPin(&PinCFG);
 }
 
-
-Status i2c_send_data(uint8_t address, uint8_t* dataSource, uint32_t dataLength) {
-    I2C_M_SETUP_Type write;
+Status i2c_send_data(uint8_t address, uint8_t *dataSource, uint32_t dataLength)
+{
+	I2C_M_SETUP_Type write;
 
 	write.sl_addr7bit = address;
 	write.tx_data = &dataSource[0];
@@ -33,14 +33,14 @@ Status i2c_send_data(uint8_t address, uint8_t* dataSource, uint32_t dataLength) 
 	write.rx_count = 0;
 	write.retransmissions_max = 2;
 
-    return I2C_MasterTransferData(LPC_I2C1, &write, I2C_TRANSFER_POLLING);
+	return I2C_MasterTransferData(LPC_I2C1, &write, I2C_TRANSFER_POLLING);
 }
 
-
-Status i2c_receiveDataFrom(uint8_t address, uint8_t* dataDest, uint32_t dataLength) {
+Status i2c_receiveDataFrom(uint8_t address, uint8_t *dataDest, uint32_t dataLength)
+{
 	I2C_M_SETUP_Type read;
 
-    const uint32_t readBit = 0x80;
+	const uint32_t readBit = 0x80;
 	read.sl_addr7bit = address | readBit;
 	read.tx_data = NULL;
 	read.tx_length = 0;
@@ -50,5 +50,5 @@ Status i2c_receiveDataFrom(uint8_t address, uint8_t* dataDest, uint32_t dataLeng
 	read.rx_count = 0;
 	read.retransmissions_max = 2;
 
-    return I2C_MasterTransferData(LPC_I2C1, &read, I2C_TRANSFER_POLLING);
+	return I2C_MasterTransferData(LPC_I2C1, &read, I2C_TRANSFER_POLLING);
 }
