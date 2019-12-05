@@ -4,7 +4,7 @@
 #include <lpc17xx_adc.h>
 #include <common_utils/TextOutput.h>
 #include <stdio.h>
-
+#include <common_utils/7Seg.h>
 void adc_init(void)
 {
     PINSEL_CFG_Type pin_config;
@@ -29,6 +29,7 @@ void adc_init(void)
 
 }
 
+
 void ADC_IRQHandler(void)
 {
     
@@ -37,6 +38,6 @@ void ADC_IRQHandler(void)
     
 
     TextOutput_printInteger(anologue_val *0.78);
-
-
+    
+    
 }
