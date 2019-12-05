@@ -39,12 +39,16 @@
 #include <stdio.h>
 
 bool everySecond = false;
-
+bool everySecond2= false;
 void Interrupts_handleAll()
 {
-   RUN_EVERY(300)
+   RUN_EVERY(1500)
    {
        everySecond = !everySecond;
+   }
+      RUN_EVERY(300)
+   {
+       everySecond2 = !everySecond2;
    }
 }
 
@@ -53,7 +57,11 @@ void aPauseOf1Second()
     bool previousSecond = everySecond;
     while (previousSecond == everySecond) { }
 }
-
+void aPauseOf1Second2()
+{
+    bool previousSecond = everySecond;
+    while (everySecond2 == everySecond2) { }
+}
 int main()
 {
     Interrupts_start();
@@ -72,7 +80,7 @@ int main()
     LCDDisplay_print("Hello", LINE_2);
     LCDDisplay_print("World", LINE_1);
 
-    aPauseOf1Second();1000
+    aPauseOf1Second();
 
     // Stage 3
     // Init the keypad
@@ -90,7 +98,7 @@ int main()
         {
             if (Keypad_isKeyDown(keys[index]))
             {
-                aPauseOf1Second();
+                aPauseOf1Second2();
                 char string[4];
                 sprintf(string, "%d", index);
                 LCDDisplay_print(string, LINE_1);
