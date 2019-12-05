@@ -42,7 +42,7 @@ bool everySecond = false;
 
 void Interrupts_handleAll()
 {
-   RUN_EVERY(1000)
+   RUN_EVERY(300)
    {
        everySecond = !everySecond;
    }
@@ -72,7 +72,7 @@ int main()
     LCDDisplay_print("Hello", LINE_2);
     LCDDisplay_print("World", LINE_1);
 
-    aPauseOf1Second();
+    aPauseOf1Second();1000
 
     // Stage 3
     // Init the keypad

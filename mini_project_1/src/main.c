@@ -16,12 +16,25 @@
 static uint8_t ledDebugValue = 0;
 static uint8_t cycleCount = 0;
 
+const char *byte_to_binary(int x)
+{
+    static char b[9];
+    b[0] = '\0';
+
+    int z;
+    for (z = 128; z > 0; z >>= 1)
+    {
+        strcat(b, ((x & z) == z) ? "1" : "0");
+    }
+
+    return b;
+}
 
 void Interrupts_handleAll() {
     RUN_EVERY(1000) {
         LEDs_debugBinary(ledDebugValue);
         char printNum[3];
-        sprintf(printNum, "%d", ledDebugValue);
+        sprintf(printNum, "%d 0x%x %s", ledDebugValue,ledDebugValue,byte_to_binary(ledDebugValue));
         TextOutput_println(printNum);
 
 
@@ -31,12 +44,12 @@ void Interrupts_handleAll() {
             cycleCount++;
         }
 
-        if(cycleCount >= 2) {
+        if(cycleCount >= 1) {
             
             TextOutput_println("Ending count!");
 
             Interrupts_stop();
-            LEDs_debug_Binary(0);
+            LEDs_debugBinary(0);
         }
     }
 }
