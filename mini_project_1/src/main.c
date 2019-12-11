@@ -10,24 +10,46 @@
 #include <common_utils/Interrupts.h>
 #include <common_utils/LEDs.h>
 #include <common_utils/TextOutput.h>
+#include <stdio.h>
 
 
 static uint8_t ledDebugValue = 0;
 static uint8_t cycleCount = 0;
 
+const char *byte_to_binary(int x)
+{
+    static char b[9];
+    b[0] = '\0';
+
+    int z;
+    for (z = 128; z > 0; z >>= 1)
+    {
+        strcat(b, ((x & z) == z) ? "1" : "0");
+    }
+
+    return b;
+}
 
 void Interrupts_handleAll() {
-    RUN_EVERY(500) {
+    RUN_EVERY(1000) {
         LEDs_debugBinary(ledDebugValue);
-        ledDebugValue++;
-        TextOutput_println("iteration");
+        char printNum[3];
+        sprintf(printNum, "%d 0x%x %s", ledDebugValue,ledDebugValue,byte_to_binary(ledDebugValue));
+        TextOutput_println(printNum);
 
+
+        ledDebugValue++;
         if(ledDebugValue % 16 == 0) {
+            ledDebugValue = 0;
             cycleCount++;
         }
 
-        if(cycleCount >= 2) {
+        if(cycleCount >= 1) {
+            
+            TextOutput_println("Ending count!");
+
             Interrupts_stop();
+            LEDs_debugBinary(0);
         }
     }
 }
@@ -37,6 +59,7 @@ int main(void) {
     TextOutput_init();
 
     TextOutput_println("Starting count");
+
     Interrupts_start();
     return 0;
 }

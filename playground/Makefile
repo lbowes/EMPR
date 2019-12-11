@@ -60,7 +60,8 @@ BIN_OUTPUT_DIR := $(PROJECT_ROOT_DIR)$(PROJECT_NAME)/bin/
 
 # Ensure consistent environment
 SHELL := /bin/bash
-PATH := /opt/york/cs/net/bin:$(PATH)
+PATH := /opt/york/cs/net/gcc-arm-9.2.0/bin:$(PATH)
+OLD_GCC := /opt/york/cs/net/bin/arm-none-eabi-gcc
 
 # Path to the GCC toolbox
 PKG=/opt/york/cs/net
@@ -91,8 +92,8 @@ CMSISFL=$(CMSIS)/lib/core_cm3.o \
 	$(CMSIS)/lib/startup_LPC17xx.o
 LDSCRIPT = $(CMSIS)/lib/ldscript_rom_gnu.ld
 
-CFLAGS=-mcpu=cortex-m3  -mthumb  -Wall  -O0  -mapcs-frame  -D__thumb2__=1 \
-  -msoft-float  -gdwarf-2  -mno-sched-prolog  -fno-hosted  -mtune=cortex-m3 \
+CFLAGS=-mcpu=cortex-m3  -mthumb  -Wall  -O0  -mapcs-frame  -D__thumb2__=1 -std=gnu18 \
+  -msoft-float -gdwarf-2  -mno-sched-prolog  -fno-hosted  -mtune=cortex-m3 \
   -march=armv7-m  -mfix-cortex-m3-ldrd   -ffunction-sections  -fdata-sections \
           -D__RAM_MODE__=0 $(CMSISINCLUDES) -I$(PROJECT_ROOT_DIR)
 
@@ -125,9 +126,10 @@ $(BUILD_DIR)%.o: %.c
 	@echo Compiling $(notdir $<)...
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
+
 $(EXECNAME): $(OBJECTS)
 	@mkdir -p ./bin
-	@$(CC) $^ -o $@ $(LDFLAGS)
+	@$(OLD_GCC) $^ -o $@ $(LDFLAGS)
 
 # make clean - Clean out the source tree ready to re-build the project
 clean:

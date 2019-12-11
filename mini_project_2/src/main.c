@@ -31,20 +31,80 @@
 
 #include <common_utils/I2CSniffer.h>
 #include <common_utils/LCDDisplay.h>
+#include <common_utils/Constants.h>
+#include <common_utils/Keypad.h>
+#include <common_utils/Interrupts.h>
+#include <common_utils/TextOutput.h>
+#include <stdbool.h>
+#include <stdio.h>
 
+bool everySecond = false;
+bool everySecond2= false;
+void Interrupts_handleAll()
+{
+   RUN_EVERY(1500)
+   {
+       everySecond = !everySecond;
+   }
+      RUN_EVERY(300)
+   {
+       everySecond2 = !everySecond2;
+   }
+}
 
-#define ONE_LINE_HELLO_WORLD 1
+void aPauseOf1Second()
+{
+    bool previousSecond = everySecond;
+    while (previousSecond == everySecond) { }
+}
+void aPauseOf1Second2()
+{
+    bool previousSecond = everySecond;
+    while (everySecond2 == everySecond2) { }
+}
+int main()
+{
+    Interrupts_start();
 
-
-void Interrupts_handleAll() { }
-
-
-int main() {
+    // Stage 1
     I2CSniffer_run();
 
+    aPauseOf1Second();
+
+    // Stage 2
     LCDDisplay_init();
-    LCDDisplay_print("Hello ", LINE_1);
-    LCDDisplay_print("World", ONE_LINE_HELLO_WORLD ? LINE_1 : LINE_2);
+    LCDDisplay_print("Hello world", LINE_1);
+
+    aPauseOf1Second();
+
+    LCDDisplay_print("Hello", LINE_2);
+    LCDDisplay_print("World", LINE_1);
+
+    aPauseOf1Second();
+
+    // Stage 3
+    // Init the keypad
+    Keypad_init();
+    // Clear the LCD
+    LCDDisplay_clear(LINE_1);
+    LCDDisplay_clear(LINE_2);
+    // Loop through keys
+    uint8_t keys[] = {EMPR_KEY_0, EMPR_KEY_1, EMPR_KEY_2, EMPR_KEY_3, EMPR_KEY_4, EMPR_KEY_5, EMPR_KEY_6, EMPR_KEY_7, EMPR_KEY_8, EMPR_KEY_9, EMPR_KEY_A, EMPR_KEY_B, EMPR_KEY_C, EMPR_KEY_D};
+    // While loop it
+    while (true)
+    {
+        int index = 0;
+        for (index = 0; index < sizeof(keys); index++)
+        {
+            if (Keypad_isKeyDown(keys[index]))
+            {
+                aPauseOf1Second2();
+                char string[4];
+                sprintf(string, "%d", index);
+                LCDDisplay_print(string, LINE_1);
+            }
+        }
+    }
 
     return 0;
 }
