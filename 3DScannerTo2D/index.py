@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # -------- End Setup -------- #
     while Running:
         # Clear the screen
-        surface.fill((0,0,0))
+        # surface.fill((0,0,0))
 
         # Todo remove me Emulate  serial input
         # x,y,z,r,g,b=input().split()
@@ -107,13 +107,13 @@ if __name__ == "__main__":
             xOffset = int((Window['width']-((maxPixelX+1)*maxPixelSize))/2)
             yOffset = int((Window['height']-((maxPixelY+1)*maxPixelSize))/2)
         # Iterate through and draw all pixels
-        for pixel in imageArray:
-            if not centerImage:
+        # for pixel in imageArray:
+        if not centerImage:
                 # X , Y , W , H
-                pygame.draw.rect(surface, pixel.getRGB(), (pixel.x*maxPixelSize,pixel.y*maxPixelSize,maxPixelSize,maxPixelSize))
-            else:
+            pygame.draw.rect(surface, newPixel.getRGB(), (newPixel.x*maxPixelSize,newPixel.y*maxPixelSize,maxPixelSize,maxPixelSize))
+        else:
                 # X + xOffset , Y + yOffset, W , H
-                pygame.draw.rect(surface, pixel.getRGB(), ((pixel.x*maxPixelSize)+xOffset,(pixel.y*maxPixelSize)+yOffset,maxPixelSize,maxPixelSize))
+            pygame.draw.rect(surface, pixel.getRGB(), ((newPixel.x*maxPixelSize)+xOffset,(newPixel.y*maxPixelSize)+yOffset,maxPixelSize,maxPixelSize))
         # Check if we are getting an abort
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
