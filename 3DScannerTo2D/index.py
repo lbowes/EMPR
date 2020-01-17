@@ -1,7 +1,6 @@
 # Remove annoying hello :(
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-
 import pygame
 import serial
 from collections import namedtuple
@@ -60,7 +59,7 @@ if __name__ == "__main__":
         Window['height']=modes[0][1]
 
     # Setup surface
-    surface=pygame.display.set_mode((Window['width'],Window['height']))
+    surface=pygame.display.set_mode((Window['width'],Window['height']),pygame.RESIZABLE)
     
 
 
@@ -78,11 +77,11 @@ if __name__ == "__main__":
     # -------- End Setup -------- #
     while Running:
         # Clear the screen
-        # surface.fill((0,0,0))
+        surface.fill((0,0,0))
 
         # Todo remove me Emulate  serial input
         # x,y,z,r,g,b=input().split()
-        x,y,z,r,g,b=random.randint(0,1919),random.randint(0,1079),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
+        x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
         #Hack z is always 1 for this 2D scanner
         z = 1
         
@@ -107,13 +106,13 @@ if __name__ == "__main__":
             xOffset = int((Window['width']-((maxPixelX+1)*maxPixelSize))/2)
             yOffset = int((Window['height']-((maxPixelY+1)*maxPixelSize))/2)
         # Iterate through and draw all pixels
-        # for pixel in imageArray:
-        if not centerImage:
+        for pixel in imageArray:
+            if not centerImage:
                 # X , Y , W , H
-            pygame.draw.rect(surface, newPixel.getRGB(), (newPixel.x*maxPixelSize,newPixel.y*maxPixelSize,maxPixelSize,maxPixelSize))
-        else:
+                pygame.draw.rect(surface, pixel.getRGB(), (pixel.x*maxPixelSize,pixel.y*maxPixelSize,maxPixelSize,maxPixelSize))
+            else:
                 # X + xOffset , Y + yOffset, W , H
-            pygame.draw.rect(surface, pixel.getRGB(), ((newPixel.x*maxPixelSize)+xOffset,(newPixel.y*maxPixelSize)+yOffset,maxPixelSize,maxPixelSize))
+                pygame.draw.rect(surface, pixel.getRGB(), ((pixel.x*maxPixelSize)+xOffset,(pixel.y*maxPixelSize)+yOffset,maxPixelSize,maxPixelSize))
         # Check if we are getting an abort
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
