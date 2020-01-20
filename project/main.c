@@ -7,20 +7,25 @@ void Interrupts_handleAll() { }
 void delay() {
     int i, j, count = 0;
     for(i = 0; i < 1000; i++) {
-        for(j = 0; j < 1000; j++)
+        for(j = 0; j < 5000; j++){
             count++;
-    }
+    
+    }}
 }
 
 int main() {
     TextOutput_init();
     RGBC_init();
-
-    while(1) {
+    while (1)
+    {
+    
         RGBC test = RGBC_SCAN();
-        TextOutput_printInteger(test.c);
+        TextOutput_printInteger(test.r);
+
         delay();
+        /* code */
     }
+    
 
     return 0;
 }
