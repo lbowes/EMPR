@@ -15,6 +15,7 @@ void delay() {
 int main() {
     TextOutput_init();
     RGBC_init();
+    Motion_init();
 
     while(1) {
         RGBC test = RGBC_SCAN();
