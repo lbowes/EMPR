@@ -65,8 +65,9 @@ if __name__ == "__main__":
 
     #image array
     imageArray=[]
-
-    # TODO setup serial input
+    
+    # Serial line
+    serialLine = serial.Serial(_port)
 
     # Running?
     Running=True
@@ -80,8 +81,8 @@ if __name__ == "__main__":
         surface.fill((0,0,0))
 
         # Todo remove me Emulate  serial input
-        # x,y,z,r,g,b=input().split()
-        x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
+        x,y,z,r,g,b= serialLine.readline()
+        # x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
         #Hack z is always 1 for this 2D scanner
         z = 1
         
