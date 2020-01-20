@@ -5,6 +5,12 @@
 #define EMPR_INPUT 0
 #define EMPR_OUTPUT 1
 
+#define EMPR_LEFT 1
+#define EMPR_RIGHT 0
+#define EMPR_X_AXIS 0
+#define EMPR_Y_AXIS 1
+#define EMPR_Z_AXIS 2
+
 // Keys
 #define EMPR_KEY_1 0b01110111 // Top row
 #define EMPR_KEY_2 0b10110111
