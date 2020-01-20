@@ -54,6 +54,10 @@ void Motion_init() {
     //Motion_home();
 }
 
+Axis Motion_getAxis(uint8_t axis)
+{
+    return axes[axis]
+}
 
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
     if(*val > axis->maxSteps)
@@ -63,6 +67,12 @@ static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
 
 void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     Axis* a = &axes[axis];
+
+    // Sanity check if we are going back to zero go to home
+    if (targetStepPos==0){
+    moveAxisToLimit(a);
+    }
+    else{
 
     clampWithinAxis(a, &targetStepPos);
 
@@ -89,6 +99,7 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     }
 
     neutralise(motor);
+    }
 }
 
 
