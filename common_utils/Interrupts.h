@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-
-#define RUN_EVERY(x) if(Interrupts_every(x))
-
+#define RUN_EVERY(x) if (Interrupts_every(x))
 
 void Interrupts_start(void (*callback)());
 int Interrupt_add(void (*callback)());
@@ -17,6 +15,5 @@ void Interrupt_remove(int callback);
 
 // User defined
 void Interrupts_handleAll(void);
-
 
 #endif //EMPR_INTERRUPTS_H_

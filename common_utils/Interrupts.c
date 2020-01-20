@@ -48,7 +48,6 @@ void Interrupt_remove(int callback)
 void Interrupts_start(void (*callback)())
 {
     callbacks[head] = callback;
-
     SYSTICK_InternalInit(1);
     SYSTICK_IntCmd(ENABLE);
     SYSTICK_Cmd(ENABLE);
