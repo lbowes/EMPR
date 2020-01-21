@@ -37,7 +37,7 @@ int Interrupt_add_at_head(int loc, void (*callback)())
         callbacks[loc] = callback;
         return loc;
     }
-    return -1
+    return -1;
 }
 
 void Interrupt_remove(int callback)
