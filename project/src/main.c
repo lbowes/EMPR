@@ -3,49 +3,50 @@
 #include "common_utils/TextOutput.h"
 #include "Motion.h"
 #include "PcSender.h"
-void Interrupts_handleAll() { }
+void Interrupts_handleAll() {}
 
-int main() {
+int main()
+{
+    // Enable text output
     TextOutput_init();
+    // Enable RGBC
     RGBC_init();
 
+    // Go home
     Motion_init();
     Motion_home();
-    // LOOK HERE THIS IS PROBABLY THE CAUSE OF THE PROBLEMS IF THERE ARE ANY THESE NEED TO REFERNCE THE ARRAY
+
+    //  Setup axis
+    // TODO can make more efficient
     Axis xAxis = Motion_getAxis(EMPR_X_AXIS);
     Axis yAxis = Motion_getAxis(EMPR_Y_AXIS);
     Axis zAxis = Motion_getAxis(EMPR_Z_AXIS);
-    // Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos);
-    // TextOutput_printInteger(xAxis.currentStepPos);
-    // TextOutput_printInteger(yAxis.currentStepPos);
-    
-    while (xAxis.currentStepPos!=202){
-        while (yAxis.currentStepPos!=202){
-        xAxis = Motion_getAxis(EMPR_X_AXIS);
-        yAxis = Motion_getAxis(EMPR_Y_AXIS);
-        zAxis = Motion_getAxis(EMPR_Z_AXIS);
 
-            RGBC result= RGBC_SCAN();
+    // Todo refer to xAxis.max & yAxis
+    while (xAxis.currentStepPos != 202)
+    {
+        while (yAxis.currentStepPos != 202)
+        {
+            // Get the updated Axis results
+            xAxis = Motion_getAxis(EMPR_X_AXIS);
+            yAxis = Motion_getAxis(EMPR_Y_AXIS);
+            zAxis = Motion_getAxis(EMPR_Z_AXIS);
+
+            // Get the RGBC scan
+            RGBC result = RGBC_SCAN();
             // Send to interface
-            PCSender_sendRGBAndPos(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos,result.r,result.g,result.b, result.c);
+            PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
             // Move to our next point
-            Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos+2,zAxis.currentStepPos);
-            delay(); 
-            // delay(); 
-            // delay(); 
-            // delay(); 
-            // delay();      
-            // delay(); 
-            // delay(); 
-            // delay(); 
-            // delay(); 
+            Motion_toPoint(xAxis.currentStepPos, yAxis.currentStepPos + 2, zAxis.currentStepPos);
+            // Use the motor delay to hold on
+            delay();
         }
+        // Update the axis
         xAxis = Motion_getAxis(EMPR_X_AXIS);
         yAxis = Motion_getAxis(EMPR_Y_AXIS);
         zAxis = Motion_getAxis(EMPR_Z_AXIS);
-        // TextOutput_printInteger(xAxis.currentStepPos);
-        // Start our new line
-        Motion_toPoint(xAxis.currentStepPos+2,0,zAxis.currentStepPos);
+        // Move to the next point down
+        Motion_toPoint(xAxis.currentStepPos + 2, 0, zAxis.currentStepPos);
     }
 
     return 0;
