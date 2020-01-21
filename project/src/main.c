@@ -18,7 +18,7 @@ int main() {
         while (yAxis.currentStepPos!=yAxis.maxSteps){
             RGBC result= RGBC_SCAN();
             // Send to interface
-            PCSender_sendRGBAndPos(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos,result.r,result.g,result.b);
+            PCSender_sendRGBAndPos(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos,result.r,result.g,result.b, result.c);
             // Move to our next point
             Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos+1,zAxis.currentStepPos);
         }
