@@ -11,6 +11,7 @@ int main() {
 
     Motion_init();
     Motion_home();
+    // LOOK HERE THIS IS PROBABLY THE CAUSE OF THE PROBLEMS IF THERE ARE ANY THESE NEED TO REFERNCE THE ARRAY
     Axis xAxis = Motion_getAxis(EMPR_X_AXIS);
     Axis yAxis = Motion_getAxis(EMPR_Y_AXIS);
     Axis zAxis = Motion_getAxis(EMPR_Z_AXIS);
