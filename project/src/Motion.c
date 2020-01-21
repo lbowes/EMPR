@@ -158,7 +158,7 @@ uint8_t applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t existin
 
     // 3. Create a variable representing 00001111 (15):               00001111
 
-    // 4. Shift these four bits into the nibble NOT used by the motor 
+    // 4. Shift these four bits into the nibble NOT used by the motor
     //    Note: This means simply leaving them in place if the motor
     //    uses the left nibble, since they are already on the right.  00001111
 
