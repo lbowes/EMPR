@@ -83,14 +83,14 @@ if __name__ == "__main__":
         # Todo remove me Emulate  serial input
         # print(serialLine.readline().decode("utf-8").split())
         try:
-            x,y,z,r,g,b,c=serialLine.readline().decode("utf-8").split()
-            r = int(r)
-            g= int(g)
-            b= int(b)
-            x= int(x)
-            y= int(y)
-            z = int(z)
-            total = r+g+b
+            x,y,z,r,g,b,c=map(int,serialLine.readline().decode("utf-8").split())
+            # r = int(r)
+            # g= int(g)
+            # b= int(b)
+            # x= int(x)
+            # y= int(y)
+            # z = int(z)
+            total = r+g+b # try total=c at some point
             r = int((int(r) / int(total))*255)
             g = int((int(g) / int(total))*255)
             b = int((int(b) / int(total))*255)
