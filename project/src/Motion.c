@@ -56,7 +56,7 @@ void Motion_init() {
 
 Axis Motion_getAxis(uint8_t axis)
 {
-    return axes[axis]
+    return axes[axis];
 }
 
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
@@ -68,11 +68,13 @@ static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
 void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     Axis* a = &axes[axis];
 
+    
+
     // Sanity check if we are going back to zero go to home
-    if (targetStepPos==0){
-    moveAxisToLimit(a);
-    }
-    else{
+    // if (targetStepPos==0){
+    //     moveAxisToLimit(axis);
+    // }
+    // else{
 
     clampWithinAxis(a, &targetStepPos);
 
@@ -86,20 +88,24 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
         // Forward and backwards directions on the Z axis are inverted
         if(axis == EMPR_Z_AXIS)
             stepBackwards(axis, stepsRequired);
-        else
+        else{
+
             stepForwards(axis, stepsRequired);
+
+    }
     }
     else {
         stepsRequired = a->currentStepPos - targetStepPos;
 
         if(axis == EMPR_Z_AXIS)
             stepForwards(axis, stepsRequired);
+ 
         else
             stepBackwards(axis, stepsRequired);
     }
 
     neutralise(motor);
-    }
+    // }
 }
 
 
@@ -133,8 +139,8 @@ void stepBackwards(uint8_t axis, uint16_t stepCount) {
     uint8_t existingData = 0;
     i2c_receiveDataFrom(motor->deviceAddress, &existingData, 1);
 
-    TextOutput_print("Backwards from: ");
-    TextOutput_printInteger(axes[axis].currentStepPos);
+    // TextOutput_print("Backwards from: ");
+    // TextOutput_printInteger(axes[axis].currentStepPos);
 
     uint32_t step = 0;
     for(step = 0; step < stepCount; step++) {
@@ -179,7 +185,7 @@ uint8_t applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t existin
     // 6. AND the result of steps 4 and the existing byte (step 5)    00001010
 
     // 7. OR the result of steps 6 and step 2                         10011010
-
+    // TextOutput_print("zAxis.currentStepPos");
     // This inserts 1001 into the left nibble of 10101010, giving 10011010
     uint8_t newByteContents = (subStepPatternNibble << motor->nibble * 4) | (existingByteContents & (0x0f << (1 - motor->nibble) * 4));
     i2c_send_data(motor->deviceAddress, &newByteContents, 1);
@@ -195,13 +201,13 @@ void neutralise(Motor* motor) {
     // Create a stop command byte that, when ANDed with, will zero the left or right nibble
     uint8_t stopCmd = motor->nibble == EMPR_LEFT ? 0x0f : 0xf0;
 
-    // Apply the stop command to the existing byte contents
+    // Apply the stop comman    TextOutput_print("zAxis.currentStepPos");d to the existing byte contents
     existingByteContents &= stopCmd;
     uint8_t stop = 0x00;
     i2c_send_data(motor->deviceAddress, &stop, 1);
 }
 
-
+        
 void neutraliseAll() {
     uint8_t axisIdx = 0;
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
@@ -210,6 +216,7 @@ void neutraliseAll() {
 
 
 void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
+                           
     Motion_moveAxisToPos(EMPR_X_AXIS, x);
     Motion_moveAxisToPos(EMPR_Y_AXIS, y);
     Motion_moveAxisToPos(EMPR_Z_AXIS, z);
@@ -222,7 +229,6 @@ void moveAxisToLimit(uint8_t axis) {
     Motor* motor = &a->motor;
     LimitSwitch* lSwitch = &a->limitSwitch;
     uint32_t steps = 0;
-
     // Number of steps required is bounded by the maximum number of steps possible on this axis
     if(axis == EMPR_Z_AXIS) {
         while(!LimitSwitch_isDown(lSwitch))
@@ -235,10 +241,11 @@ void moveAxisToLimit(uint8_t axis) {
         while(!LimitSwitch_isDown(lSwitch))
             stepBackwards(axis, 1);
 
-        while(LimitSwitch_isDown(lSwitch))
+        while(LimitSwitch_isDown(lSwitch)){
             stepForwards(axis, 1);
+        }
     }
-
+    a->currentStepPos = 0;
     neutralise(motor);
 }
 

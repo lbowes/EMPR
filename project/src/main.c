@@ -15,16 +15,37 @@ int main() {
     Axis xAxis = Motion_getAxis(EMPR_X_AXIS);
     Axis yAxis = Motion_getAxis(EMPR_Y_AXIS);
     Axis zAxis = Motion_getAxis(EMPR_Z_AXIS);
-    while (xAxis.currentStepPos!=xAxis.maxSteps){
-        while (yAxis.currentStepPos!=yAxis.maxSteps){
+    // Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos);
+    // TextOutput_printInteger(xAxis.currentStepPos);
+    // TextOutput_printInteger(yAxis.currentStepPos);
+    
+    while (xAxis.currentStepPos!=120){
+        while (yAxis.currentStepPos!=120){
+        xAxis = Motion_getAxis(EMPR_X_AXIS);
+        yAxis = Motion_getAxis(EMPR_Y_AXIS);
+        zAxis = Motion_getAxis(EMPR_Z_AXIS);
             RGBC result= RGBC_SCAN();
             // Send to interface
             PCSender_sendRGBAndPos(xAxis.currentStepPos,yAxis.currentStepPos,zAxis.currentStepPos,result.r,result.g,result.b, result.c);
+            
             // Move to our next point
-            Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos+1,zAxis.currentStepPos);
+            Motion_toPoint(xAxis.currentStepPos,yAxis.currentStepPos+3,zAxis.currentStepPos);
+            delay(); 
+            delay(); 
+            delay(); 
+            delay(); 
+            delay();      
+            delay(); 
+            delay(); 
+            delay(); 
+            delay(); 
         }
+        xAxis = Motion_getAxis(EMPR_X_AXIS);
+        yAxis = Motion_getAxis(EMPR_Y_AXIS);
+        zAxis = Motion_getAxis(EMPR_Z_AXIS);
+        // TextOutput_printInteger(xAxis.currentStepPos);
         // Start our new line
-        Motion_toPoint(xAxis.currentStepPos+1,0,zAxis.currentStepPos);
+        Motion_toPoint(xAxis.currentStepPos+3,0,zAxis.currentStepPos);
     }
 
     return 0;

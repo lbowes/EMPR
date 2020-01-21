@@ -108,7 +108,7 @@ LDFLAGS+=-L$(CMSIS)/lib -lDriversLPC17xxgnu
 EXECNAME = $(BIN_OUTPUT_DIR)$(PROJECT_NAME)
 
 # Source files provided by the user to build the project
-SOURCE_FILES = $(shell find $(PROJECT_ROOT_DIR) -name "*.c")
+SOURCE_FILES = $(shell find $(PROJECT_SRC_DIRS) -name "*.c")
 VPATH := $(sort $(dir $(PROJECT_SRC_DIRS)))
 OBJECTS = $(patsubst %.c, $(BUILD_DIR)%.o, $(notdir $(SOURCE_FILES)))
 
