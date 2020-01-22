@@ -1,10 +1,10 @@
 #include "Motion.h"
 #include "LimitSwitch.h"
 
-#include <common_utils/I2C.h>
-#include <common_utils/Constants.h>
-#include <common_utils/TextOutput.h>
-#include <common_utils/LEDs.h>
+#include <mbed/I2C.h>
+#include <mbed/Constants.h>
+#include <mbed/TextOutput.h>
+#include <mbed/LEDs.h>
 
 
 #define SUB_STEP_COUNT 4
@@ -48,16 +48,12 @@ void Motion_init() {
     axes[EMPR_Z_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_Z_AXIS].limitSwitch.stateBitPos = 2;
     axes[EMPR_Z_AXIS].currentStepPos = 0;
-    axes[EMPR_Z_AXIS].maxSteps = 600; //todo
+    axes[EMPR_Z_AXIS].maxSteps = 300; //todo
 
     neutraliseAll();
-    //Motion_home();
+    Motion_home();
 }
 
-Axis Motion_getAxis(uint8_t axis)
-{
-    return axes[axis]
-}
 
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
     if(*val > axis->maxSteps)
@@ -67,12 +63,6 @@ static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
 
 void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     Axis* a = &axes[axis];
-
-    // Sanity check if we are going back to zero go to home
-    if (targetStepPos==0){
-    moveAxisToLimit(a);
-    }
-    else{
 
     clampWithinAxis(a, &targetStepPos);
 
@@ -95,11 +85,10 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
         if(axis == EMPR_Z_AXIS)
             stepForwards(axis, stepsRequired);
         else
-            stepBackwards(axis, stepsRequired);
+            stepaxesBackwards(axis, stepsRequired);
     }
 
     neutralise(motor);
-    }
 }
 
 
@@ -195,6 +184,9 @@ void neutralise(Motor* motor) {
     // Create a stop command byte that, when ANDed with, will zero the left or right nibble
     uint8_t stopCmd = motor->nibble == EMPR_LEFT ? 0x0f : 0xf0;
 
+    // TODO: Get this to neutralise only the motor passed in,
+    // it currently zeros the whole byte.
+
     // Apply the stop command to the existing byte contents
     existingByteContents &= stopCmd;
     uint8_t stop = 0x00;
@@ -216,12 +208,22 @@ void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
 }
 
 
+void Motion_home() {
+    neutraliseAll();
+
+    uint8_t axisIdx = 0;
+    for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
+        moveAxisToLimit(axisIdx);
+
+    neutraliseAll();
+}
+
+
 void moveAxisToLimit(uint8_t axis) {
     Axis* a = &axes[axis];
 
     Motor* motor = &a->motor;
     LimitSwitch* lSwitch = &a->limitSwitch;
-    uint32_t steps = 0;
 
     // Number of steps required is bounded by the maximum number of steps possible on this axis
     if(axis == EMPR_Z_AXIS) {
@@ -238,17 +240,7 @@ void moveAxisToLimit(uint8_t axis) {
         while(LimitSwitch_isDown(lSwitch))
             stepForwards(axis, 1);
     }
+    a->currentStepPos = 0;
 
     neutralise(motor);
-}
-
-
-void Motion_home() {
-    neutraliseAll();
-
-    uint8_t axisIdx = 0;
-    for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
-        moveAxisToLimit(axisIdx);
-
-    neutraliseAll();
 }

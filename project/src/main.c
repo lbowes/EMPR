@@ -1,6 +1,6 @@
-#include "common_utils/I2C.h"
-#include "common_utils/RGBC.h"
-#include "common_utils/TextOutput.h"
+#include "mbed/I2C.h"
+#include "mbed/RGBC.h"
+#include "mbed/TextOutput.h"
 #include "Motion.h"
 #include "PcSender.h"
 void Interrupts_handleAll() { }

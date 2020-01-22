@@ -1,42 +1,38 @@
-/***********************************************************************/
-#include "stdbool.h"
-#include "stdio.h"
+#include <scanner/Motion.h>
+#include <mbed/I2C.h>
+#include <mbed/LEDs.h>
 
-uint8_t array[4] = {0x09, 0x05, 0x06, 0x0a};
-int n;
-int cycles;
-#define MOTOR_ADDRESS 62
-n = 0;
-cycles = 0;
-#include "common_utils/Interrupts.h"
-#include "common_utils/I2CSniffer.h"
-#include "common_utils/I2C.h"
-#include "common_utils/LEDs.h"
-#include "common_utils/TextOutput.h"
-Interrupts_handleAll() { 
-    RUN_EVERY(10) {
-    LEDs_debugBinary(n);
-    if (cycles < 100){
-        TextOutput_printInteger(array[n]);
-        i2c_send_data(MOTOR_ADDRESS, array[n], 1);
-        n=n+1;
-        if (n > 3) {
-            n = 0;
-            cycles = cycles + 1;
-        } 
+#include <math.h>
+
+int main() {
+    i2c_init();
+    Motion_init();
+    LEDs_init();
+
+    //Motion_moveAxisToPos(EMPR_X_AXIS, 180);
+
+    uint32_t count = 0;
+    float sinVal = 0.0f;
+    float cosVal = 0.0f;
+
+    while(1) {
+        sinVal = sin((float)count / 20.0f);
+        cosVal = cos((float)count / 20.0f);
+
+        //Motion_moveAxisToPos(EMPR_Y_AXIS, 120 + sinVal * 40);
+        //Motion_moveAxisToPos(EMPR_X_AXIS, 100 + cosVal * 40);
+
+        //LEDs_debugBinary((count / 5000) % 16);
+        count++;
     }
-    }
-} 
-/* Example group ----------------------------------------------------------- */
-/*-------------------------MAIN FUNCTION------------------------------*/
-/*********************************************************************/
-int main(void)
-{
-LEDs_init();
-LEDs_debugBinary(1);
-i2c_init();
-I2CSniffer_run();
-Interrupts_start();
-LEDs_debugBinary(2);
-return 0;
+
+    //uint8_t t = 0;
+    //for(t = 0; t < 20; t++) {
+    //    Motion_moveAxisToPos(EMPR_X_AXIS, 10);
+    //    Motion_moveAxisToPos(EMPR_X_AXIS, 180);
+    //}
+
+    //Motion_moveAxisToPos(EMPR_X_AXIS, 0);
+
+    return 0;
 }

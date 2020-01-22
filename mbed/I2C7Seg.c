@@ -1,10 +1,10 @@
-#include <common_utils/I2C7Seg.h>
-#include <common_utils/TextOutput.h>
+#include <mbed/I2C7Seg.h>
+#include <mbed/TextOutput.h>
 #include <LPC17xx.h>
 #include <lpc_types.h>
 #include <lpc17xx_i2c.h>
 #include <lpc17xx_pinsel.h>
-#include <common_utils/I2C.h>
+#include <mbed/I2C.h>
 
 //Bit patterns representing each number, index = number, eg patterns[3] = bit pattern for 3
 uint8_t patterns[17] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x67, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x49};

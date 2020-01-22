@@ -1,7 +1,7 @@
 #include "I2CSniffer.h"
 
-#include <common_utils/TextOutput.h>
-#include <common_utils/I2C.h>
+#include <mbed/TextOutput.h>
+#include <mbed/I2C.h>
 #include <stdio.h>
 #include <stdbool.h>
 
