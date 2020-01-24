@@ -22,19 +22,21 @@ static inline void clampBelow(uint16_t* steps);
 void stepForwards(uint8_t axis, uint16_t stepCount);
 void stepBackwards(uint8_t axis, uint16_t stepCount);
 uint8_t applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t existingByteContents, Motor* motor);
-void neutralise(Motor* motor);
+void Motion_neutralise(uint8_t axis);
 void neutraliseAll();
 void delay();
 
 
 void Motion_init() {
+    i2c_init();
+
     // todo: Configure all axis (motor and switch) parameters
     axes[EMPR_X_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_X_AXIS].motor.nibble = EMPR_LEFT;
     axes[EMPR_X_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_X_AXIS].limitSwitch.stateBitPos = 0;
     axes[EMPR_X_AXIS].currentStepPos = 0;
-    axes[EMPR_X_AXIS].maxSteps = 202; //todo: 202
+    axes[EMPR_X_AXIS].maxSteps = 202;
 
     axes[EMPR_Y_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_Y_AXIS].motor.nibble = EMPR_RIGHT;
@@ -51,7 +53,7 @@ void Motion_init() {
     axes[EMPR_Z_AXIS].maxSteps = 600; //todo
 
     neutraliseAll();
-    //Motion_home();
+    Motion_home();
 }
 
 Axis Motion_getAxis(uint8_t axis)
@@ -68,7 +70,7 @@ static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
 void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     Axis* a = &axes[axis];
 
-    
+    //Motion_neutralise(axis);
 
     // Sanity check if we are going back to zero go to home
     // if (targetStepPos==0){
@@ -79,7 +81,7 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     clampWithinAxis(a, &targetStepPos);
 
     Motor* motor = &a->motor;
-    neutralise(motor);
+    //Motion_neutralise(axis);
 
     uint16_t stepsRequired = 0;
     if(targetStepPos > a->currentStepPos) {
@@ -89,22 +91,19 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
         if(axis == EMPR_Z_AXIS)
             stepBackwards(axis, stepsRequired);
         else{
-
             stepForwards(axis, stepsRequired);
-
-    }
+        }
     }
     else {
         stepsRequired = a->currentStepPos - targetStepPos;
 
         if(axis == EMPR_Z_AXIS)
             stepForwards(axis, stepsRequired);
- 
         else
             stepBackwards(axis, stepsRequired);
     }
 
-    neutralise(motor);
+    //Motion_neutralise(axis);
     // }
 }
 
@@ -159,7 +158,7 @@ void stepBackwards(uint8_t axis, uint16_t stepCount) {
 
 void delay() {
     int i, j, count = 0;
-    for(i = 0; i < 8; i++) {
+    for(i = 0; i < 9; i++) {
         for(j = 0; j < 1000; j++)
             count++;
     }
@@ -193,9 +192,10 @@ uint8_t applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t existin
 }
 
 
-void neutralise(Motor* motor) {
+void Motion_neutralise(uint8_t axis) {
     // Get the existing contents of the byte for this motors state
     uint8_t existingByteContents = 0;
+    Motor* motor = &axes[axis].motor;
     i2c_receiveDataFrom(motor->deviceAddress, &existingByteContents, 1);
 
     // Create a stop command byte that, when ANDed with, will zero the left or right nibble
@@ -207,11 +207,11 @@ void neutralise(Motor* motor) {
     i2c_send_data(motor->deviceAddress, &stop, 1);
 }
 
-        
+
 void neutraliseAll() {
     uint8_t axisIdx = 0;
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
-        neutralise(&axes[axisIdx].motor);
+        Motion_neutralise(axisIdx);
 }
 
 
@@ -246,16 +246,16 @@ void moveAxisToLimit(uint8_t axis) {
         }
     }
     a->currentStepPos = 0;
-    neutralise(motor);
+    //Motion_neutralise(axis);
 }
 
 
 void Motion_home() {
-    neutraliseAll();
+    //neutraliseAll();
 
     uint8_t axisIdx = 0;
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
         moveAxisToLimit(axisIdx);
 
-    neutraliseAll();
+    //neutraliseAll();
 }

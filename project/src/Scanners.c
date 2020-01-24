@@ -33,19 +33,19 @@ void SimpleScan(void)
     {
         while (yAxis.currentStepPos != 202)
         {
-            // Get the updated Axis results
+            // // Get the updated Axis results
             xAxis = Motion_getAxis(EMPR_X_AXIS);
             yAxis = Motion_getAxis(EMPR_Y_AXIS);
             zAxis = Motion_getAxis(EMPR_Z_AXIS);
 
-            // Get the RGBC scan
-            RGBC result = RGBC_SCAN();
-            // Send to interface
-            PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
+            // // Get the RGBC scan
+            // RGBC result = RGBC_SCAN();
+            // // Send to interface
+            // PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
             // Move to our next point
             Motion_toPoint(xAxis.currentStepPos, yAxis.currentStepPos + 2, zAxis.currentStepPos);
             // Use the motor delay to hold on
-            delay();
+            //delay();
         }
         // Update the axis
         xAxis = Motion_getAxis(EMPR_X_AXIS);
@@ -152,16 +152,16 @@ void BetterSimpleScan(void)
     }
 }
 
-void PointScanner(Point points[])
-{
-    SetupScan();
-    int index;
-    for (index = 0; index < sizeof(points) / sizeof(Point); index++)
-    {
-        Motion_toPoint(points[index].x, points[index].y, points[index].z);
-        // Get the RGBC scan
-        RGBC result = RGBC_SCAN();
-        // Send to interface
-        PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
-    }
-}
+// void PointScanner(Point points[])
+// {
+//     SetupScan();
+//     int index;
+//     for (index = 0; index < sizeof(points) / sizeof(Point); index++)
+//     {
+//         Motion_toPoint(points[index].x, points[index].y, points[index].z);
+//         // Get the RGBC scan
+//         RGBC result = RGBC_SCAN();
+//         // Send to interface
+//         PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
+//     }
+// }

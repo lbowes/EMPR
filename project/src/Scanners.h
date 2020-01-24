@@ -6,7 +6,7 @@ typedef struct point {
 } Point;
 
 void SetupScan();
-void SimpleScanner(void);
+void SimpleScan(void);
 void StreamSimpleScan(void);
 void BetterSimpleScan(void);
-void PointScanner(Point points[])
+//void PointScanner(Point points[])
