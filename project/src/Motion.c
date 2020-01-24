@@ -52,8 +52,8 @@ void Motion_init() {
     axes[EMPR_Z_AXIS].currentStepPos = 0;
     axes[EMPR_Z_AXIS].maxSteps = 600; //todo
 
-    neutraliseAll();
     Motion_home();
+    neutraliseAll();
 }
 
 Axis Motion_getAxis(uint8_t axis)
