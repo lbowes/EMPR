@@ -56,7 +56,7 @@ void Motion_init() {
 
 Axis Motion_getAxis(uint8_t axis)
 {
-    return axes[axis]
+    return axes[axis];
 }
 
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
