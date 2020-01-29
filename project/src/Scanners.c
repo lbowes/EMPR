@@ -14,7 +14,6 @@ void SetupScan()
 
     // Go home
     Motion_init();
-    Motion_home();
 }
 
 // Simple Scan line by line with delay
