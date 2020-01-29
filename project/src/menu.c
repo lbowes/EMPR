@@ -25,7 +25,7 @@ void start_menu(void)
     int page_count = 0;
     Keypad_init();
     init_7seg();
-    LCDDisplay_init(); LCDDisplay_print("jdkhgh", LINE_1);
+    LCDDisplay_init(); 
     while (1){
         //Scan Patterns
         if (Keypad_isKeyDown(EMPR_KEY_1) && page_count == 0 ){
