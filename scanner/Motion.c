@@ -61,6 +61,13 @@ Axis* Motion_getAxis(uint8_t axis) {
 }
 
 
+void Motion_neutraliseAll() {
+    uint8_t axisIdx = 0;
+    for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
+        Motion_neutralise(axisIdx);
+}
+
+
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
     if(*val > axis->maxSteps)
         *val = axis->maxSteps;
@@ -199,11 +206,7 @@ void Motion_neutralise(uint8_t axis) {
 }
 
 
-void neutraliseAll() {
-    uint8_t axisIdx = 0;
-    for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
-        Motion_neutralise(axisIdx);
-}
+
 
 
 void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
@@ -244,5 +247,5 @@ void Motion_home() {
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
         moveAxisToLimit(axisIdx);
 
-    neutraliseAll();
+    Motion_neutraliseAll();
 }
