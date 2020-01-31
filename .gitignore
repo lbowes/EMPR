@@ -2,7 +2,7 @@
 **/build
 **/.idea
 .vscode
-**/playground
+playground/**
 
 !/playground/Makefile
 !/3DScannerTo2D/venv/bin
