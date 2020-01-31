@@ -1,33 +1,38 @@
-/***********************************************************************/
-#include "stdbool.h"
-#include "stdio.h"
-#include <common_utils/Constants.h>
-#include <common_utils/Keypad.h>
-#include <common_utils/Constants.h>
-#include "LPC17xx.h"
-#include "lpc_types.h"
-#include "lpc17xx_pinsel.h"
-#include "lpc17xx_gpio.h"
+#include <scanner/Motion.h>
+#include <mbed/I2C.h>
+#include <mbed/LEDs.h>
 
+#include <math.h>
 
+int main() {
+    i2c_init();
+    Motion_init();
+    LEDs_init();
 
+    //Motion_moveAxisToPos(EMPR_X_AXIS, 180);
 
+    uint32_t count = 0;
+    float sinVal = 0.0f;
+    float cosVal = 0.0f;
 
-void Interrupts_handleAll(){}
-int main(void)
-{
-    Keypad_init();
-    TextOutput_init();
-    NVIC_EnableIRQ(EINT3_IRQn);
+    while(1) {
+        sinVal = sin((float)count / 20.0f);
+        cosVal = cos((float)count / 20.0f);
 
-    __enable_irq();
+        //Motion_moveAxisToPos(EMPR_Y_AXIS, 120 + sinVal * 40);
+        //Motion_moveAxisToPos(EMPR_X_AXIS, 100 + cosVal * 40);
 
-    //uint8_t keylist [2] = {EMPR_KEY_1, EMPR_KEY_2};
-    
-
-}
-
-void EINT3_IRQHandler (void){
-        TextOutput_print("yes");
-        GPIO_ClearInt(2,0);
+        //LEDs_debugBinary((count / 5000) % 16);
+        count++;
     }
+
+    //uint8_t t = 0;
+    //for(t = 0; t < 20; t++) {
+    //    Motion_moveAxisToPos(EMPR_X_AXIS, 10);
+    //    Motion_moveAxisToPos(EMPR_X_AXIS, 180);
+    //}
+
+    //Motion_moveAxisToPos(EMPR_X_AXIS, 0);
+
+    return 0;
+}

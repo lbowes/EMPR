@@ -1,7 +1,7 @@
 #include "Keypad.h"
 
-#include <common_utils/I2C.h>
-#include <common_utils/Constants.h>
+#include <mbed/I2C.h>
+#include <mbed/Constants.h>
 #include <stdio.h>
 
 void Keypad_init(void)

@@ -1,10 +1,10 @@
 #include "Motion.h"
 #include "LimitSwitch.h"
 
-#include <common_utils/I2C.h>
-#include <common_utils/Constants.h>
-#include <common_utils/TextOutput.h>
-#include <common_utils/LEDs.h>
+#include <mbed/I2C.h>
+#include <mbed/Constants.h>
+#include <mbed/TextOutput.h>
+#include <mbed/LEDs.h>
 
 
 #define SUB_STEP_COUNT 4
@@ -50,16 +50,16 @@ void Motion_init() {
     axes[EMPR_Z_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_Z_AXIS].limitSwitch.stateBitPos = 2;
     axes[EMPR_Z_AXIS].currentStepPos = 0;
-    axes[EMPR_Z_AXIS].maxSteps = 600; //todo
+    axes[EMPR_Z_AXIS].maxSteps = 300; //todo
 
     Motion_home();
-    neutraliseAll();
 }
 
-Axis Motion_getAxis(uint8_t axis)
-{
+
+Axis Motion_getAxis(uint8_t axis) {
     return axes[axis];
 }
+
 
 static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
     if(*val > axis->maxSteps)
@@ -70,18 +70,9 @@ static inline void clampWithinAxis(Axis* axis, uint16_t* val) {
 void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
     Axis* a = &axes[axis];
 
-    //Motion_neutralise(axis);
-
-    // Sanity check if we are going back to zero go to home
-    // if (targetStepPos==0){
-    //     moveAxisToLimit(axis);
-    // }
-    // else{
-
     clampWithinAxis(a, &targetStepPos);
 
     Motor* motor = &a->motor;
-    //Motion_neutralise(axis);
 
     uint16_t stepsRequired = 0;
     if(targetStepPos > a->currentStepPos) {
@@ -100,11 +91,8 @@ void Motion_moveAxisToPos(uint8_t axis, uint16_t targetStepPos) {
         if(axis == EMPR_Z_AXIS)
             stepForwards(axis, stepsRequired);
         else
-            stepBackwards(axis, stepsRequired);
+            stepaxesBackwards(axis, stepsRequired);
     }
-
-    //Motion_neutralise(axis);
-    // }
 }
 
 
@@ -174,7 +162,7 @@ uint8_t applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t existin
 
     // 3. Create a variable representing 00001111 (15):               00001111
 
-    // 4. Shift these four bits into the nibble NOT used by the motor 
+    // 4. Shift these four bits into the nibble NOT used by the motor
     //    Note: This means simply leaving them in place if the motor
     //    uses the left nibble, since they are already on the right.  00001111
 
@@ -201,7 +189,10 @@ void Motion_neutralise(uint8_t axis) {
     // Create a stop command byte that, when ANDed with, will zero the left or right nibble
     uint8_t stopCmd = motor->nibble == EMPR_LEFT ? 0x0f : 0xf0;
 
-    // Apply the stop comman    TextOutput_print("zAxis.currentStepPos");d to the existing byte contents
+    // TODO: Get this to neutralise only the motor passed in,
+    // it currently zeros the whole byte.
+
+    // Apply the stop command to the existing byte contents
     existingByteContents &= stopCmd;
     uint8_t stop = 0x00;
     i2c_send_data(motor->deviceAddress, &stop, 1);
@@ -216,10 +207,20 @@ void neutraliseAll() {
 
 
 void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
-                           
     Motion_moveAxisToPos(EMPR_X_AXIS, x);
     Motion_moveAxisToPos(EMPR_Y_AXIS, y);
     Motion_moveAxisToPos(EMPR_Z_AXIS, z);
+}
+
+
+void Motion_home() {
+    neutraliseAll();
+
+    uint8_t axisIdx = 0;
+    for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
+        moveAxisToLimit(axisIdx);
+
+    neutraliseAll();
 }
 
 
@@ -228,7 +229,7 @@ void moveAxisToLimit(uint8_t axis) {
 
     Motor* motor = &a->motor;
     LimitSwitch* lSwitch = &a->limitSwitch;
-    uint32_t steps = 0;
+
     // Number of steps required is bounded by the maximum number of steps possible on this axis
     if(axis == EMPR_Z_AXIS) {
         while(!LimitSwitch_isDown(lSwitch))
@@ -246,16 +247,13 @@ void moveAxisToLimit(uint8_t axis) {
         }
     }
     a->currentStepPos = 0;
-    //Motion_neutralise(axis);
 }
 
 
 void Motion_home() {
-    //neutraliseAll();
-
     uint8_t axisIdx = 0;
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
         moveAxisToLimit(axisIdx);
 
-    //neutraliseAll();
+    neutraliseAll();
 }

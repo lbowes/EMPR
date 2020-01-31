@@ -45,11 +45,9 @@ PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
 # Source directories for this project, relative to the PROJECT_ROOT_DIR
 PROJECT_SRC_DIRS := \
 	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/ \
-	$(PROJECT_ROOT_DIR)common_utils/ \
+	$(PROJECT_ROOT_DIR)mbed/ \
+	$(PROJECT_ROOT_DIR)scanner/ \
 # ==============================================================================
-
-
-
 
 
 # Build (object) directory for this project relative to the PROJECT_ROOT_DIR
@@ -140,7 +138,7 @@ clean:
 	@rm -f *.elf *.wrn bin/*.bin log *.hex
 	@rm -f $(EXECNAME)
 
-complete: | clean all install
+complete: | all install
 
 # make install - Installs the resulting binary file to the MBED board, remember
 # to sync the file systems, so the copy finishes
