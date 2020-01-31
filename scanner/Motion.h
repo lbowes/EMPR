@@ -20,6 +20,7 @@ typedef struct {
 } Axis;
 
 void Motion_init();
+Axis* Motion_getAxis(uint8_t axis);
 void Motion_neutralise(uint8_t axis);
 void Motion_moveAxisToPos(uint8_t axis, uint16_t pos);
 void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z);
