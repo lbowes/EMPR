@@ -206,13 +206,37 @@ void Motion_neutralise(uint8_t axis) {
 }
 
 
-
-
-
 void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
-    Motion_moveAxisToPos(EMPR_X_AXIS, x);
-    Motion_moveAxisToPos(EMPR_Y_AXIS, y);
-    Motion_moveAxisToPos(EMPR_Z_AXIS, z);
+    uint16_t currentX = axes[EMPR_X_AXIS].currentStepPos;
+    uint16_t currentY = axes[EMPR_Y_AXIS].currentStepPos;
+    uint16_t currentZ = axes[EMPR_Z_AXIS].currentStepPos;
+
+    while(currentX != x || currentY != y || currentZ != z) {
+        currentX = axes[EMPR_X_AXIS].currentStepPos;
+        currentY = axes[EMPR_Y_AXIS].currentStepPos;
+        currentZ = axes[EMPR_Z_AXIS].currentStepPos;
+
+        if(currentX != x) {
+            if(currentX < x)
+                Motion_moveAxisToPos(EMPR_X_AXIS, currentX + 1);
+            else
+                Motion_moveAxisToPos(EMPR_X_AXIS, currentX - 1);
+        }
+
+        if(currentY != y) {
+            if(currentY < y)
+                Motion_moveAxisToPos(EMPR_Y_AXIS, currentY + 1);
+            else
+                Motion_moveAxisToPos(EMPR_Y_AXIS, currentY - 1);
+        }
+
+        // if(currentZ != z) {
+        //     if(currentZ > z)
+        //         Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ + 1);
+        //     else
+        //         Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ - 1);
+        // }
+    }
 }
 
 
