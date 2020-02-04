@@ -1,6 +1,5 @@
 #include "A.h"
 
-
 /*
  * A scanning API should be written, to permit control of all three stepper motors.
  * It should be possible to demonstrate its functionality by performing test
