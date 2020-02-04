@@ -30,27 +30,26 @@ void delay();
 void Motion_init() {
     i2c_init();
 
-    // todo: Configure all axis (motor and switch) parameters
     axes[EMPR_X_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_X_AXIS].motor.nibble = EMPR_LEFT;
     axes[EMPR_X_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_X_AXIS].limitSwitch.stateBitPos = 0;
     axes[EMPR_X_AXIS].currentStepPos = 0;
-    axes[EMPR_X_AXIS].maxSteps = 202;
+    axes[EMPR_X_AXIS].maxSteps = 200;
 
     axes[EMPR_Y_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_Y_AXIS].motor.nibble = EMPR_RIGHT;
     axes[EMPR_Y_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_Y_AXIS].limitSwitch.stateBitPos = 1;
     axes[EMPR_Y_AXIS].currentStepPos = 0;
-    axes[EMPR_Y_AXIS].maxSteps = 600; //todo
+    axes[EMPR_Y_AXIS].maxSteps = 236;
 
     axes[EMPR_Z_AXIS].motor.deviceAddress = 0x3f;
     axes[EMPR_Z_AXIS].motor.nibble = EMPR_RIGHT;
     axes[EMPR_Z_AXIS].limitSwitch.deviceAddress = 0x3c;
     axes[EMPR_Z_AXIS].limitSwitch.stateBitPos = 2;
     axes[EMPR_Z_AXIS].currentStepPos = 0;
-    axes[EMPR_Z_AXIS].maxSteps = 300; //todo
+    axes[EMPR_Z_AXIS].maxSteps = 1575;
 
     Motion_home();
 }

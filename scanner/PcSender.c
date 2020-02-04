@@ -9,3 +9,11 @@ void PCSender_sendRGBAndPos (uint8_t x,uint8_t y,uint8_t z,uint8_t raw_r,uint8_t
      sprintf(data,"%d %d %d %d %d %d %d",x,y,z,raw_r,raw_g,raw_b,raw_c);
     TextOutput_println(data);
 }
+
+void PCSender_sendDebugMessage(char* message){
+
+    char messageArray [1000];
+    strcpy(messageArray,"Debug:");
+    strcpy(messageArray,message);
+    TextOutput_println("Debug:");
+}
