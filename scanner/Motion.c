@@ -119,8 +119,7 @@ void stepForwards(uint8_t axis, uint16_t stepCount) {
             applySubStepPatternToMotor(subStepPattern, existingData, motor);
         }
 
-        //axes[axis].currentStepPos += (axis != EMPR_Z_AXIS) * 2 - 1;
-        axes[axis].currentStepPos++;
+        axes[axis].currentStepPos += (axis != EMPR_Z_AXIS) * 2 - 1;
     }
 
 }
@@ -145,8 +144,7 @@ void stepBackwards(uint8_t axis, uint16_t stepCount) {
             applySubStepPatternToMotor(subStepPattern, existingData, motor);
         }
 
-        //axes[axis].currentStepPos += (axis != EMPR_Z_AXIS) * 2 - 1;
-        axes[axis].currentStepPos--;
+        axes[axis].currentStepPos -= (axis != EMPR_Z_AXIS) * 2 - 1;
     }
 }
 
@@ -230,13 +228,15 @@ void Motion_toPoint(uint16_t x, uint16_t y, uint16_t z) {
                 Motion_moveAxisToPos(EMPR_Y_AXIS, currentY - 1);
         }
 
-        // if(currentZ != z) {
-        //     if(currentZ > z)
-        //         Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ + 1);
-        //     else
-        //         Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ - 1);
-        // }
+        if(currentZ != z) {
+            if(currentZ < z)
+                Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ + 1);
+            else
+                Motion_moveAxisToPos(EMPR_Z_AXIS, currentZ - 1);
+        }
     }
+
+    Motion_neutraliseAll();
 }
 
 
