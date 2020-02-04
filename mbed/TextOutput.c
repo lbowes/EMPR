@@ -31,8 +31,10 @@ void TextOutput_init(void) {
      * - 1 Stop bit
      * - None parity
      */
-    UART_ConfigStructInit(&UARTConfigStruct);
+    
 
+    UART_ConfigStructInit(&UARTConfigStruct);
+    UARTConfigStruct.Baud_rate=460800;
     /* Initialize FIFOConfigStruct to default state:
      * - FIFO_DMAMode = DISABLE
      * - FIFO_Level = UART_FIFO_TRGLEV0

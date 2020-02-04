@@ -31,6 +31,7 @@ if __name__ == "__main__":
         _height = config_parser.getint('settings', 'height')
         _width = config_parser.getint('settings', 'width')
         _port = config_parser.get('settings', 'port')
+        _speed = config_parser.get('settings', 'speed')
         centerImage = config_parser.getboolean('settings','centerImage')
     except Exception:
         print("There is an issue with the config file please make sure you have all the settings required.")
@@ -67,7 +68,7 @@ if __name__ == "__main__":
     imageArray=[]
     
     # Serial line
-    serialLine = serial.Serial(_port)
+    serialLine = serial.Serial(_port,baudrate=_speed)
 
     # Running?
     Running=True

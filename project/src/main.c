@@ -1,6 +1,7 @@
-#include <scanner/Scanners.h>
-
+#include "scanner/Scanners.h"
 int main() {
-    StreamSimpleScan();
+    SimpleScan();
+    Motion_neutraliseAll();
+    
     return 0;
 }
