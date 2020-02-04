@@ -45,7 +45,9 @@ PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
 # Source directories for this project, relative to the PROJECT_ROOT_DIR
 PROJECT_SRC_DIRS := \
 	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/ \
-	$(PROJECT_ROOT_DIR)common_utils/ \
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/ \
+	$(PROJECT_ROOT_DIR)mbed/ \
+	$(PROJECT_ROOT_DIR)scanner/ \
 # ==============================================================================
 
 

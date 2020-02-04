@@ -1,5 +1,5 @@
 #include "LimitSwitch.h"
-#include <common_utils/I2C.h>
+#include <mbed/I2C.h>
 
 
 bool LimitSwitch_isDown(LimitSwitch* lSwitch) {

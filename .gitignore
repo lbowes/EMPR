@@ -2,7 +2,7 @@
 **/build
 **/.idea
 .vscode
-playground/*
+playground/**
 
 !/playground/Makefile
 !*/venv/bin

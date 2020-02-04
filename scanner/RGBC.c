@@ -1,7 +1,6 @@
 #include "RGBC.h"
-#include <common_utils/I2C.h>
-#include <common_utils/TextOutput.h>
-#include <common_utils/Constants.h>
+#include <mbed/I2C.h>
+#include <mbed/Constants.h>
 #include <stdio.h>
 
 
@@ -21,13 +20,17 @@ void RGBC_init(void){
     // static uint8_t setGain[] = {0x8F, 0x00}; // Set gain to 1
     uint8_t initalSetup[1] = {0x00 | 160};
     i2c_init();
+    uint8_t readSwitchOn[] = {0x80};
+    i2c_send_data(RGBC_I2C_SENSOR_ADDRESS,readSwitchOn, sizeof(readSwitchOn));
     i2c_receiveDataFrom(RGBC_I2C_SENSOR_ADDRESS, &initalSetup[0], 1);
     uint8_t enable = initalSetup[0] | 3;
     uint8_t switchOn[] = {0x80,enable | 0x03};
     i2c_send_data(RGBC_I2C_SENSOR_ADDRESS,switchOn, sizeof(switchOn));
     char atime= 256 - ((int) 100/2.4);
-    uint8_t aTimeTx[] = {0x81,atime};
+    uint8_t aTimeTx[] = {0x81,0xFF};
     i2c_send_data(RGBC_I2C_SENSOR_ADDRESS,aTimeTx, sizeof(aTimeTx));
+    uint8_t aGainTx[] = {0x8F,0x00};
+    i2c_send_data(RGBC_I2C_SENSOR_ADDRESS,aGainTx, sizeof(aGainTx));
 }
 
 RGBC RGBC_SCAN(void){
