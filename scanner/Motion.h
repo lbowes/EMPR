@@ -2,6 +2,7 @@
 #define EMPR_MOTION_H_
 
 #include "LimitSwitch.h"
+
 #include <mbed/Constants.h>
 
 #include <stdint.h>

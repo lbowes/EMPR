@@ -1,6 +1,8 @@
-#include <scanner/Scanners.h>
+#include "core_requirements/A1.h"
 
 int main() {
-    StreamSimpleScan();
+    A1();
+    TextOutput_print("moving onto next test...");
+
     return 0;
 }
