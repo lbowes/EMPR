@@ -6,6 +6,7 @@ static void drawFullSizeCircle();
 static void traceSquareBoundary();
 static void demoZAxis();
 static void menuOptionDelay();
+static void motionPauseDelay();
 
 void A1();
 

@@ -3,7 +3,6 @@
 
 
 void A2();
-void A3();
 
 
 #endif // EMPR_REQ_A2_H_

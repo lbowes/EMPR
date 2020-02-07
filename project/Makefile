@@ -46,6 +46,10 @@ PROJECT_ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../
 PROJECT_SRC_DIRS := \
 	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/ \
 	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/ \
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/A/ \
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/B/ \
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/C/ \
+	$(PROJECT_ROOT_DIR)$(PROJECT_NAME)/src/core_requirements/D/ \
 	$(PROJECT_ROOT_DIR)mbed/ \
 	$(PROJECT_ROOT_DIR)scanner/ \
 # ==============================================================================
