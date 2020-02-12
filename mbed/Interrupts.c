@@ -15,11 +15,11 @@ void Do_Nothing(void)
 void SysTick_Handler(void)
 {
     int handler;
-    for (handler = 0; handler < head; handler++)
+    for (handler = 0; handler <= head; handler++)
     {
         callbacks[handler]();
     }
-    interruptHandler();
+   // interruptHandler();
     elapsedMs++;
 }
 
