@@ -30,6 +30,7 @@ static uint8_t line_1[] = {0x00, 0x02};
 static uint8_t line_2[] = {0x00, 0xC0};
 void LCDDisplay_init(void)
 {
+    i2c_init();
     // Lets write the first bits to get the lcd configured
     i2c_send_data(LCD_I2C_ADDRESS, initWrite, sizeof(initWrite));
     i2c_send_data(LCD_I2C_ADDRESS, cursor, sizeof(cursor));
