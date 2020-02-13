@@ -21,7 +21,7 @@
 
 int len;
 uint8_t command[6];
-//uint32_t val = 0;
+
 
 int z_axis = 0;
 int y_axis = 0;
@@ -32,69 +32,50 @@ int y = 1;
 int z = 2;
 
 int scale = 5;
-//int origin [3] = {100,100,100}; //x,y,z
 
 Axis* coord ;
 
 
-void delay3(void) {
-    int i, j, count = 0;
-    for(i = 0; i < 10000; i++) {
-        for(j = 0; j < 1000; j++)
-            count++;
-    }
-}
+
 
 
 void move_x(int change){
 
     coord = Motion_getAxis(x);
-    //if (error_check(coord, change) == 0){
+
         change = change + coord->currentStepPos;
         if (change < 0){
             change = 0;
         }
         Motion_moveAxisToPos(x, change);
-   // }
+
 }
 
 
 void move_y(int change){
 
     coord = Motion_getAxis(y);
-   // if (error_check(coord, change+20) == 0){
+
         change = change + coord->currentStepPos;
         if (change < 0){
             change = 0;
         }
         Motion_moveAxisToPos(y, change);
-    //}
+   
 }
 
 void move_z(int change){
  
 
     coord = Motion_getAxis(z);
-    //if (error_check(coord, change) == 0){
     change = change + coord->currentStepPos;
     if (change < 0){
             change = 0;
         }
     Motion_moveAxisToPos(z, change);
-    //}
-}
+    
 
-// int error_check(Axis axis, int change){
-//     Axis* a = &axis;
-//     LimitSwitch* lSwitch = &a->limitSwitch;
-//     if ((axis.maxSteps < change) || LimitSwitch_isDown(lSwitch) == 1){
-//         return 1;
-//     }
-//     else{
-//         return 0;
-//     }
 
-// }
 
 
 void manual_start(void){
@@ -129,7 +110,6 @@ void manual_start(void){
         }
         
         neut_count ++;
-        //delay3();
     }
 
 }
@@ -154,7 +134,6 @@ void UART_control_start(void){
 void UART0_IRQHandler(void){
     NVIC_DisableIRQ(UART0_IRQn);
     memset(command, 0, sizeof(command));
-    //memset(charArray, 0, sizeof(charArray));
     serial_read(&command , sizeof(command));
 
     
@@ -188,11 +167,7 @@ void UART0_IRQHandler(void){
     NVIC_EnableIRQ(UART0_IRQn);
 
 
-    //  for (len = 0; len < sizeof(command) ; len++){
-    //      charArray[len] = command[len];
-    //  }
     
-    //  LCDDisplay_print(&charArray, 0);
 
 }
 
