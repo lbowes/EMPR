@@ -109,9 +109,9 @@ void brightness_7seg(int setting)
 
 void display_hex_7seg(int digit1, int digit2 )
 {
-    set_values(0,0, digit1, digit2,0,0);
+    set_values(0,sizeof(patterns)-1, digit1, digit2,0,0);
     
-    change_digit(2,sizeof(patterns)-1);
+    //change_digit(2,sizeof(patterns)-1);
 }
 
 

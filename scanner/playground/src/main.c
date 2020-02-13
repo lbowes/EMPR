@@ -32,8 +32,7 @@ void main(void)
     // NVIC_EnableIRQ(UART0_IRQn);
     // set_values(0,0,0,0,0,0);
 
-    //UART_control_start();
-    manual_start();
+    UART_control_start();
 
 }
     
