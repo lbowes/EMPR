@@ -12,7 +12,15 @@ def write_screen(line):
             linee += ' '
     ser.write(linee.encode())
 
-def send_command(coord):
+
+
+def move_to_coords(coord):
+    
+
+
+
+
+def send_command_relative(coord):
     values = []
     separated_coords = coord.split(',')
 
