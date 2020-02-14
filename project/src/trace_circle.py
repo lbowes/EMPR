@@ -19,7 +19,7 @@ def main():
         y = 50 + int((cosVal + 1) / 2 * 136)
 
         if(lastX != x or lastY != y):
-            print(F"Motion_toPoint({x}, {y}, 0);")
+            print(F"Motion_moveTo({x}, {y}, 0);")
 
         lastX = x
         lastY = y

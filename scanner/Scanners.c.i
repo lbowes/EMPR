@@ -29,9 +29,9 @@ void SimpleScan(void)
     Axis* zAxis = Motion_getAxis(EMPR_Z_AXIS);
 
     // Todo refer to xAxis.max & yAxis
-    while (xAxis->currentStepPos != 202)
+    while (xAxis->currentPos_steps != 202)
     {
-        while (yAxis->currentStepPos != 202)
+        while (yAxis->currentPos_steps != 202)
         {
             // // Get the updated Axis results
             xAxis = Motion_getAxis(EMPR_X_AXIS);
@@ -41,9 +41,9 @@ void SimpleScan(void)
             // // Get the RGBC scan
             // RGBC result = RGBC_SCAN();
             // // Send to interface
-            // PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
+            // PCSender_sendRGBAndPos(xAxis.currentPos_steps, yAxis.currentPos_steps, zAxis.currentPos_steps, result.r, result.g, result.b, result.c);
             // Move to our next point
-            Motion_toPoint(xAxis->currentStepPos, yAxis->currentStepPos + 2, zAxis->currentStepPos);
+            Motion_moveTo(xAxis->currentPos_steps, yAxis->currentPos_steps + 2, zAxis->currentPos_steps);
             // Use the motor delay to hold on
             //delay();
         }
@@ -52,7 +52,7 @@ void SimpleScan(void)
         yAxis = Motion_getAxis(EMPR_Y_AXIS);
         zAxis = Motion_getAxis(EMPR_Z_AXIS);
         // Move to the next point down
-        Motion_toPoint(xAxis->currentStepPos + 2, 0, zAxis->currentStepPos);
+        Motion_moveTo(xAxis->currentPos_steps + 2, 0, zAxis->currentPos_steps);
     }
 }
 
@@ -68,9 +68,9 @@ void StreamSimpleScan(void)
     Axis* zAxis = Motion_getAxis(EMPR_Z_AXIS);
 
     // Todo refer to xAxis.max & yAxis
-    while (xAxis->currentStepPos != 202)
+    while (xAxis->currentPos_steps != 202)
     {
-        while (yAxis->currentStepPos != 202)
+        while (yAxis->currentPos_steps != 202)
         {
             // Get the updated Axis results
             xAxis = Motion_getAxis(EMPR_X_AXIS);
@@ -80,16 +80,16 @@ void StreamSimpleScan(void)
             // Get the RGBC scan
             RGBC result = RGBC_SCAN();
             // Send to interface
-            PCSender_sendRGBAndPos(xAxis->currentStepPos, yAxis->currentStepPos, zAxis->currentStepPos, result.r, result.g, result.b, result.c);
+            PCSender_sendRGBAndPos(xAxis->currentPos_steps, yAxis->currentPos_steps, zAxis->currentPos_steps, result.r, result.g, result.b, result.c);
             // Move to our next point
-            Motion_toPoint(xAxis->currentStepPos, yAxis->currentStepPos + 1, zAxis->currentStepPos);
+            Motion_moveTo(xAxis->currentPos_steps, yAxis->currentPos_steps + 1, zAxis->currentPos_steps);
         }
         // Update the axis
         xAxis = Motion_getAxis(EMPR_X_AXIS);
         yAxis = Motion_getAxis(EMPR_Y_AXIS);
         zAxis = Motion_getAxis(EMPR_Z_AXIS);
         // Move to the next point down
-        Motion_toPoint(xAxis->currentStepPos + 1, 0, zAxis->currentStepPos);
+        Motion_moveTo(xAxis->currentPos_steps + 1, 0, zAxis->currentPos_steps);
     }
 }
 
@@ -105,11 +105,11 @@ void BetterSimpleScan(void)
     Axis* zAxis = Motion_getAxis(EMPR_Z_AXIS);
     int backwards = 0;
     // Todo refer to xAxis.max & yAxis
-    while (xAxis->currentStepPos != 202)
+    while (xAxis->currentPos_steps != 202)
     {
         if (!backwards)
         {
-            while (yAxis->currentStepPos != 202)
+            while (yAxis->currentPos_steps != 202)
             {
                 // Get the updated Axis results
                 xAxis = Motion_getAxis(EMPR_X_AXIS);
@@ -119,15 +119,15 @@ void BetterSimpleScan(void)
                 // Get the RGBC scan
                 RGBC result = RGBC_SCAN();
                 // Send to interface
-                PCSender_sendRGBAndPos(xAxis->currentStepPos, yAxis->currentStepPos, zAxis->currentStepPos, result.r, result.g, result.b, result.c);
+                PCSender_sendRGBAndPos(xAxis->currentPos_steps, yAxis->currentPos_steps, zAxis->currentPos_steps, result.r, result.g, result.b, result.c);
                 // Move to our next point
-                Motion_toPoint(xAxis->currentStepPos, yAxis->currentStepPos + 1, zAxis->currentStepPos);
+                Motion_moveTo(xAxis->currentPos_steps, yAxis->currentPos_steps + 1, zAxis->currentPos_steps);
             }
             backwards = 1;
         }
         else
         {
-            while (yAxis->currentStepPos != 0)
+            while (yAxis->currentPos_steps != 0)
             {
                 // Get the updated Axis results
                 xAxis = Motion_getAxis(EMPR_X_AXIS);
@@ -137,9 +137,9 @@ void BetterSimpleScan(void)
                 // Get the RGBC scan
                 RGBC result = RGBC_SCAN();
                 // Send to interface
-                PCSender_sendRGBAndPos(xAxis->currentStepPos, yAxis->currentStepPos, zAxis->currentStepPos, result.r, result.g, result.b, result.c);
+                PCSender_sendRGBAndPos(xAxis->currentPos_steps, yAxis->currentPos_steps, zAxis->currentPos_steps, result.r, result.g, result.b, result.c);
                 // Move to our next point
-                Motion_toPoint(xAxis->currentStepPos, yAxis->currentStepPos - 1, zAxis->currentStepPos);
+                Motion_moveTo(xAxis->currentPos_steps, yAxis->currentPos_steps - 1, zAxis->currentPos_steps);
             }
             backwards = 0;
         }
@@ -148,7 +148,7 @@ void BetterSimpleScan(void)
         yAxis = Motion_getAxis(EMPR_Y_AXIS);
         zAxis = Motion_getAxis(EMPR_Z_AXIS);
         // Move to the next point down
-        Motion_toPoint(xAxis->currentStepPos + 1, yAxis->currentStepPos, zAxis->currentStepPos);
+        Motion_moveTo(xAxis->currentPos_steps + 1, yAxis->currentPos_steps, zAxis->currentPos_steps);
     }
 }
 
@@ -158,10 +158,10 @@ void BetterSimpleScan(void)
 //     int index;
 //     for (index = 0; index < sizeof(points) / sizeof(Point); index++)
 //     {
-//         Motion_toPoint(points[index].x, points[index].y, points[index].z);
+//         Motion_moveTo(points[index].x, points[index].y, points[index].z);
 //         // Get the RGBC scan
 //         RGBC result = RGBC_SCAN();
 //         // Send to interface
-//         PCSender_sendRGBAndPos(xAxis.currentStepPos, yAxis.currentStepPos, zAxis.currentStepPos, result.r, result.g, result.b, result.c);
+//         PCSender_sendRGBAndPos(xAxis.currentPos_steps, yAxis.currentPos_steps, zAxis.currentPos_steps, result.r, result.g, result.b, result.c);
 //     }
 // }

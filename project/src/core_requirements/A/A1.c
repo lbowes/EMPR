@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-void drawFullSizeCircle() {
+static void drawFullSizeCircle() {
     Motion_home();
 
 #define GENERATED 1
@@ -33,7 +33,7 @@ void drawFullSizeCircle() {
         y = padding + (cosVal + 1.0f) / 2.0f * (EMPR_Y_LIMIT - padding);
 
         if(lastX != x && lastY != y)
-            Motion_toPoint(x, y, 0);
+            Motion_moveTo(x, y, 0);
 
         lastX = x;
         lastY = y;
@@ -41,250 +41,250 @@ void drawFullSizeCircle() {
 
 #else
 
-    Motion_toPoint(100, 186, 0);
+    Motion_moveTo(100, 186, 0);
     motionPauseDelay();
-Motion_toPoint(101, 185, 0);
-Motion_toPoint(103, 185, 0);
-Motion_toPoint(104, 185, 0);
-Motion_toPoint(106, 185, 0);
-Motion_toPoint(107, 185, 0);
-Motion_toPoint(109, 184, 0);
-Motion_toPoint(110, 184, 0);
-Motion_toPoint(112, 183, 0);
-Motion_toPoint(113, 183, 0);
-Motion_toPoint(115, 182, 0);
-Motion_toPoint(116, 181, 0);
-Motion_toPoint(118, 181, 0);
-Motion_toPoint(119, 180, 0);
-Motion_toPoint(121, 179, 0);
-Motion_toPoint(122, 178, 0);
-Motion_toPoint(124, 177, 0);
-Motion_toPoint(125, 176, 0);
-Motion_toPoint(126, 175, 0);
-Motion_toPoint(128, 174, 0);
-Motion_toPoint(129, 173, 0);
-Motion_toPoint(130, 171, 0);
-Motion_toPoint(131, 170, 0);
-Motion_toPoint(133, 169, 0);
-Motion_toPoint(134, 167, 0);
-Motion_toPoint(135, 166, 0);
-Motion_toPoint(136, 164, 0);
-Motion_toPoint(137, 162, 0);
-Motion_toPoint(138, 161, 0);
-Motion_toPoint(139, 159, 0);
-Motion_toPoint(140, 157, 0);
-Motion_toPoint(141, 156, 0);
-Motion_toPoint(142, 154, 0);
-Motion_toPoint(143, 152, 0);
-Motion_toPoint(143, 150, 0);
-Motion_toPoint(144, 148, 0);
-Motion_toPoint(145, 146, 0);
-Motion_toPoint(145, 145, 0);
-Motion_toPoint(146, 143, 0);
-Motion_toPoint(147, 141, 0);
-Motion_toPoint(147, 139, 0);
-Motion_toPoint(148, 136, 0);
-Motion_toPoint(148, 134, 0);
-Motion_toPoint(148, 132, 0);
-Motion_toPoint(149, 130, 0);
-Motion_toPoint(149, 128, 0);
-Motion_toPoint(149, 126, 0);
-Motion_toPoint(149, 124, 0);
-Motion_toPoint(149, 122, 0);
-Motion_toPoint(149, 120, 0);
-Motion_toPoint(150, 118, 0);
-Motion_toPoint(149, 115, 0);
-Motion_toPoint(149, 113, 0);
-Motion_toPoint(149, 111, 0);
-Motion_toPoint(149, 109, 0);
-Motion_toPoint(149, 107, 0);
-Motion_toPoint(149, 105, 0);
-Motion_toPoint(148, 103, 0);
-Motion_toPoint(148, 101, 0);
-Motion_toPoint(148, 99, 0);
-Motion_toPoint(147, 96, 0);
-Motion_toPoint(147, 94, 0);
-Motion_toPoint(146, 92, 0);
-Motion_toPoint(145, 90, 0);
-Motion_toPoint(145, 89, 0);
-Motion_toPoint(144, 87, 0);
-Motion_toPoint(143, 85, 0);
-Motion_toPoint(143, 83, 0);
-Motion_toPoint(142, 81, 0);
-Motion_toPoint(141, 79, 0);
-Motion_toPoint(140, 78, 0);
-Motion_toPoint(139, 76, 0);
-Motion_toPoint(138, 74, 0);
-Motion_toPoint(137, 73, 0);
-Motion_toPoint(136, 71, 0);
-Motion_toPoint(135, 69, 0);
-Motion_toPoint(134, 68, 0);
-Motion_toPoint(133, 66, 0);
-Motion_toPoint(131, 65, 0);
-Motion_toPoint(130, 64, 0);
-Motion_toPoint(129, 62, 0);
-Motion_toPoint(128, 61, 0);
-Motion_toPoint(126, 60, 0);
-Motion_toPoint(125, 59, 0);
-Motion_toPoint(124, 58, 0);
-Motion_toPoint(122, 57, 0);
-Motion_toPoint(121, 56, 0);
-Motion_toPoint(119, 55, 0);
-Motion_toPoint(118, 54, 0);
-Motion_toPoint(116, 54, 0);
-Motion_toPoint(115, 53, 0);
-Motion_toPoint(113, 52, 0);
-Motion_toPoint(112, 52, 0);
-Motion_toPoint(110, 51, 0);
-Motion_toPoint(109, 51, 0);
-Motion_toPoint(107, 50, 0);
-Motion_toPoint(106, 50, 0);
-Motion_toPoint(104, 50, 0);
-Motion_toPoint(103, 50, 0);
-Motion_toPoint(101, 50, 0);
-Motion_toPoint(100, 50, 0);
-Motion_toPoint(98, 50, 0);
-Motion_toPoint(96, 50, 0);
-Motion_toPoint(95, 50, 0);
-Motion_toPoint(93, 50, 0);
-Motion_toPoint(92, 50, 0);
-Motion_toPoint(90, 51, 0);
-Motion_toPoint(89, 51, 0);
-Motion_toPoint(87, 52, 0);
-Motion_toPoint(86, 52, 0);
-Motion_toPoint(84, 53, 0);
-Motion_toPoint(83, 54, 0);
-Motion_toPoint(81, 54, 0);
-Motion_toPoint(80, 55, 0);
-Motion_toPoint(78, 56, 0);
-Motion_toPoint(77, 57, 0);
-Motion_toPoint(75, 58, 0);
-Motion_toPoint(74, 59, 0);
-Motion_toPoint(73, 60, 0);
-Motion_toPoint(71, 61, 0);
-Motion_toPoint(70, 62, 0);
-Motion_toPoint(69, 64, 0);
-Motion_toPoint(68, 65, 0);
-Motion_toPoint(66, 66, 0);
-Motion_toPoint(65, 68, 0);
-Motion_toPoint(64, 69, 0);
-Motion_toPoint(63, 71, 0);
-Motion_toPoint(62, 73, 0);
-Motion_toPoint(61, 74, 0);
-Motion_toPoint(60, 76, 0);
-Motion_toPoint(59, 78, 0);
-Motion_toPoint(58, 79, 0);
-Motion_toPoint(57, 81, 0);
-Motion_toPoint(56, 83, 0);
-Motion_toPoint(56, 85, 0);
-Motion_toPoint(55, 87, 0);
-Motion_toPoint(54, 89, 0);
-Motion_toPoint(54, 90, 0);
-Motion_toPoint(53, 92, 0);
-Motion_toPoint(52, 94, 0);
-Motion_toPoint(52, 96, 0);
-Motion_toPoint(51, 99, 0);
-Motion_toPoint(51, 101, 0);
-Motion_toPoint(51, 103, 0);
-Motion_toPoint(50, 105, 0);
-Motion_toPoint(50, 107, 0);
-Motion_toPoint(50, 109, 0);
-Motion_toPoint(50, 111, 0);
-Motion_toPoint(50, 113, 0);
-Motion_toPoint(50, 115, 0);
-Motion_toPoint(50, 117, 0);
-Motion_toPoint(50, 120, 0);
-Motion_toPoint(50, 122, 0);
-Motion_toPoint(50, 124, 0);
-Motion_toPoint(50, 126, 0);
-Motion_toPoint(50, 128, 0);
-Motion_toPoint(50, 130, 0);
-Motion_toPoint(51, 132, 0);
-Motion_toPoint(51, 134, 0);
-Motion_toPoint(51, 136, 0);
-Motion_toPoint(52, 139, 0);
-Motion_toPoint(52, 141, 0);
-Motion_toPoint(53, 143, 0);
-Motion_toPoint(54, 145, 0);
-Motion_toPoint(54, 146, 0);
-Motion_toPoint(55, 148, 0);
-Motion_toPoint(56, 150, 0);
-Motion_toPoint(56, 152, 0);
-Motion_toPoint(57, 154, 0);
-Motion_toPoint(58, 156, 0);
-Motion_toPoint(59, 157, 0);
-Motion_toPoint(60, 159, 0);
-Motion_toPoint(61, 161, 0);
-Motion_toPoint(62, 162, 0);
-Motion_toPoint(63, 164, 0);
-Motion_toPoint(64, 166, 0);
-Motion_toPoint(65, 167, 0);
-Motion_toPoint(66, 169, 0);
-Motion_toPoint(68, 170, 0);
-Motion_toPoint(69, 171, 0);
-Motion_toPoint(70, 173, 0);
-Motion_toPoint(71, 174, 0);
-Motion_toPoint(73, 175, 0);
-Motion_toPoint(74, 176, 0);
-Motion_toPoint(75, 177, 0);
-Motion_toPoint(77, 178, 0);
-Motion_toPoint(78, 179, 0);
-Motion_toPoint(80, 180, 0);
-Motion_toPoint(81, 181, 0);
-Motion_toPoint(83, 181, 0);
-Motion_toPoint(84, 182, 0);
-Motion_toPoint(86, 183, 0);
-Motion_toPoint(87, 183, 0);
-Motion_toPoint(89, 184, 0);
-Motion_toPoint(90, 184, 0);
-Motion_toPoint(92, 185, 0);
-Motion_toPoint(93, 185, 0);
-Motion_toPoint(95, 185, 0);
-Motion_toPoint(96, 185, 0);
-Motion_toPoint(98, 185, 0);
+Motion_moveTo(101, 185, 0);
+Motion_moveTo(103, 185, 0);
+Motion_moveTo(104, 185, 0);
+Motion_moveTo(106, 185, 0);
+Motion_moveTo(107, 185, 0);
+Motion_moveTo(109, 184, 0);
+Motion_moveTo(110, 184, 0);
+Motion_moveTo(112, 183, 0);
+Motion_moveTo(113, 183, 0);
+Motion_moveTo(115, 182, 0);
+Motion_moveTo(116, 181, 0);
+Motion_moveTo(118, 181, 0);
+Motion_moveTo(119, 180, 0);
+Motion_moveTo(121, 179, 0);
+Motion_moveTo(122, 178, 0);
+Motion_moveTo(124, 177, 0);
+Motion_moveTo(125, 176, 0);
+Motion_moveTo(126, 175, 0);
+Motion_moveTo(128, 174, 0);
+Motion_moveTo(129, 173, 0);
+Motion_moveTo(130, 171, 0);
+Motion_moveTo(131, 170, 0);
+Motion_moveTo(133, 169, 0);
+Motion_moveTo(134, 167, 0);
+Motion_moveTo(135, 166, 0);
+Motion_moveTo(136, 164, 0);
+Motion_moveTo(137, 162, 0);
+Motion_moveTo(138, 161, 0);
+Motion_moveTo(139, 159, 0);
+Motion_moveTo(140, 157, 0);
+Motion_moveTo(141, 156, 0);
+Motion_moveTo(142, 154, 0);
+Motion_moveTo(143, 152, 0);
+Motion_moveTo(143, 150, 0);
+Motion_moveTo(144, 148, 0);
+Motion_moveTo(145, 146, 0);
+Motion_moveTo(145, 145, 0);
+Motion_moveTo(146, 143, 0);
+Motion_moveTo(147, 141, 0);
+Motion_moveTo(147, 139, 0);
+Motion_moveTo(148, 136, 0);
+Motion_moveTo(148, 134, 0);
+Motion_moveTo(148, 132, 0);
+Motion_moveTo(149, 130, 0);
+Motion_moveTo(149, 128, 0);
+Motion_moveTo(149, 126, 0);
+Motion_moveTo(149, 124, 0);
+Motion_moveTo(149, 122, 0);
+Motion_moveTo(149, 120, 0);
+Motion_moveTo(150, 118, 0);
+Motion_moveTo(149, 115, 0);
+Motion_moveTo(149, 113, 0);
+Motion_moveTo(149, 111, 0);
+Motion_moveTo(149, 109, 0);
+Motion_moveTo(149, 107, 0);
+Motion_moveTo(149, 105, 0);
+Motion_moveTo(148, 103, 0);
+Motion_moveTo(148, 101, 0);
+Motion_moveTo(148, 99, 0);
+Motion_moveTo(147, 96, 0);
+Motion_moveTo(147, 94, 0);
+Motion_moveTo(146, 92, 0);
+Motion_moveTo(145, 90, 0);
+Motion_moveTo(145, 89, 0);
+Motion_moveTo(144, 87, 0);
+Motion_moveTo(143, 85, 0);
+Motion_moveTo(143, 83, 0);
+Motion_moveTo(142, 81, 0);
+Motion_moveTo(141, 79, 0);
+Motion_moveTo(140, 78, 0);
+Motion_moveTo(139, 76, 0);
+Motion_moveTo(138, 74, 0);
+Motion_moveTo(137, 73, 0);
+Motion_moveTo(136, 71, 0);
+Motion_moveTo(135, 69, 0);
+Motion_moveTo(134, 68, 0);
+Motion_moveTo(133, 66, 0);
+Motion_moveTo(131, 65, 0);
+Motion_moveTo(130, 64, 0);
+Motion_moveTo(129, 62, 0);
+Motion_moveTo(128, 61, 0);
+Motion_moveTo(126, 60, 0);
+Motion_moveTo(125, 59, 0);
+Motion_moveTo(124, 58, 0);
+Motion_moveTo(122, 57, 0);
+Motion_moveTo(121, 56, 0);
+Motion_moveTo(119, 55, 0);
+Motion_moveTo(118, 54, 0);
+Motion_moveTo(116, 54, 0);
+Motion_moveTo(115, 53, 0);
+Motion_moveTo(113, 52, 0);
+Motion_moveTo(112, 52, 0);
+Motion_moveTo(110, 51, 0);
+Motion_moveTo(109, 51, 0);
+Motion_moveTo(107, 50, 0);
+Motion_moveTo(106, 50, 0);
+Motion_moveTo(104, 50, 0);
+Motion_moveTo(103, 50, 0);
+Motion_moveTo(101, 50, 0);
+Motion_moveTo(100, 50, 0);
+Motion_moveTo(98, 50, 0);
+Motion_moveTo(96, 50, 0);
+Motion_moveTo(95, 50, 0);
+Motion_moveTo(93, 50, 0);
+Motion_moveTo(92, 50, 0);
+Motion_moveTo(90, 51, 0);
+Motion_moveTo(89, 51, 0);
+Motion_moveTo(87, 52, 0);
+Motion_moveTo(86, 52, 0);
+Motion_moveTo(84, 53, 0);
+Motion_moveTo(83, 54, 0);
+Motion_moveTo(81, 54, 0);
+Motion_moveTo(80, 55, 0);
+Motion_moveTo(78, 56, 0);
+Motion_moveTo(77, 57, 0);
+Motion_moveTo(75, 58, 0);
+Motion_moveTo(74, 59, 0);
+Motion_moveTo(73, 60, 0);
+Motion_moveTo(71, 61, 0);
+Motion_moveTo(70, 62, 0);
+Motion_moveTo(69, 64, 0);
+Motion_moveTo(68, 65, 0);
+Motion_moveTo(66, 66, 0);
+Motion_moveTo(65, 68, 0);
+Motion_moveTo(64, 69, 0);
+Motion_moveTo(63, 71, 0);
+Motion_moveTo(62, 73, 0);
+Motion_moveTo(61, 74, 0);
+Motion_moveTo(60, 76, 0);
+Motion_moveTo(59, 78, 0);
+Motion_moveTo(58, 79, 0);
+Motion_moveTo(57, 81, 0);
+Motion_moveTo(56, 83, 0);
+Motion_moveTo(56, 85, 0);
+Motion_moveTo(55, 87, 0);
+Motion_moveTo(54, 89, 0);
+Motion_moveTo(54, 90, 0);
+Motion_moveTo(53, 92, 0);
+Motion_moveTo(52, 94, 0);
+Motion_moveTo(52, 96, 0);
+Motion_moveTo(51, 99, 0);
+Motion_moveTo(51, 101, 0);
+Motion_moveTo(51, 103, 0);
+Motion_moveTo(50, 105, 0);
+Motion_moveTo(50, 107, 0);
+Motion_moveTo(50, 109, 0);
+Motion_moveTo(50, 111, 0);
+Motion_moveTo(50, 113, 0);
+Motion_moveTo(50, 115, 0);
+Motion_moveTo(50, 117, 0);
+Motion_moveTo(50, 120, 0);
+Motion_moveTo(50, 122, 0);
+Motion_moveTo(50, 124, 0);
+Motion_moveTo(50, 126, 0);
+Motion_moveTo(50, 128, 0);
+Motion_moveTo(50, 130, 0);
+Motion_moveTo(51, 132, 0);
+Motion_moveTo(51, 134, 0);
+Motion_moveTo(51, 136, 0);
+Motion_moveTo(52, 139, 0);
+Motion_moveTo(52, 141, 0);
+Motion_moveTo(53, 143, 0);
+Motion_moveTo(54, 145, 0);
+Motion_moveTo(54, 146, 0);
+Motion_moveTo(55, 148, 0);
+Motion_moveTo(56, 150, 0);
+Motion_moveTo(56, 152, 0);
+Motion_moveTo(57, 154, 0);
+Motion_moveTo(58, 156, 0);
+Motion_moveTo(59, 157, 0);
+Motion_moveTo(60, 159, 0);
+Motion_moveTo(61, 161, 0);
+Motion_moveTo(62, 162, 0);
+Motion_moveTo(63, 164, 0);
+Motion_moveTo(64, 166, 0);
+Motion_moveTo(65, 167, 0);
+Motion_moveTo(66, 169, 0);
+Motion_moveTo(68, 170, 0);
+Motion_moveTo(69, 171, 0);
+Motion_moveTo(70, 173, 0);
+Motion_moveTo(71, 174, 0);
+Motion_moveTo(73, 175, 0);
+Motion_moveTo(74, 176, 0);
+Motion_moveTo(75, 177, 0);
+Motion_moveTo(77, 178, 0);
+Motion_moveTo(78, 179, 0);
+Motion_moveTo(80, 180, 0);
+Motion_moveTo(81, 181, 0);
+Motion_moveTo(83, 181, 0);
+Motion_moveTo(84, 182, 0);
+Motion_moveTo(86, 183, 0);
+Motion_moveTo(87, 183, 0);
+Motion_moveTo(89, 184, 0);
+Motion_moveTo(90, 184, 0);
+Motion_moveTo(92, 185, 0);
+Motion_moveTo(93, 185, 0);
+Motion_moveTo(95, 185, 0);
+Motion_moveTo(96, 185, 0);
+Motion_moveTo(98, 185, 0);
 
 #endif
-    Motion_neutraliseAll();
+    Motion_neutraliseAllAxes();
 }
 
 
-void traceSquareBoundary() {
-    Motion_home();
-    motionPauseDelay();
-
-    Motion_moveAxisToPos(EMPR_X_AXIS, EMPR_X_LIMIT);
-    Motion_moveAxisToPos(EMPR_Y_AXIS, EMPR_Y_LIMIT);
-    Motion_moveAxisToPos(EMPR_X_AXIS, 0);
-    Motion_moveAxisToPos(EMPR_Y_AXIS, 0);
-
-    Motion_neutraliseAll();
-}
-
-
-void demoZAxis() {
-    Motion_home();
-
-    Motion_moveAxisToPos(EMPR_Z_AXIS, 0);
-    Motion_moveAxisToPos(EMPR_Z_AXIS, 500);
-    motionPauseDelay();
-    Motion_moveAxisToPos(EMPR_Z_AXIS, 0);
-
-    Motion_neutraliseAll();
-}
-
-
-void menuOptionDelay() {
+static void motionPauseDelay() {
     int i, j, count = 0;
-    for(i = 0; i < 1000; i++) {
+    for(i = 0; i < 8000; i++) {
         for(j = 0; j < 1000; j++)
             count++;
     }
 }
 
 
-void motionPauseDelay() {
+
+static void traceSquareBoundary() {
+    Motion_home();
+    motionPauseDelay();
+
+    Motion_moveTo(0, 0, 0);
+    Motion_moveTo(0, EMPR_Y_LIMIT, 0);
+    Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
+    Motion_moveTo(EMPR_X_LIMIT, 0, 0);
+
+    Motion_neutraliseAllAxes();
+}
+
+
+static void demoZAxis() {
+    Motion_home();
+
+    Motion_moveTo(0, 0, 500);
+    motionPauseDelay();
+    Motion_moveTo(0, 0, 0);
+
+    Motion_neutraliseAllAxes();
+}
+
+
+static void menuOptionDelay() {
     int i, j, count = 0;
-    for(i = 0; i < 8000; i++) {
+    for(i = 0; i < 1000; i++) {
         for(j = 0; j < 1000; j++)
             count++;
     }

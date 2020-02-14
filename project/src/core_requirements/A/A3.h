@@ -2,6 +2,9 @@
 #define EMPR_REQ_A3_H_
 
 
+static void moveXYWithInputs();
+static void moveXYWithInputs();
+
 void A3();
 
 
