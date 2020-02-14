@@ -142,7 +142,7 @@ clean:
 	@echo Cleaning old..._copy
 	@rm -f `find . | grep \~`
 	@rm -f *.swp *.o */*.o */*/*.o  *.log
-	@rm -f *.d */*.d *.srec */*.a bin/*.map
+	@rm -f *.d */*.d *.srec */*.a bin/*.map build/*.o
 	@rm -f *.elf *.wrn bin/*.bin log *.hex
 	@rm -f $(EXECNAME)
 

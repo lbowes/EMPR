@@ -251,7 +251,6 @@ void Motion_moveTo(int x, int y, int z) {
     clampWithinAxis(&axes[EMPR_Y_AXIS], &y);
     clampWithinAxis(&axes[EMPR_Z_AXIS], &z);
 
-
     while(currentPos.x != x || currentPos.y != y || currentPos.z != z) {
         currentPos = Motion_getCurrentPos();
 
@@ -276,6 +275,8 @@ void Motion_moveTo(int x, int y, int z) {
                 moveAxisToPos(EMPR_Z_AXIS, currentPos.z - 1);
         }
     }
+
+    Motion_neutraliseAll();
 }
 
 

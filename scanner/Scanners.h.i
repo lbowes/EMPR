@@ -9,4 +9,5 @@ void SetupScan();
 void SimpleScan(void);
 void StreamSimpleScan(void);
 void BetterSimpleScan(void);
+void delayScanner (uint8_t ms);
 //void PointScanner(Point points[])

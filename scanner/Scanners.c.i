@@ -5,7 +5,7 @@
 #include "PcSender.h"
 #include "Scanners.h"
 #include "RGBC.h"
-
+#include "mbed/Interrupts.h"
 void SetupScan()
 {
     // Enable text output
@@ -17,10 +17,13 @@ void SetupScan()
     Motion_init();
 }
 
+
+
 // Simple Scan line by line with delay
 void SimpleScan(void)
 {
     SetupScan();
+<<<<<<< HEAD:scanner/Scanners.c.i
 
     //  Setup axis
     // TODO can make more efficient
@@ -32,12 +35,25 @@ void SimpleScan(void)
     while (xAxis->currentPos_steps != 202)
     {
         while (yAxis->currentPos_steps != 202)
+=======
+    uint32_t x = 0;
+    uint32_t y = 0;
+    uint32_t z = 0;
+    RGBC result;
+    while (x < 200)
+    {
+        while (y < 237)
+>>>>>>> 059ef79615ea109312fa59f14a9b0c219330fa8b:scanner/Scanners.c
         {
-            // // Get the updated Axis results
-            xAxis = Motion_getAxis(EMPR_X_AXIS);
-            yAxis = Motion_getAxis(EMPR_Y_AXIS);
-            zAxis = Motion_getAxis(EMPR_Z_AXIS);
+            Motion_toPoint(x, y, z);
+            result = RGBC_SCAN();
+            // PCSender_sendRGBAndPos(x,y,0, result.r, result.g, result.b, result.c);
+            TextOutput_printInteger(y);
+            y += 1;
+        }
+        y = y - 1;
 
+<<<<<<< HEAD:scanner/Scanners.c.i
             // // Get the RGBC scan
             // RGBC result = RGBC_SCAN();
             // // Send to interface
@@ -53,6 +69,24 @@ void SimpleScan(void)
         zAxis = Motion_getAxis(EMPR_Z_AXIS);
         // Move to the next point down
         Motion_moveTo(xAxis->currentPos_steps + 2, 0, zAxis->currentPos_steps);
+=======
+        Motion_toPoint(x, y, z);
+        x += 1;
+        result = RGBC_SCAN();
+        PCSender_sendRGBAndPos(x, y, 0, result.r, result.g, result.b, result.c);
+        while (y > 0)
+        {
+            TextOutput_printInteger(y);
+            Motion_toPoint(x, y, 0);
+            result = RGBC_SCAN();
+            PCSender_sendRGBAndPos(x, y, 0, result.r, result.g, result.b, result.c);
+            y -= 1;
+        }
+        Motion_toPoint(x, y, 0);
+        result = RGBC_SCAN();
+        PCSender_sendRGBAndPos(x, y, 0, result.r, result.g, result.b, result.c);
+        x += 1;
+>>>>>>> 059ef79615ea109312fa59f14a9b0c219330fa8b:scanner/Scanners.c
     }
 }
 
@@ -63,9 +97,9 @@ void StreamSimpleScan(void)
 
     //  Setup axis
     // TODO can make more efficient
-    Axis* xAxis = Motion_getAxis(EMPR_X_AXIS);
-    Axis* yAxis = Motion_getAxis(EMPR_Y_AXIS);
-    Axis* zAxis = Motion_getAxis(EMPR_Z_AXIS);
+    Axis *xAxis = Motion_getAxis(EMPR_X_AXIS);
+    Axis *yAxis = Motion_getAxis(EMPR_Y_AXIS);
+    Axis *zAxis = Motion_getAxis(EMPR_Z_AXIS);
 
     // Todo refer to xAxis.max & yAxis
     while (xAxis->currentPos_steps != 202)
@@ -100,9 +134,9 @@ void BetterSimpleScan(void)
 
     //  Setup axis
     // TODO can make more efficient
-    Axis* xAxis = Motion_getAxis(EMPR_X_AXIS);
-    Axis* yAxis = Motion_getAxis(EMPR_Y_AXIS);
-    Axis* zAxis = Motion_getAxis(EMPR_Z_AXIS);
+    Axis *xAxis = Motion_getAxis(EMPR_X_AXIS);
+    Axis *yAxis = Motion_getAxis(EMPR_Y_AXIS);
+    Axis *zAxis = Motion_getAxis(EMPR_Z_AXIS);
     int backwards = 0;
     // Todo refer to xAxis.max & yAxis
     while (xAxis->currentPos_steps != 202)
