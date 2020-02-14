@@ -1,7 +1,9 @@
 #include "scanner/Scanners.h"
+#include "mbed/LCDDisplay.h"
 int main() {
     SimpleScan();
-    Motion_neutraliseAll();
+    // DelayScanTestSettings();
+    // Motion_neutraliseAll();
     
     return 0;
 }
