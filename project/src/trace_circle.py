@@ -8,7 +8,7 @@ def main():
     lastY = 0
 
     roundCircle = 0.0
-    padding = 50
+    padding = 80
     steps = 200
 
     for i in range(steps):

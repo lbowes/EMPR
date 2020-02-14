@@ -5,6 +5,7 @@
 #include <mbed/Constants.h>
 #include <mbed/TextOutput.h>
 #include <mbed/LEDs.h>
+#include <mbed/Delay.h>
 
 #include <stdbool.h>
 
@@ -275,8 +276,6 @@ void Motion_moveTo(int x, int y, int z) {
                 moveAxisToPos(EMPR_Z_AXIS, currentPos.z - 1);
         }
     }
-
-    Motion_neutraliseAll();
 }
 
 

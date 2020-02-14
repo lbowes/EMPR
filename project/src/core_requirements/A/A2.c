@@ -61,13 +61,6 @@ static void exploreEdgeBoundaries() {
 static void displayBoundsOnLCD() {
     LCDDisplay_init();
 
-    char xBoundary[16];
-    sprintf(xBoundary, "X: [0, %i]", EMPR_X_LIMIT);
-    LCDDisplay_print(xBoundary, LINE_1);
-
-    char yBoundary[16];
-    sprintf(yBoundary, "Y: [0, %i]", EMPR_Y_LIMIT);
-    LCDDisplay_print(yBoundary, LINE_2);
 }
 
 
