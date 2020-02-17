@@ -14,7 +14,16 @@ def write_screen(line):
 
 
 
+
+def read_RGB():
+    readline=serialLine.readline().decode("utf-8")
+    print(readline)
+
+
+
+
 def move_to_coords(coord):
+    return 0
     
 
 
@@ -46,7 +55,7 @@ def send_command_relative(coord):
 
     
 ser = serial.Serial('/dev/ttyACM0')
-ay = 'woah'
+
 
 
     

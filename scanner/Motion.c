@@ -1,5 +1,6 @@
 #include "Motion.h"
 #include "LimitSwitch.h"
+#include "Vector3D.h"
 
 #include <mbed/I2C.h>
 #include <mbed/Constants.h>

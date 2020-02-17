@@ -7,6 +7,7 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "lpc17xx_uart.h"
+#include "Vector3D.h"
 #include "lpc17xx_pinsel.h"
 
 #include <stdio.h>
@@ -22,59 +23,38 @@
 int len;
 uint8_t command[6];
 
+char buffer[20];
 
-int z_axis = 0;
-int y_axis = 0;
-int x_axis = 0;
-
-int x = 0;
-int y = 1;
-int z = 2;
 
 int scale = 5;
 
-Axis* coord ;
+Vector3D location ;
 
 
 
 
 
 void move_x(int change){
-
-    coord = Motion_getAxis(x);
-
-        change = change + coord->currentStepPos;
-        if (change < 0){
-            change = 0;
-        }
-        Motion_moveAxisToPos(x, change);
-
+    Motion_moveBy(change, 0, 0);
+    location = Motion_getCurrentPos() ; 
+    sprintf(buffer,"%d   %d", location.x, location.y);
+    LCDDisplay_print(buffer, 0);
 }
 
-
 void move_y(int change){
-
-    coord = Motion_getAxis(y);
-
-        change = change + coord->currentStepPos;
-        if (change < 0){
-            change = 0;
-        }
-        Motion_moveAxisToPos(y, change);
+    Motion_moveBy(0, change, 0);
+    location = Motion_getCurrentPos() ; 
+    sprintf(buffer,"%d   %d", location.x, location.y);
+    LCDDisplay_print(buffer, 0);
    
 }
 
 void move_z(int change){
- 
-
-    coord = Motion_getAxis(z);
-    change = change + coord->currentStepPos;
-    if (change < 0){
-            change = 0;
-        }
-    Motion_moveAxisToPos(z, change);
-    
-
+    Motion_moveBy(0, 0, change);
+    location = Motion_getCurrentPos() ; 
+    sprintf(buffer,"%d", location.z);
+    LCDDisplay_print(buffer, 1);
+}
 
 
 
@@ -105,7 +85,7 @@ void manual_start(void){
         } 
 
         if (neut_count == 1500) {
-            Motion_neutraliseAll();
+            Motion_neutraliseAllAxes();
             neut_count = 0;
         }
         
@@ -124,7 +104,7 @@ void UART_control_start(void){
     NVIC_EnableIRQ(UART0_IRQn);
     set_values(0,0,0,0,0,0);
     Motion_home();
-    Motion_neutraliseAll();
+    Motion_neutraliseAllAxes();
 }
 
 
@@ -163,7 +143,8 @@ void UART0_IRQHandler(void){
         }
         move_z(command[5]);
     }
-    Motion_neutraliseAll();
+
+    Motion_neutraliseAllAxes();
     NVIC_EnableIRQ(UART0_IRQn);
 
 
