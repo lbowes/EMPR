@@ -1,5 +1,5 @@
 #include <stdint.h>
-typedef struct point {
+typedef struct point{
     uint16_t x;
     uint16_t y;
     uint16_t z;

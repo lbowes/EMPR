@@ -5,6 +5,7 @@ import pygame
 import serial
 from collections import namedtuple
 from configparser import *
+import datetime
 from  Pixel import Pixel
 
 # Todo remove me
@@ -31,6 +32,7 @@ if __name__ == "__main__":
         _height = config_parser.getint('settings', 'height')
         _width = config_parser.getint('settings', 'width')
         _port = config_parser.get('settings', 'port')
+        saveImage = config_parser.getboolean('settings', 'saveImage')
         centerImage = config_parser.getboolean('settings','centerImage')
     except Exception:
         print("There is an issue with the config file please make sure you have all the settings required.")
@@ -63,9 +65,15 @@ if __name__ == "__main__":
     
 
 
+    #Scan Settings
+    settings=[]
+
     #image array
     imageArray=[]
     
+    #filename
+    filename=""
+
     # Serial line
     serialLine = serial.Serial(_port)
 
@@ -88,19 +96,19 @@ if __name__ == "__main__":
             
             if "Debug" in readline:
                 print(re.sub('Debug:','',readline))
+            if "Start Scan:" in readline:
+                settings= readline
+                imageArray=[]
+                filename=str(datetime.date.today()) + re.sub()
+            if "End Scan" in readline and saveImage:
+
             else:
                 x,y,z,r,g,b,c=map(int,readline.split())
-                # r = int(r)
-                # g= int(g)
-                # b= int(b)
-                # x= int(x)
-                # y= int(y)
-                # z = int(z)
                 total = r+g+b # try total=c at some point
                 r = int((int(r) / int(total))*255)
                 g = int((int(g) / int(total))*255)
                 b = int((int(b) / int(total))*255)
-                print(x,y,z,r,g,b,total)
+                # print(x,y,z,r,g,b,total)
 
                 # x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
                 #Hack z is always 1 for this 2D scanner
