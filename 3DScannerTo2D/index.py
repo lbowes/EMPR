@@ -99,10 +99,10 @@ if __name__ == "__main__":
                 # x= int(x)
                 # y= int(y)
                 # z = int(z)
-                total = r+g+b+c # try total=c at some point
-                r = min(int((int(r) / int(total))*255)*3,255)
-                g = min(int((int(g) / int(total))*255)*3,255)
-                b = min(int((int(b) / int(total))*255)*3,255)
+                total = c # try total=c at some point
+                r = min(int((int(r) / int(total))*255),255)
+                g = min(int((int(g) / int(total))*255),255)
+                b = min(int((int(b) / int(total))*255),255)
                 # r=r
                 # g=int(g)
                 # b= int (b)

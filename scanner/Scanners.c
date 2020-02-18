@@ -22,8 +22,9 @@ void SetupScan()
 void MoveAndWaitAndSend(uint8_t x,uint8_t y,uint8_t z,uint8_t delayMs)
 {
     Motion_toPoint(x, y, z);
-    RGBC result = RGBC_SCAN();
     Delay_ms(delayMs);
+    RGBC result = RGBC_SCAN();
+
     PCSender_sendRGBAndPos(x, y, z, result.r, result.g, result.b, result.c);
 }
 
@@ -38,18 +39,18 @@ void DelayScanTestSettings()
     i2c_send_data(RGBC_I2C_SENSOR_ADDRESS,aTimeTx, sizeof(aTimeTx));
 
     uint32_t amountOfDelay = 3 * (abs(0xFF-delayState)+1);
-    uint32_t x = 100;
-    uint32_t y = 45;
+    uint32_t x = 0;
+    uint32_t y = 0;
     uint32_t z = 0;
-    TextOutput_println("New Scan");
-    TextOutput_printInteger(delayState);
-    TextOutput_println("Time Start");
-    RTC_TIME_Type time = Real_Time_Clock_Get_Time();
-    TextOutput_printInteger(time.HOUR);
-    TextOutput_printInteger(time.MIN);
-    TextOutput_printInteger(time.SEC);
+    // TextOutput_println("New Scan");
+    // TextOutput_printInteger(delayState);
+    // TextOutput_println("Time Start");
+    // RTC_TIME_Type time = Real_Time_Clock_Get_Time();
+    // TextOutput_printInteger(time.HOUR);
+    // TextOutput_printInteger(time.MIN);
+    // TextOutput_printInteger(time.SEC);
     TextOutput_println("Output");
-    while (y < 150)
+    while (y < 200)
     {
         while (x < 200)
         {
@@ -59,7 +60,7 @@ void DelayScanTestSettings()
         MoveAndWaitAndSend(x,y,z,amountOfDelay);
         y += 1;
 
-        while (x > 100)
+        while (x > 0)
         {
             MoveAndWaitAndSend(x,y,z,amountOfDelay);
             x -= 1;
@@ -68,12 +69,12 @@ void DelayScanTestSettings()
         y += 1;
     }
     delayState-=1;
-    TextOutput_println("End");
-    TextOutput_println("Time End");
-    time = Real_Time_Clock_Get_Time();
-    TextOutput_printInteger(time.HOUR);
-    TextOutput_printInteger(time.MIN);
-    TextOutput_printInteger(time.SEC);
+    // TextOutput_println("End");
+    // TextOutput_println("Time End");
+    // time = Real_Time_Clock_Get_Time();
+    // TextOutput_printInteger(time.HOUR);
+    // TextOutput_printInteger(time.MIN);
+    // TextOutput_printInteger(time.SEC);
     Motion_neutraliseAll();
     Delay_ms(15000);
     }

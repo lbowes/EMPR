@@ -1,9 +1,14 @@
+/***********************************************************************/
+#include <stdbool.h>
+#include <stdio.h>
+#include "mbed/TextOutput.h"
+#include "mbed/Interrupts.h"
+#include "mbed/LEDs.h"
+#include "mbed/Delay.h"
 #include "scanner/Scanners.h"
-#include "mbed/LCDDisplay.h"
-int main() {
-    SimpleScan();
-    // DelayScanTestSettings();
-    // Motion_neutraliseAll();
-    
-    return 0;
+#include "scanner/Motion.h"
+
+int main(void) {
+DelayScanTestSettings();
+return 0;
 }
