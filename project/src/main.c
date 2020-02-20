@@ -14,6 +14,8 @@
 #include "mbed/LCDDisplay.h"
 #include "scanner/manual.h"
 
+#include "scanner/UART_movement.h"
+
 // int len;
 // uint8_t command[3];
 // uint32_t val = 0;
@@ -32,8 +34,8 @@ void main(void)
     // NVIC_EnableIRQ(UART0_IRQn);
     // set_values(0,0,0,0,0,0);
 
-    //UART_control_start();
-    manual_start();
+    UART_control_start();
+    //manual_start();
 
 }
     

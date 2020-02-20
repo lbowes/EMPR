@@ -1,14 +1,34 @@
-#include "D2.h"
+#include <mbed/Constants.h>
+#include "Motion.h"
+#include "RGBC.h"
+#include "PcSender.h"
+
+#include "stdbool.h"
+#include "stdio.h"
+#include "lpc17xx_uart.h"
+#include "Vector3D.h"
+#include "lpc17xx_pinsel.h"
 
 
-/*
- * PC Move and Measure:
- * The PC will be able to send commands to MBED to move axes, and then receive
- * a color data measurement from the new location.
- * • Minimum requirement is for a 16x16 grid resolution.
- * • Color data should be displayed as RGB values on the PC.
-*/
-void D2() {
+
+#include "mbed/Serial.h"
+#include "mbed/7Seg.h"
+#include "mbed/I2C.h"
+#include "mbed/LCDDisplay.h"
+#include "mbed/TextOutput.h"
+
+#include "UART_movement.h"
+
+
+
+uint8_t command[2];
+
+Vector3D location ;
+
+RGBC scan_vals;
+
+
+void UART_control_start(void){
     RGBC_init();
     Motion_init();
     i2c_init();
@@ -19,10 +39,20 @@ void D2() {
     Motion_neutraliseAllAxes();
 }
 
+
+
+
+
 void move(int x, int y){
     Motion_moveTo(x,y,0);
 
 }
+
+
+
+
+
+
 
 
 void UART0_IRQHandler(void){

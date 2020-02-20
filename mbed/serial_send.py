@@ -2,33 +2,59 @@ import serial
 import struct
 
 import time
-def write_screen(line):
-    if len(line) > 16:
-        print('16 or less only, champ')
-        return
-    if len(line)<16 :
-        linee = line
-        for i in range(0, 16-len(line)):
-            linee += ' '
-    ser.write(linee.encode())
+
 
 
 
 
 def read_RGB():
-    readline=serialLine.readline().decode("utf-8")
-    print(readline)
+    run  = True
+    while run:
+        try:
+            readline= ser.readline().decode("utf-8")
+            if readline != 'start' and readline != 'running':
+                readline = readline[6:]
+                readline = readline.split(' ')
+                print("R" + readline[0])
+                print("G" + readline[1])
+                print("B" + readline[2])
+                print("C" + readline[3])                
+                run = False
+        except:
+            pass
 
 
 
 
 def move_to_coords(coord):
-    return 0
     
+    values = []
+    separated_coords = coord.split(',')
+
+    for index in range (0,2):
+        try:
+            sent_val = int (separated_coords[index])
+        except ValueError:
+            print("numbers only you monster")
+            return 
+        
+        if sent_val > 200:
+            sent_val = 200
+        elif sent_val < 0:
+            sent_val = 0
+        
+        values.append(sent_val) 
+
+    string = b''
+
+    for i in values:
+        string += struct.pack('!B',i)
+
+    ser.write(string)
 
 
 
-
+#not used, reference only
 def send_command_relative(coord):
     values = []
     separated_coords = coord.split(',')
@@ -40,9 +66,8 @@ def send_command_relative(coord):
             sent_val = 255
         elif sent_val < -255:
             sent_val = -255
-        print(sent_val)
         values.append(sent_val) 
-    print(values)
+
     string = b''
     for i in values:
         if  i < 0:
@@ -59,13 +84,14 @@ ser = serial.Serial('/dev/ttyACM0')
 
 
     
-
+ay = "aha"
 
 
 while ay != 'stop':
     ay = input()
     if ay != 'stop':
-        send_command(ay)
+        move_to_coords(ay)
+        read_RGB()
         
 #write_screen(ay)
 
