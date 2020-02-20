@@ -5,6 +5,7 @@ import pygame
 import serial
 from collections import namedtuple
 from configparser import *
+import datetime
 from  Pixel import Pixel
 
 # Todo remove me
@@ -31,6 +32,7 @@ if __name__ == "__main__":
         _height = config_parser.getint('settings', 'height')
         _width = config_parser.getint('settings', 'width')
         _port = config_parser.get('settings', 'port')
+        saveImage = config_parser.getboolean('settings', 'saveImage')
         _speed = config_parser.get('settings', 'speed')
         centerImage = config_parser.getboolean('settings','centerImage')
     except Exception:
@@ -64,9 +66,15 @@ if __name__ == "__main__":
     
 
 
+    #Scan Settings
+    settings=[]
+
     #image array
     imageArray=[]
     
+    #filename
+    filename=""
+
     # Serial line
     serialLine = serial.Serial(_port,baudrate=_speed)
 
@@ -100,6 +108,12 @@ if __name__ == "__main__":
             
             if "Debug" in readline:
                 print(re.sub('Debug:','',readline))
+            if "Start Scan:" in readline:
+                settings= readline
+                imageArray=[]
+                filename=str(datetime.date.today()) + re.sub()
+            if "End Scan" in readline and saveImage:
+                pass
             else:
                 # print(readline)
                 x,y,z,r,g,b,c=map(int,readline.split())
