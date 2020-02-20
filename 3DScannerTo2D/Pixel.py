@@ -3,10 +3,12 @@ class Pixel:
         self.x, self.y, self.z, self.r, self.g, self.b = x, y, z, r, g, b
 
     def updateAndAverage(self, r: int, g: int, b: int):
-        self.r = int((self.r + r)/2)
-        self.g = int((self.g + g) / 2)
-        self.b = int((self.b + b) / 2)
-
+        # self.r = int((self.r + r)/2)
+        # self.g = int((self.g + g) / 2)
+        # self.b = int((self.b + b) / 2)
+        self.r=r
+        self.g=g
+        self.b=b
     def getRGB(self) -> tuple:
         return (self.r,self.g,self.b)
 

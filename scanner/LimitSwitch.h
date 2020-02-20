@@ -13,4 +13,4 @@ typedef struct {
 bool LimitSwitch_isDown(LimitSwitch* lSwitch);
 
 
-#endif
+#endif // EMPR_LIMIT_SWITCH_

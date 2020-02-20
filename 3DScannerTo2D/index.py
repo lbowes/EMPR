@@ -33,6 +33,7 @@ if __name__ == "__main__":
         _width = config_parser.getint('settings', 'width')
         _port = config_parser.get('settings', 'port')
         saveImage = config_parser.getboolean('settings', 'saveImage')
+        _speed = config_parser.get('settings', 'speed')
         centerImage = config_parser.getboolean('settings','centerImage')
     except Exception:
         print("There is an issue with the config file please make sure you have all the settings required.")
@@ -75,7 +76,7 @@ if __name__ == "__main__":
     filename=""
 
     # Serial line
-    serialLine = serial.Serial(_port)
+    serialLine = serial.Serial(_port,baudrate=_speed)
 
     # Running?
     Running=True
@@ -86,13 +87,24 @@ if __name__ == "__main__":
     # -------- End Setup -------- #
     while Running:
         # Clear the screen
-        surface.fill((0,0,0))
+
+        # temp
+        try:
+            readline=serialLine.readline().decode("utf-8")
+            x,y,z,r,g,b,c=map(int,readline.split())
+            surface.fill((r,g,b))
+            pygame.display.update()
+        except:
+            pass
+        continue
+        # temp
 
         # Todo remove me Emulate  serial input
         # print(serialLine.readline().decode("utf-8").split())
         try:
 
             readline=serialLine.readline().decode("utf-8")
+            # print(readline)
             
             if "Debug" in readline:
                 print(re.sub('Debug:','',readline))
@@ -101,13 +113,20 @@ if __name__ == "__main__":
                 imageArray=[]
                 filename=str(datetime.date.today()) + re.sub()
             if "End Scan" in readline and saveImage:
-
+                pass
             else:
+                # print(readline)
                 x,y,z,r,g,b,c=map(int,readline.split())
-                total = r+g+b # try total=c at some point
-                r = int((int(r) / int(total))*255)
-                g = int((int(g) / int(total))*255)
-                b = int((int(b) / int(total))*255)
+                # r = int(r)
+                # g= int(g)
+                # b= int(b)
+                # x= int(x)
+                # y= int(y)
+                # z = int(z)
+                # total = r+g+b # try total=c at some point
+                # r = int((int(r) / int(total))*255)
+                # g = int((int(g) / int(total))*255)
+                # b = int((int(b) / int(total))*255)
                 # print(x,y,z,r,g,b,total)
 
                 # x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
@@ -128,8 +147,8 @@ if __name__ == "__main__":
 
                 # Calculate the max size of all the pixels
                 maxPixelSize=int(min(Window['height']/(maxPixelY+1),Window['width']/(maxPixelX+1)))
-                if (maxPixelSize==0):
-                    raise Exception("You have run out of Pixels, now you need to consider subsampling or making your res higher")
+                # if (maxPixelSize==0):
+                #     raise Exception("You have run out of Pixels, now you need to consider subsampling or making your res higher")
                 # If center image calculate offsets
                 if centerImage:
                     xOffset = int((Window['width']-((maxPixelX+1)*maxPixelSize))/2)
