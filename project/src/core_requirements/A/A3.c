@@ -1,6 +1,9 @@
 #include "A3.h"
 
 
+static void moveXYWithInputs();
+
+
 /*
  * 'Manual Move Mode,' : the user should be able to use the keypad or another
  * input device to move all three axes back and forth, whilst the position of each axis
@@ -10,5 +13,10 @@
  * • Response times should be fast enough for reasonable user interaction.
 */
 void A3() {
+    
+}
 
+
+static void moveXYWithInputs() {
+    // TODO:
 }

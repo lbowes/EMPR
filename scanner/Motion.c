@@ -125,12 +125,12 @@ static void moveAxisToLimit(uint8_t axis) {
             stepBackwards(axis, 1);
     }
     else {
-        TextOutput_println("start");
+        // TextOutput_println("start");
         while(!LimitSwitch_isDown(lSwitch)) {
             stepBackwards(axis, 1);
-            TextOutput_println("running");
+            // TextOutput_println("running");
         }
-        TextOutput_println("end");
+        // TextOutput_println("end");
 
         while(LimitSwitch_isDown(lSwitch))
             stepForwards(axis, 1);
@@ -187,6 +187,7 @@ static void applySubStepPatternToMotor(uint8_t subStepPatternNibble, uint8_t exi
     uint8_t newByteContents = (subStepPatternNibble << motor->nibble * 4) | (existingByteContents & (0x0f << (1 - motor->nibble) * 4));
     i2c_send_data(motor->deviceAddress, &newByteContents, 1);
     substepDelay();
+    //Delay_ms(16);
 }
 
 

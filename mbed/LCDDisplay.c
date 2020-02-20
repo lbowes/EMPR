@@ -35,8 +35,8 @@ void LCDDisplay_init(void)
     i2c_send_data(LCD_I2C_ADDRESS, initWrite, sizeof(initWrite));
     i2c_send_data(LCD_I2C_ADDRESS, cursor, sizeof(cursor));
 
-    LCDDisplay_clear(LINE_1);
-    LCDDisplay_clear(LINE_2);
+    LCDDisplay_clear(EMPR_LINE_1);
+    LCDDisplay_clear(EMPR_LINE_2);
 }
 
 int LCDDisplay_progress_bar(unsigned int line_number, unsigned int progress)
@@ -59,13 +59,13 @@ void LCDDisplay_clear(unsigned int line_number)
     // To clear a line number then we will write blanks
     uint8_t clear[] = {0x40, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0};
 
-    if (LINE_1 == line_number)
+    if (EMPR_LINE_1 == line_number)
     {
         i2c_send_data(LCD_I2C_ADDRESS, line_1, sizeof(line_1));
         i2c_send_data(LCD_I2C_ADDRESS, clear, sizeof(clear));
         i2c_send_data(LCD_I2C_ADDRESS, line_1, sizeof(line_1));
     }
-    else if (LINE_2 == line_number)
+    else if (EMPR_LINE_2 == line_number)
     {
         i2c_send_data(LCD_I2C_ADDRESS, line_2, sizeof(line_2));
         i2c_send_data(LCD_I2C_ADDRESS, clear, sizeof(clear));
@@ -80,7 +80,7 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
     message_size = strlen(msg);
     // Lets perform some checks
     // If line_number is not 1 or 0 we will return -1 to show an error
-    if (line_number != LINE_1 && line_number != LINE_2)
+    if (line_number != EMPR_LINE_1 && line_number != EMPR_LINE_2)
     {
         return -1;
     }
@@ -131,14 +131,14 @@ int LCDDisplay_print(const char *msg, unsigned int line_number)
         message[index + 1] = character;
     }
 
-    if (line_number == LINE_1)
+    if (line_number == EMPR_LINE_1)
     {
-        LCDDisplay_clear(LINE_1);
+        LCDDisplay_clear(EMPR_LINE_1);
         i2c_send_data(LCD_I2C_ADDRESS, line_1, sizeof(line_1));
     }
-    else if (line_number == LINE_2)
+    else if (line_number == EMPR_LINE_2)
     {
-        LCDDisplay_clear(LINE_2);
+        LCDDisplay_clear(EMPR_LINE_2);
         i2c_send_data(LCD_I2C_ADDRESS, line_2, sizeof(line_2));
     }
     i2c_send_data(LCD_I2C_ADDRESS, message, sizeof(message));

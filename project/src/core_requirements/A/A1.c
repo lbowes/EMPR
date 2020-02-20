@@ -1,81 +1,19 @@
 #include "A1.h"
+#include "../MenuUtils.h"
 
 #include <mbed/Keypad.h>
 #include <mbed/TextOutput.h>
 #include <mbed/I2C.h>
+#include <mbed/Delay.h>
 #include <scanner/Motion.h>
 #include <scanner/Vector3D.h>
 
 #include <math.h>
 
 
-static void motionPauseDelay() {
-    int i, j, count = 0;
-    for(i = 0; i < 8000; i++) {
-        for(j = 0; j < 1000; j++)
-            count++;
-    }
-}
-
-
-static void drawFullSizeCircle() {
-    Motion_home();
-
-    Vector3D pos;
-    Vector3D lastPos;
-
-    float roundCircle = 0.0f;
-    const uint16_t steps = 500;
-    const uint16_t padding = 80;
-
-    uint16_t i = 0;
-    for(i = 0; i < steps; i++) {
-        float sinVal = sin(i / (float)steps * 2 * M_PI);
-        float cosVal = cos(i / (float)steps * 2 * M_PI);
-
-        pos.x = padding + (sinVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
-        pos.y = padding + (cosVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
-
-        Motion_moveTo(pos.x, pos.y, 0);
-
-        lastPos = pos;
-    }
-
-    Motion_neutraliseAllAxes();
-}
-
-
-static void traceSquareBoundary() {
-    Motion_home();
-    motionPauseDelay();
-
-    Motion_moveTo(0, 0, 0);
-    Motion_moveTo(0, EMPR_Y_LIMIT, 0);
-    Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
-    Motion_moveTo(EMPR_X_LIMIT, 0, 0);
-
-    Motion_neutraliseAllAxes();
-}
-
-
-static void demoZAxis() {
-    Motion_home();
-
-    Motion_moveTo(0, 0, 500);
-    motionPauseDelay();
-    Motion_moveTo(0, 0, 0);
-
-    Motion_neutraliseAllAxes();
-}
-
-
-static void menuOptionDelay() {
-    int i, j, count = 0;
-    for(i = 0; i < 1000; i++) {
-        for(j = 0; j < 1000; j++)
-            count++;
-    }
-}
+static void traceFullSizeCircle();
+static void traceSquareBoundary();
+static void demoZAxis();
 
 
 /*
@@ -102,7 +40,7 @@ void A1() {
     typedef void (*func)(void);
 
     func requirementDemos[3] = {
-        &drawFullSizeCircle,
+        &traceFullSizeCircle,
         &traceSquareBoundary,
         &demoZAxis
     };
@@ -113,34 +51,94 @@ void A1() {
         "3. Demo Z axis"
     };
 
-    int activeReqIdx = 0;
+    int selectedFunctionIdx = 0;
 
     while(1) {
-        LCDDisplay_print(menuLabels[activeReqIdx], LINE_1);
-        LCDDisplay_print("<[1]        [4]>", LINE_2);
+        LCDDisplay_print(menuLabels[selectedFunctionIdx], EMPR_LINE_1);
+        LCDDisplay_print("<[1]        [4]>", EMPR_LINE_2);
 
         // Execute test shown
         if(Keypad_isKeyDown(EMPR_KEY_HASH))
-            requirementDemos[activeReqIdx]();
+            requirementDemos[selectedFunctionIdx]();
 
         // Shift menu up
         if(Keypad_isKeyDown(EMPR_KEY_1)) {
-            activeReqIdx--;
-            if(activeReqIdx < 0)
-                activeReqIdx = 2;
+            selectedFunctionIdx--;
+            if(selectedFunctionIdx < 0)
+                selectedFunctionIdx = 2;
         }
 
         // Shift menu down
         if(Keypad_isKeyDown(EMPR_KEY_4)) {
-            activeReqIdx++;
-            if(activeReqIdx > 2)
-                activeReqIdx = 0;
+            selectedFunctionIdx++;
+            if(selectedFunctionIdx > 2)
+                selectedFunctionIdx = 0;
         }
 
-        // Move on to A2
+        // Move on to next requirement
         if(Keypad_isKeyDown(EMPR_KEY_ASTERISK))
-            return;
+            break;
 
-        menuOptionDelay();
+        MenuUtils_selectionLoopDelay();
     }
+}
+
+
+static void traceFullSizeCircle() {
+    Motion_home();
+
+    Vector3D pos;
+    Vector3D lastPos;
+
+    float roundCircle = 0.0f;
+    const uint16_t steps = 500;
+    const uint16_t padding = 0;
+
+    uint16_t i = 0;
+    for(i = 0; i < steps; i++) {
+        float sinVal = sin(i / (float)steps * 2 * M_PI);
+        float cosVal = cos(i / (float)steps * 2 * M_PI);
+
+        pos.x = padding + (sinVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
+        pos.y = padding + (cosVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
+
+        Motion_moveTo(pos.x, pos.y, 0);
+
+        lastPos = pos;
+    }
+
+    Motion_neutraliseAllAxes();
+}
+
+
+static void traceSquareBoundary() {
+    // TODO: This function is not technically correct
+
+    // The requirement states:
+    //    The X-Y functional test will include scan patterns:
+    //    • (b) A square at the __boundaries of the platform__
+
+    // If there's time, the scan head should trace the platform boundaries, rather
+    // the limits of each axis. Quite similar to requirement A2.
+
+    Motion_home();
+    Delay_ms(1000);
+
+    Motion_moveTo(0, 0, 0);
+    Motion_moveTo(0, EMPR_Y_LIMIT, 0);
+    Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
+    Motion_moveTo(EMPR_X_LIMIT, 0, 0);
+
+    Motion_neutraliseAllAxes();
+}
+
+
+static void demoZAxis() {
+    Motion_home();
+
+    Motion_moveTo(0, 0, 500);
+    Delay_ms(1000);
+    Motion_moveTo(0, 0, 0);
+
+    Motion_neutraliseAllAxes();
 }
