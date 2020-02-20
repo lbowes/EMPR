@@ -4,6 +4,7 @@
 #include <mbed/Keypad.h>
 #include <mbed/TextOutput.h>
 #include <mbed/I2C.h>
+#include <mbed/Delay.h>
 #include <scanner/Motion.h>
 #include <scanner/Vector3D.h>
 
@@ -12,7 +13,6 @@
 
 static void traceFullSizeCircle();
 static void traceSquareBoundary();
-static void motionPauseDelay();
 static void demoZAxis();
 
 
@@ -122,7 +122,7 @@ static void traceSquareBoundary() {
     // the limits of each axis. Quite similar to requirement A2.
 
     Motion_home();
-    motionPauseDelay();
+    Delay_ms(1000);
 
     Motion_moveTo(0, 0, 0);
     Motion_moveTo(0, EMPR_Y_LIMIT, 0);
@@ -137,17 +137,8 @@ static void demoZAxis() {
     Motion_home();
 
     Motion_moveTo(0, 0, 500);
-    motionPauseDelay();
+    Delay_ms(1000);
     Motion_moveTo(0, 0, 0);
 
     Motion_neutraliseAllAxes();
-}
-
-
-static void motionPauseDelay() {
-    int i, j, count = 0;
-    for(i = 0; i < 1000; i++) {
-        for(j = 0; j < 1000; j++)
-            count++;
-    }
 }

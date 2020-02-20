@@ -35,7 +35,7 @@ static void Delay_ms() { }
 #define TCS34725_BDATAL      (0x1A)
 #define TCS34725_BDATAH      (0x1B)
 
-#define MAX_COLOUR_VALUE     10240
+#define MAX_COLOUR_VALUE     20480
 
 /** Integration time settings for TCS34725 */
 typedef enum {
@@ -71,6 +71,10 @@ void ColourSensor_init() {
 
     initIntegrationTime();
     initGain();
+
+    // TODO: Check that this is working correctly WLONG
+    write8(0x0D, 0x00);
+    //
 
     enable();
 }
@@ -109,7 +113,7 @@ static void enable() {
 static void integrationDelay() {
     switch (sIntegrationTime) {
     case TCS34725_INTEGRATIONTIME_2_4MS:
-        Delay_ms(3);
+        Delay_ms(8);
         break;
     case TCS34725_INTEGRATIONTIME_24MS:
         Delay_ms(24);
@@ -183,6 +187,7 @@ static void postProcess(Colour* rawData) {
     rawData->g = g;
     rawData->b = b;
 }
+
 
 static uint16_t read16(uint8_t reg) {
     uint8_t writeData = TCS34725_COMMAND_BIT | reg;

@@ -1,25 +1,19 @@
-#include "mbed/I2C.h"
-#include "mbed/TextOutput.h"
-
 #include "Motion.h"
 #include "PcSender.h"
 #include "Scanners.h"
-// #include "RGBC.h"
-#include "mbed/Interrupts.h"
-#include "scanner/ColourSensor.h"
+
+#include <mbed/I2C.h>
+#include <mbed/TextOutput.h>
+#include <mbed/Interrupts.h>
+#include <scanner/ColourSensor.h>
 
 
 void SetupScan()
 {
-    // Enable text output
     TextOutput_init();
-    // Enable RGBC
     ColourSensor_init();
-
-    // Go home
     Motion_init();
 }
-
 
 
 // Simple Scan line by line with delay
@@ -36,7 +30,7 @@ void SimpleScan(void)
         {
             Motion_moveTo(x, y, z);
             result = ColourSensor_read();
-            // PCSender_sendRGBAndPos(x,y,0, result.r, result.g, result.b, result.clear);
+            PCSender_sendRGBAndPos(x,y,0, result.r, result.g, result.b, result.clear);
             // TextOutput_printInteger(y);
             y += 1;
         }

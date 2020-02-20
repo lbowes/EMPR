@@ -79,7 +79,17 @@ if __name__ == "__main__":
     # -------- End Setup -------- #
     while Running:
         # Clear the screen
-        surface.fill((0,0,0))
+
+        # temp
+        try:
+            readline=serialLine.readline().decode("utf-8")
+            x,y,z,r,g,b,c=map(int,readline.split())
+            surface.fill((r,g,b))
+            pygame.display.update()
+        except:
+            pass
+        continue
+        # temp
 
         # Todo remove me Emulate  serial input
         # print(serialLine.readline().decode("utf-8").split())
