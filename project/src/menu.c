@@ -1,7 +1,7 @@
 #include <mbed/LCDDisplay.h>
 #include <mbed/Constants.h>
 #include <mbed/I2C.h>
-//#include <Motion.h>
+#include <scanner/Motion.h>
 
 #include <stdbool.h>
 #include <stdio.h>
