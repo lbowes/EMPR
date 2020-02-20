@@ -9,7 +9,7 @@ static bool isInside(Image* img, uint16_t x, uint16_t y);
 
 Image Image_create(uint16_t width, uint16_t height) {
     Image image;
-    
+
     image.width = width;
     image.height = height;
     image.data = (Colour*)calloc(width * height, sizeof(Colour));
