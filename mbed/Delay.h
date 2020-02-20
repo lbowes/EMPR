@@ -5,7 +5,6 @@
 
 
 void Delay_ms(uint32_t time);
-void Delay_init();  
 
 
 #endif // EMPR_KEYPAD_UTILS_H_

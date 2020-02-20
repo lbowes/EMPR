@@ -96,10 +96,12 @@ if __name__ == "__main__":
         try:
 
             readline=serialLine.readline().decode("utf-8")
+            # print(readline)
             
             if "Debug" in readline:
                 print(re.sub('Debug:','',readline))
             else:
+                # print(readline)
                 x,y,z,r,g,b,c=map(int,readline.split())
                 # r = int(r)
                 # g= int(g)
@@ -131,8 +133,8 @@ if __name__ == "__main__":
 
                 # Calculate the max size of all the pixels
                 maxPixelSize=int(min(Window['height']/(maxPixelY+1),Window['width']/(maxPixelX+1)))
-                if (maxPixelSize==0):
-                    raise Exception("You have run out of Pixels, now you need to consider subsampling or making your res higher")
+                # if (maxPixelSize==0):
+                #     raise Exception("You have run out of Pixels, now you need to consider subsampling or making your res higher")
                 # If center image calculate offsets
                 if centerImage:
                     xOffset = int((Window['width']-((maxPixelX+1)*maxPixelSize))/2)
