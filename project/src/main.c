@@ -1,14 +1,20 @@
-/***********************************************************************/
-#include <stdbool.h>
-#include <stdio.h>
-#include "mbed/TextOutput.h"
-#include "mbed/Interrupts.h"
-#include "mbed/LEDs.h"
-#include "mbed/Delay.h"
-#include "scanner/Scanners.h"
-#include "scanner/Motion.h"
+#include "core_requirements/CoreRequirements.h"
 
-int main(void) {
-DelayScanTestSettings();
-return 0;
+
+int main() {
+    A1();
+    A2();
+    A3();
+
+    B1();
+    B2();
+    B3();
+
+    C1();
+
+    D1();
+    D2();
+    D3();
+
+    return 0;
 }

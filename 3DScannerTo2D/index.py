@@ -79,7 +79,17 @@ if __name__ == "__main__":
     # -------- End Setup -------- #
     while Running:
         # Clear the screen
-        surface.fill((0,0,0))
+
+        # temp
+        try:
+            readline=serialLine.readline().decode("utf-8")
+            x,y,z,r,g,b,c=map(int,readline.split())
+            surface.fill((r,g,b))
+            pygame.display.update()
+        except:
+            pass
+        continue
+        # temp
 
         # Todo remove me Emulate  serial input
         # print(serialLine.readline().decode("utf-8").split())
@@ -99,14 +109,11 @@ if __name__ == "__main__":
                 # x= int(x)
                 # y= int(y)
                 # z = int(z)
-                total = c # try total=c at some point
-                r = min(int((int(r) / int(total))*255),255)
-                g = min(int((int(g) / int(total))*255),255)
-                b = min(int((int(b) / int(total))*255),255)
-                # r=r
-                # g=int(g)
-                # b= int (b)
-                # # print(x,y,z,r,g,b,total)
+                # total = r+g+b # try total=c at some point
+                # r = int((int(r) / int(total))*255)
+                # g = int((int(g) / int(total))*255)
+                # b = int((int(b) / int(total))*255)
+                # print(x,y,z,r,g,b,total)
 
                 # x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
                 #Hack z is always 1 for this 2D scanner
