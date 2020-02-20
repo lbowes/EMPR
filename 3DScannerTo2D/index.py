@@ -97,11 +97,11 @@ if __name__ == "__main__":
                 # x= int(x)
                 # y= int(y)
                 # z = int(z)
-                total = r+g+b # try total=c at some point
-                r = int((int(r) / int(total))*255)
-                g = int((int(g) / int(total))*255)
-                b = int((int(b) / int(total))*255)
-                print(x,y,z,r,g,b,total)
+                # total = r+g+b # try total=c at some point
+                # r = int((int(r) / int(total))*255)
+                # g = int((int(g) / int(total))*255)
+                # b = int((int(b) / int(total))*255)
+                # print(x,y,z,r,g,b,total)
 
                 # x,y,z,r,g,b=random.randint(0,10),random.randint(0,10),1,random.randint(0,255),random.randint(0,255),random.randint(0,255)
                 #Hack z is always 1 for this 2D scanner
