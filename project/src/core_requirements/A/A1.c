@@ -1,10 +1,11 @@
 #include "A1.h"
-#include "../MenuUtils.h"
 
 #include <mbed/Keypad.h>
 #include <mbed/TextOutput.h>
 #include <mbed/I2C.h>
 #include <mbed/Delay.h>
+#include <mbed/LCDMenu.h>
+#include <mbed/LCDDisplay.h>
 #include <scanner/Motion.h>
 #include <scanner/Vector3D.h>
 
@@ -37,64 +38,29 @@ void A1() {
     TextOutput_init();
     Motion_init();
 
-    typedef void (*func)(void);
+    LCDMenu motionOptions = LCDMenu_create();
 
-    func requirementDemos[3] = {
-        &traceFullSizeCircle,
-        &traceSquareBoundary,
-        &demoZAxis
-    };
+    LCDMenu_addItem(&motionOptions, "Trace circle", &traceFullSizeCircle);
+    LCDMenu_addItem(&motionOptions, "Trace square", &traceSquareBoundary);
+    LCDMenu_addItem(&motionOptions, "Demo Z axis", &demoZAxis);
 
-    static const char* menuLabels[3] = {
-        "1. Trace circle",
-        "2. Trace square",
-        "3. Demo Z axis"
-    };
+    LCDMenu_run(&motionOptions);
 
-    int selectedFunctionIdx = 0;
-
-    while(1) {
-        LCDDisplay_print(menuLabels[selectedFunctionIdx], EMPR_LINE_1);
-        LCDDisplay_print("<[1]        [4]>", EMPR_LINE_2);
-
-        // Execute test shown
-        if(Keypad_isKeyDown(EMPR_KEY_HASH))
-            requirementDemos[selectedFunctionIdx]();
-
-        // Shift menu up
-        if(Keypad_isKeyDown(EMPR_KEY_1)) {
-            selectedFunctionIdx--;
-            if(selectedFunctionIdx < 0)
-                selectedFunctionIdx = 2;
-        }
-
-        // Shift menu down
-        if(Keypad_isKeyDown(EMPR_KEY_4)) {
-            selectedFunctionIdx++;
-            if(selectedFunctionIdx > 2)
-                selectedFunctionIdx = 0;
-        }
-
-        // Move on to next requirement
-        if(Keypad_isKeyDown(EMPR_KEY_ASTERISK))
-            break;
-
-        MenuUtils_selectionLoopDelay();
-    }
+    LCDDisplay_print("motion", 0);
+    LCDMenu_destroy(&motionOptions);
+    LCDDisplay_print("motion end", 1);
 }
+
 
 
 static void traceFullSizeCircle() {
     Motion_home();
 
     Vector3D pos;
-    Vector3D lastPos;
-
-    float roundCircle = 0.0f;
     const uint16_t steps = 500;
     const uint16_t padding = 0;
-
     uint16_t i = 0;
+
     for(i = 0; i < steps; i++) {
         float sinVal = sin(i / (float)steps * 2 * M_PI);
         float cosVal = cos(i / (float)steps * 2 * M_PI);
@@ -103,8 +69,6 @@ static void traceFullSizeCircle() {
         pos.y = padding + (cosVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
 
         Motion_moveTo(pos.x, pos.y, 0);
-
-        lastPos = pos;
     }
 
     Motion_neutraliseAllAxes();

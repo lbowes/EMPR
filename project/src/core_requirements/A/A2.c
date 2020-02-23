@@ -5,6 +5,23 @@
 #include <mbed/Constants.h>
 
 
+static void exploreEdgeBoundaries();
+static void displayBoundsOnLCD();
+
+/*
+ * The X-Y Platform should perform a boundary detection setup procedure, such
+ * that the edges of the platform are determined automatically by stepping the
+ * motors and monitoring the microswitches.
+ * • The platform will explore the edge boundaries
+ * • The edge boundaries will be displayed on LCD at the end of the search.
+ * • Stepping resolution should be at least 16 distinct positions per X/Yaxis.
+*/
+void A2() {
+    exploreEdgeBoundaries();
+    displayBoundsOnLCD();
+}
+
+
 // Changes to be made to the `Motion` module
 // =========================================
 // * Add some way of detecting the boundaries of the platform (see below).
@@ -35,18 +52,4 @@ static void displayBoundsOnLCD() {
     LCDDisplay_init();
 
     // TODO: Display the boundaries of the platform on the LCD display
-}
-
-
-/*
- * The X-Y Platform should perform a boundary detection setup procedure, such
- * that the edges of the platform are determined automatically by stepping the
- * motors and monitoring the microswitches.
- * • The platform will explore the edge boundaries
- * • The edge boundaries will be displayed on LCD at the end of the search.
- * • Stepping resolution should be at least 16 distinct positions per X/Yaxis.
-*/
-void A2() {
-    exploreEdgeBoundaries();
-    displayBoundsOnLCD();
 }

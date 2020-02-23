@@ -6,7 +6,6 @@ static uint32_t elapsedMs = 0;
 // Create 100 callbackes
 static void (*callbacks[100])();
 static uint8_t head = 0;
-static void (*interruptHandler)();
 
 void Do_Nothing(void)
 {
@@ -19,7 +18,6 @@ void SysTick_Handler(void)
     {
         callbacks[handler]();
     }
-   // interruptHandler();
     elapsedMs++;
 }
 

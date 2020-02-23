@@ -13,7 +13,7 @@ static void moveXYWithInputs();
  * • Response times should be fast enough for reasonable user interaction.
 */
 void A3() {
-    
+    moveXYWithInputs();
 }
 
 

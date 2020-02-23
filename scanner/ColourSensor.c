@@ -1,22 +1,11 @@
-#define IN_LAB 1
 #include "ColourSensor.h"
 
-#if IN_LAB
 #include <mbed/I2C.h>
 #include <mbed/Delay.h>
 #include <mbed/Constants.h>
-#else
-static void i2c_init(void) { }
-static void i2c_send_data(uint8_t address, uint8_t *dataSource, uint32_t dataLength) { }
-static void i2c_receiveDataFrom(uint8_t address, uint8_t *dataDest, uint32_t dataLength) { }
-static void Delay_ms() { }
-#endif
 
 #include <math.h>
 
-
-// CODE LIFTED FROM
-// https://github.com/adafruit/Adafruit_TCS34725
 
 #define TCS34725_ADDRESS     (0x29)
 #define TCS34725_COMMAND_BIT (0x80)
@@ -171,18 +160,12 @@ static void postProcess(Colour* rawData) {
     g = g / maxF;
     b = b / maxF;
 
-    // Apply non-linear 'S' shape to make light colours darker
-    // and darker colours lighter
-    r -= 0.2f * (0.5f * (1.0f + sin(2.0f * M_PI * r)) - 0.5f);
-    g -= 0.2f * (0.5f * (1.0f + sin(2.0f * M_PI * g)) - 0.5f);
-    b -= 0.2f * (0.5f * (1.0f + sin(2.0f * M_PI * b)) - 0.5f);
-
     // Scale all components by 255
     r *= 255;
     g *= 255;
     b *= 255;
 
-    // Complete the process by modifying the input rawData
+    // Return a correctly scaled form of the input `rawData`
     rawData->r = r;
     rawData->g = g;
     rawData->b = b;
@@ -193,8 +176,8 @@ static uint16_t read16(uint8_t reg) {
     uint8_t writeData = TCS34725_COMMAND_BIT | reg;
     i2c_send_data(TCS34725_ADDRESS, &writeData, 1);
 
-    uint16_t result = 0;
-    i2c_receiveDataFrom(TCS34725_ADDRESS, &result, 2);
+    uint8_t readData[2];
+    i2c_receiveDataFrom(TCS34725_ADDRESS, &readData[0], 2);
 
-    return result;
+    return ((uint16_t)readData[1] << 8) | readData[0];
 }

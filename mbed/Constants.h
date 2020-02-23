@@ -37,6 +37,12 @@
 #define EMPR_KEYPAD_ROWS 4
 #define EMPR_KEYPAD_COLS EMPR_KEYPAD_ROWS
 
+// Wait time if the keypad is being queried for presses in a while loop
+// to allow the user to click and select one item (rather than cycle,
+// too quickly through multiple).
+#define EMPR_KEYPAD_WAIT_TIME_MS 80
+
+
 // LCD display
 #define EMPR_LINE_1 0
 #define EMPR_LINE_2 1
@@ -48,9 +54,6 @@
 #define EEPROM_I2C_ADDRESS                0x50
 #define GPIO_I2C_ADDRESS                  0x20
 #define RGBC_I2C_SENSOR_ADDRESS           0x29
-
-// Used to allow code compilation outside the hardware
-#define IN_LAB 0
 
 
 #endif // EMPR_CONSTANTS_H_

@@ -285,8 +285,6 @@ static void moveAxisToPos(uint8_t axis, int targetStepPos) {
 
     clampWithinAxis(a, &targetStepPos);
 
-    Motor* motor = &a->motor;
-
     uint16_t stepsRequired = 0;
     if(targetStepPos > a->currentPos_steps) {
         stepsRequired = targetStepPos - a->currentPos_steps;
@@ -355,5 +353,3 @@ Vector3D Motion_getCurrentPos() {
 
     return output;
 }
-
-
