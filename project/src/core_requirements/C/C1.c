@@ -42,7 +42,9 @@ void C1() {
         if(Keypad_isKeyDown(EMPR_KEY_HASH)) {
             LCDDisplay_print("...", EMPR_LINE_2);
 
-            FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_errorFunc);
+            //FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_errorFunc);
+            Delay_ms(4000);
+            FlagId recognisedFlagId = 0;
 
             LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
         }

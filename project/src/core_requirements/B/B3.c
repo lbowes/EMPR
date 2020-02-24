@@ -111,4 +111,5 @@ static void findHighest(uint8_t colourComponent) {
 
     // "• The head will move to that final position once it has been identified."
     Motion_moveTo(closestPoint.x, closestPoint.y, 0);
+    Motion_neutraliseAllAxes();
 }

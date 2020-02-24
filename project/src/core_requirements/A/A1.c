@@ -46,9 +46,10 @@ void A1() {
 
     LCDMenu_run(&motionOptions);
 
-    LCDDisplay_print("motion", 0);
-    LCDMenu_destroy(&motionOptions);
-    LCDDisplay_print("motion end", 1);
+    // TODO: Work out why this is causing a crash
+    //LCDDisplay_print("motion", 0);
+    //LCDMenu_destroy(&motionOptions);
+    //LCDDisplay_print("motion end", 1);
 }
 
 
@@ -86,12 +87,11 @@ static void traceSquareBoundary() {
     // the limits of each axis. Quite similar to requirement A2.
 
     Motion_home();
-    Delay_ms(1000);
 
-    Motion_moveTo(0, 0, 0);
     Motion_moveTo(0, EMPR_Y_LIMIT, 0);
     Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
     Motion_moveTo(EMPR_X_LIMIT, 0, 0);
+    Motion_moveTo(0, 0, 0);
 
     Motion_neutraliseAllAxes();
 }

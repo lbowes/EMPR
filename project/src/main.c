@@ -41,7 +41,7 @@ static void run() {
 
     LCDMenu_run(&mainMenu);
 
-    LCDDisplay_print("main prog", 0);
-    LCDMenu_destroy(&mainMenu); // TODO: Work out why this is causing a crash
-    LCDDisplay_print("main prog end", 1);
+    //LCDDisplay_print("main prog", 0);
+    //LCDMenu_destroy(&mainMenu); // TODO: Work out why this is causing a crash
+    //LCDDisplay_print("main prog end", 1);
 }

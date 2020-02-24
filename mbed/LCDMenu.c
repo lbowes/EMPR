@@ -72,8 +72,10 @@ void LCDMenu_run(LCDMenu* menu) {
             shiftUp(menu);
 
         // Quit
-        if(Keypad_isKeyDown(EMPR_KEY_ASTERISK))
+        if(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) {
+            while(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) { }
             break;
+        }
 
         // Adds a delay in an LCD menu while loop.
         // Without any delay, the loop cycles too quickly for keypad presses to be used to
