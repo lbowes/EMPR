@@ -32,7 +32,7 @@ void scan_start(void){
         for (y_ax = y_offset; y_ax < 200; y_ax+=y_scale){
             Motion_moveTo(x_ax, y_ax, 0);
             //Delay_ms(5);   figure out what is going on here
-            col_vals = ColourSensor_read();
+            col_vals = ColourSensor_seq();
             sprintf(buffer1,"r: %d   g: %d", col_vals.r, col_vals.g);
             LCDDisplay_print(buffer1, 0);
             PCSender_sendRGBAndPos((x_ax/x_scale) - x_offset,(y_ax/y_scale) - y_offset,0, col_vals.r, col_vals.g, col_vals.b, col_vals.clear);
