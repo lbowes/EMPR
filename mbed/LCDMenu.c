@@ -57,19 +57,25 @@ void LCDMenu_run(LCDMenu* menu) {
         sprintf(label, "%d.%s", menu->activeItemIdx + 1, menu->items[menu->activeItemIdx].nameOnLCD);
 
         LCDDisplay_print(label, EMPR_LINE_1);
-        LCDDisplay_print("<[1]        [4]>", EMPR_LINE_2);
+        LCDDisplay_print("1< *quit #run 4>", EMPR_LINE_2);
 
         // Run active function displayed on the LCD
-        if(Keypad_isKeyDown(EMPR_KEY_HASH))
+        if(Keypad_isKeyDown(EMPR_KEY_HASH)) {
+            while(Keypad_isKeyDown(EMPR_KEY_HASH)) { }
             menu->items[menu->activeItemIdx].function();
+        }
 
         // Shift menu up
-        if(Keypad_isKeyDown(EMPR_KEY_1))
+        if(Keypad_isKeyDown(EMPR_KEY_1)) {
+            while(Keypad_isKeyDown(EMPR_KEY_1)) { }
             shiftDown(menu);
+        }
 
         // Shift menu down
-        if(Keypad_isKeyDown(EMPR_KEY_4))
+        if(Keypad_isKeyDown(EMPR_KEY_4)) {
+            while(Keypad_isKeyDown(EMPR_KEY_4)) { }
             shiftUp(menu);
+        }
 
         // Quit
         if(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) {
@@ -77,11 +83,7 @@ void LCDMenu_run(LCDMenu* menu) {
             break;
         }
 
-        // Adds a delay in an LCD menu while loop.
-        // Without any delay, the loop cycles too quickly for keypad presses to be used to
-        // switch menu options. A button press might be 10s of millseconds, which could
-        // cause the menu to skip options.
-        Delay_ms(EMPR_KEYPAD_WAIT_TIME_MS);
+        Delay_ms(EMPR_SMOOTH_MENU_DELAY_MS);
     }
 }
 

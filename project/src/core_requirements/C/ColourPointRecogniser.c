@@ -19,22 +19,28 @@
 
 #include "ColourPointRecogniser.h"
 
-#include <scanner/Vector3D.h>
+#include <mbed/Constants.h>
 #include <scanner/Motion.h>
 #include <scanner/ColourSensor.h>
+#include <mbed/TextOutput.h>
 
 #include <math.h>
+#include <stdio.h>
 
 
-// TODO: Configure this correctly - accuracy might still be possible with 2 or 3
-#define NUM_CRITICAL_POINTS_PER_FLAG 4
+#define NUM_CRITICAL_POINTS_PER_FLAG 14
+
+typedef struct {
+    float x;
+    float y;
+} FlagPoint;
 
 typedef struct {
     Colour criticalPointColours[NUM_CRITICAL_POINTS_PER_FLAG];
 } FlagSignature;
 
 // This is the data required by this flag recognition method
-static Vector3D criticalPoints[NUM_CRITICAL_POINTS_PER_FLAG];
+static FlagPoint criticalPoints[NUM_CRITICAL_POINTS_PER_FLAG];
 
 static FlagSignature flagSignatures[FLAG_COUNT];
 // ==========================================================
@@ -50,11 +56,20 @@ void ColourPointRecogniser_init() {
 
 
 static void setCriticalPoints() {
-    // TODO: These need to be chosen very carefully
-    criticalPoints[0] = (Vector3D){ 1, 2, 3 };
-    criticalPoints[1] = (Vector3D){ 1, 2, 3 };
-    criticalPoints[2] = (Vector3D){ 1, 2, 3 };
-    criticalPoints[3] = (Vector3D){ 1, 2, 3 };
+    criticalPoints[0] = (FlagPoint){ -0.868, 0.276 };
+    criticalPoints[1] = (FlagPoint){ -0.874, -0.278 };
+    criticalPoints[2] = (FlagPoint){ -0.294, -0.068 };
+    criticalPoints[3] = (FlagPoint){ -0.269, 0.412 };
+    criticalPoints[4] = (FlagPoint){ -0.265, -0.422 };
+    criticalPoints[5] = (FlagPoint){ 0.003, 0.416 };
+    criticalPoints[6] = (FlagPoint){ 0.020, 0.043 };
+    criticalPoints[7] = (FlagPoint){ 0.001, -0.428 };
+    criticalPoints[8] = (FlagPoint){ 0.106, -0.267 };
+    criticalPoints[9] = (FlagPoint){ 0.253, 0.421 };
+    criticalPoints[10] = (FlagPoint){ 0.251, -0.416 };
+    criticalPoints[11] = (FlagPoint){ 0.429, 0.438 };
+    criticalPoints[12] = (FlagPoint){ 0.835, 0.278 };
+    criticalPoints[13] = (FlagPoint){ 0.842, -0.276 };
 }
 
 
@@ -63,31 +78,185 @@ static void loadFlagSignatureData() {
     // The colours entered for each flag should be the colours under the
     // respective points when the flag is under the scanner.
 
-    // =================================== BRITISH FLAG ===================================
-    flagSignatures[BRITAIN] = (FlagSignature){
+    // =================================== UNITED_KINGDOM ===================================
+    flagSignatures[UNITED_KINGDOM] = (FlagSignature){
         (Colour){ 255, 0, 123 },
         (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
         (Colour){ 0, 123, 255 },
         (Colour){ 0, 69, 0 }
     };
 
-    // =================================== FRENCH FLAG ===================================
+    // =================================== FRANCE ===================================
     flagSignatures[FRANCE] = (FlagSignature){
         (Colour){ 255, 0, 123 },
         (Colour){ 0, 255, 0 },
         (Colour){ 0, 123, 255 },
-        (Colour){ 0, 69, 0 }
-    };
-
-    // =================================== ITALIAN FLAG ===================================
-    flagSignatures[ITALY] = (FlagSignature){
+        (Colour){ 0, 69, 0 },
         (Colour){ 255, 0, 123 },
         (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
         (Colour){ 0, 123, 255 },
         (Colour){ 0, 69, 0 }
     };
 
-    // TODO:
+    // =================================== SYRIA ===================================
+    flagSignatures[SYRIA] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== ICELAND ===================================
+    flagSignatures[ICELAND] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== SUDAN ===================================
+    flagSignatures[SUDAN] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== NORTH_MACEDONIA ===================================
+    flagSignatures[NORTH_MACEDONIA] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== CZECHIA ===================================
+    flagSignatures[CZECHIA] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== BURKINA_FASO ===================================
+    flagSignatures[BURKINA_FASO] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== CENTRAL_AFRICAN_REBUBLIC ===================================
+    flagSignatures[CENTRAL_AFRICAN_REBUBLIC] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
+
+    // =================================== BURUNDI ===================================
+    flagSignatures[BURUNDI] = (FlagSignature){
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 255, 0, 123 },
+        (Colour){ 0, 255, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 },
+        (Colour){ 0, 123, 255 },
+        (Colour){ 0, 69, 0 }
+    };
 }
 
 
@@ -104,8 +273,12 @@ uint32_t ColourPointRecogniser_errorFunc(FlagId flagId) {
     uint8_t pointIdx = 0;
     for(pointIdx = 0; pointIdx < NUM_CRITICAL_POINTS_PER_FLAG; pointIdx++) {
         // 1. Move the sensor to the critical point to be tested
-        Vector3D* criticalPoint = &criticalPoints[pointIdx];
-        Motion_moveTo(criticalPoint->x, criticalPoint->y, criticalPoint->z);
+        FlagPoint* criticalPoint = &criticalPoints[pointIdx];
+
+        // Convert the flag point into platform coordinates
+        uint16_t x = (int)((criticalPoint->x + 1.0f) * 0.5f * EMPR_X_LIMIT);
+        uint16_t y = (int)((criticalPoint->y + 1.0f) * 0.5f * EMPR_Y_LIMIT);
+        Motion_moveTo(x, y, 0);
 
         // 2. Read the colour there
         Colour reading = ColourSensor_read();
@@ -118,4 +291,27 @@ uint32_t ColourPointRecogniser_errorFunc(FlagId flagId) {
     }
 
     return error;
+}
+
+
+void ColourPointRecogniser_readPoints() {
+    TextOutput_init();
+
+    uint8_t pointIdx = 0;
+    for(pointIdx = 0; pointIdx < NUM_CRITICAL_POINTS_PER_FLAG; pointIdx++) {
+        // 1. Move the sensor to the critical point to be tested
+        FlagPoint* criticalPoint = &criticalPoints[pointIdx];
+
+        // Convert the flag point into platform coordinates
+        uint16_t x = (int)((criticalPoint->x + 1.0f) * 0.5f * EMPR_X_LIMIT);
+        uint16_t y = (int)((criticalPoint->y + 1.0f) * 0.5f * EMPR_Y_LIMIT);
+        Motion_moveTo(x, y, 0);
+
+        // 2. Read the colour there
+        Colour reading = ColourSensor_read();
+
+        char buf[64];
+        sprintf(buf, "X: %i, Y: %i, R: %i, G: %i, B: %i\n", x, y, reading.r, reading.g, reading.b);
+        TextOutput_print(buf);
+    }
 }

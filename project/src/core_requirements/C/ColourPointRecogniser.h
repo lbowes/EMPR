@@ -6,6 +6,7 @@
 
 void ColourPointRecogniser_init();
 uint32_t ColourPointRecogniser_errorFunc(FlagId flagId);
+void ColourPointRecogniser_readPoints();
 
 
 #endif // EMPR_COLOURPOINTRECOGNITION_H_

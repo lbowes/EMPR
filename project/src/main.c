@@ -19,7 +19,10 @@ int main() {
     LEDs_init();
     Motion_init();
 
-    run();
+    ColourSensor_init();
+    ColourPointRecogniser_readPoints();
+
+    //run();
 
     return 0;
 }

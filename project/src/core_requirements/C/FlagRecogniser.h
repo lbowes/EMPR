@@ -5,12 +5,21 @@
 
 
 typedef enum {
-    BRITAIN = 0,
+    UNITED_KINGDOM = 0,
     FRANCE,
-    ITALY
+    SYRIA,
+    ICELAND,
+    SUDAN,
+    NORTH_MACEDONIA,
+    CZECHIA,
+    BURKINA_FASO,
+    CENTRAL_AFRICAN_REBUBLIC,
+    BURUNDI
 } FlagId;
 
-#define FLAG_COUNT (ITALY - BRITAIN + 1)
+#define FIRST_FLAG UNITED_KINGDOM
+#define LAST_FLAG BURUNDI
+#define FLAG_COUNT (LAST_FLAG - FIRST_FLAG + 1)
 
 typedef uint32_t (*ErrorFunction)(FlagId);
 

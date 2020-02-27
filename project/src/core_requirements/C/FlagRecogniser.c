@@ -13,7 +13,7 @@ FlagId FlagRecogniser_run(ErrorFunction errorFunc) {
     uint8_t minSqrError = 0;
 
     FlagId flagId = 0;
-    for(flagId = BRITAIN; flagId < ITALY; flagId++) {
+    for(flagId = FIRST_FLAG; flagId < LAST_FLAG; flagId++) {
         uint32_t error = errorFunc(flagId);
 
         if(error < minSqrError || flagId == 0) {

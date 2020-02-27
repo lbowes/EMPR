@@ -6,6 +6,8 @@
 
 #include <math.h>
 
+// CODE LIFTED FROM
+// https://github.com/adafruit/Adafruit_TCS34725
 
 #define TCS34725_ADDRESS     (0x29)
 #define TCS34725_COMMAND_BIT (0x80)
@@ -45,7 +47,7 @@ typedef enum {
 } tcs34725Gain_t;
 
 static uint8_t sIntegrationTime = 0;
-
+static void initWait();
 static void initIntegrationTime();
 static void integrationDelay();
 static void initGain();
@@ -53,49 +55,66 @@ static void enable();
 static void write8(uint8_t reg, uint8_t value);
 static uint16_t read16(uint8_t reg);
 static void postProcess(Colour* rawData);
+static void write16(uint8_t reg, uint8_t value);
+uint8_t * readAuto16(uint8_t reg);
 
 
 void ColourSensor_init() {
     i2c_init();
-
+    Delay_ms(3);
+    Delay_ms(3);
     initIntegrationTime();
+    Delay_ms(3);
     initGain();
-
-    // TODO: Check that this is working correctly WLONG
-    write8(0x0D, 0x00);
-    //
-
+    Delay_ms(3);
+    initWait();
+    Delay_ms(3);
+    write16(0x0D, 0X00);
+    Delay_ms(3);
     enable();
 }
 
 
+static void initWait() {
+    uint8_t WTIME = 0X03;
+    write16(WTIME, 0XFF);
+}
+
+
 static void initIntegrationTime() {
-    sIntegrationTime = TCS34725_INTEGRATIONTIME_2_4MS;
-    write8(TCS34725_ATIME, sIntegrationTime);
+    sIntegrationTime = 0XFF;
+    write16(TCS34725_ATIME, 0XFF);
+}
+
+
+static void write16(uint8_t reg, uint8_t value) {
+    uint8_t cmd = (TCS34725_COMMAND_BIT | reg);
+    uint8_t data = value;
+    uint8_t package = {cmd, data};
+    i2c_send_data(TCS34725_ADDRESS, &package, 2);
+
 }
 
 
 static void write8(uint8_t reg, uint8_t value) {
-    uint8_t cmd = TCS34725_COMMAND_BIT | reg;
+    uint8_t cmd = (TCS34725_COMMAND_BIT | reg);
     i2c_send_data(TCS34725_ADDRESS, &cmd, 1);
 
-    uint8_t data = value & 0xFF;
-    i2c_send_data(TCS34725_ADDRESS, &data, 1);
+   // Very confused what the point of this is?
+   uint8_t data = value; // & 0xFF;
+   i2c_send_data(TCS34725_ADDRESS, &data, 1);
 }
 
 
 static void initGain() {
     uint8_t gain = TCS34725_GAIN_1X;
-    write8(TCS34725_CONTROL, gain);
+    write16(TCS34725_CONTROL, gain);
 }
 
 
 static void enable() {
-    write8(TCS34725_ENABLE, TCS34725_ENABLE_PON);
-    Delay_ms(3);
-    write8(TCS34725_ENABLE, TCS34725_ENABLE_PON | TCS34725_ENABLE_AEN);
-
-    integrationDelay();
+    write16(TCS34725_ENABLE, TCS34725_ENABLE_PON | TCS34725_ENABLE_AEN);
+    //integrationDelay();
 }
 
 
@@ -123,6 +142,18 @@ static void integrationDelay() {
 }
 
 
+Colour ColourSensor_seq() {
+    Colour seq_read;
+    uint8_t *vals;
+    vals = readAuto16(TCS34725_CDATAL);
+    seq_read.clear = ((*(vals+1)<<8) | *(vals));
+    seq_read.r = ((*(vals+3)<<8) | *(vals+2));
+    seq_read.g = ((*(vals+5)<<8) | *(vals+4));
+    seq_read.b = ((*(vals+7)<<8) | *(vals+6));
+    return seq_read;
+}
+
+
 Colour ColourSensor_read() {
     Colour reading;
 
@@ -138,37 +169,27 @@ Colour ColourSensor_read() {
 
 
 static void postProcess(Colour* rawData) {
-    // Get the maximum value to use when scaling all components
-    uint16_t max = MAX_COLOUR_VALUE;
+    uint16_t max = 0;
 
     if(rawData->r > max)
         max = rawData->r;
-    else if(rawData->g > max)
-        max = rawData->r;
-    else if(rawData->b > max)
-        max = rawData->r;
+    if(rawData->g > max)
+        max = rawData->g;
+    if(rawData->b > max)
+        max = rawData->b;
 
-    float maxF = (float)max;
+    rawData->r = (int)((float)rawData->r / max * 255);
+    rawData->g = (int)((float)rawData->g / max * 255);
+    rawData->b = (int)((float)rawData->b / max * 255);
+}
 
-    // Convert integer colour readings into floats for post processing
-    float r = rawData->r;
-    float g = rawData->g;
-    float b = rawData->b;
 
-    // Normalise all components between 0 and 1
-    r = r / maxF;
-    g = g / maxF;
-    b = b / maxF;
-
-    // Scale all components by 255
-    r *= 255;
-    g *= 255;
-    b *= 255;
-
-    // Return a correctly scaled form of the input `rawData`
-    rawData->r = r;
-    rawData->g = g;
-    rawData->b = b;
+uint8_t * readAuto16(uint8_t reg) {
+    static uint8_t list_result[8];
+    uint8_t writeData = TCS34725_COMMAND_BIT | 0x10 | reg; // 0X10 AUTO INC MODE
+    i2c_send_data(TCS34725_ADDRESS, &writeData, 1);
+    i2c_receiveDataFrom(TCS34725_ADDRESS, &list_result, 8);
+    return list_result;
 }
 
 
@@ -176,8 +197,8 @@ static uint16_t read16(uint8_t reg) {
     uint8_t writeData = TCS34725_COMMAND_BIT | reg;
     i2c_send_data(TCS34725_ADDRESS, &writeData, 1);
 
-    uint8_t readData[2];
-    i2c_receiveDataFrom(TCS34725_ADDRESS, &readData[0], 2);
+    uint16_t result = 0;
+    i2c_receiveDataFrom(TCS34725_ADDRESS, &result, 2);
 
-    return ((uint16_t)readData[1] << 8) | readData[0];
+    return result;
 }

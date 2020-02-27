@@ -40,27 +40,38 @@ void C1() {
     while(1) {
         // Perform flag recognition
         if(Keypad_isKeyDown(EMPR_KEY_HASH)) {
+            while(Keypad_isKeyDown(EMPR_KEY_HASH)) { }
+
             LCDDisplay_print("...", EMPR_LINE_2);
 
             //FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_errorFunc);
+
             Delay_ms(4000);
             FlagId recognisedFlagId = 0;
 
-            LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
+            //LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
         }
 
         // Move on to next requirement
-        if(Keypad_isKeyDown(EMPR_KEY_ASTERISK))
+        if(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) {
+            while(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) { }
             break;
+        }
 
-        Delay_ms(EMPR_KEYPAD_WAIT_TIME_MS);
+        Delay_ms(EMPR_SMOOTH_MENU_DELAY_MS);
     }
 }
 
 
 static void populateFlagNames() {
-    // TODO: Complete this initialisation for all flagss
-    flagNames[BRITAIN] = "Britain";
+    flagNames[UNITED_KINGDOM] = "United Kingom";
     flagNames[FRANCE] = "France";
-    flagNames[ITALY] = "Italy";
+    flagNames[SYRIA] = "Syria";
+    flagNames[ICELAND] = "Iceland";
+    flagNames[SUDAN] = "Sudan";
+    flagNames[NORTH_MACEDONIA] = "North Macedonia";
+    flagNames[CZECHIA] = "Czechia";
+    flagNames[BURKINA_FASO] = "Burkina Faso";
+    flagNames[CENTRAL_AFRICAN_REBUBLIC] = "Cent.Africa.Rep.";
+    flagNames[BURUNDI] = "Burundi";
 }
