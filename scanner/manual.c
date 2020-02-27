@@ -35,14 +35,14 @@ Vector3D location ;
 
 
 
-void move_x(int change){
+void move_x1(int change){
     Motion_moveBy(change, 0, 0);
     location = Motion_getCurrentPos() ; 
     sprintf(buffer,"%d   %d", location.x, location.y);
     LCDDisplay_print(buffer, 0);
 }
 
-void move_y(int change){
+void move_y1(int change){
     Motion_moveBy(0, change, 0);
     location = Motion_getCurrentPos() ; 
     sprintf(buffer,"%d   %d", location.x, location.y);
@@ -50,7 +50,7 @@ void move_y(int change){
    
 }
 
-void move_z(int change){
+void move_z1(int change){
     Motion_moveBy(0, 0, change);
     location = Motion_getCurrentPos() ; 
     sprintf(buffer,"%d", location.z);
@@ -59,7 +59,7 @@ void move_z(int change){
 
 
 
-void manual_start(void){
+void manual_start1(void){
     i2c_init();
     Motion_init();
     Motion_home();

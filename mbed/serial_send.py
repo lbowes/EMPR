@@ -15,10 +15,10 @@ def read_RGB():
             if readline != 'start' and readline != 'running':
                 readline = readline[6:]
                 readline = readline.split(' ')
-                print("R" + readline[0])
-                print("G" + readline[1])
-                print("B" + readline[2])
-                print("C" + readline[3])                
+                print("R " + readline[0])
+                print("G " + readline[1])
+                print("B " + readline[2])
+                print("C " + readline[3])                
                 run = False
         except:
             pass
@@ -88,9 +88,9 @@ ay = "aha"
 
 
 while ay != 'stop':
-    ay = input()
+    #ay = input()
     if ay != 'stop':
-        move_to_coords(ay)
+        #move_to_coords(ay)
         read_RGB()
         
 #write_screen(ay)

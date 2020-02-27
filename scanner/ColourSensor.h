@@ -8,6 +8,6 @@
 
 void ColourSensor_init();
 Colour ColourSensor_read();
-
+Colour ColourSensor_seq();
 
 #endif // EMPR_COLOURSENSOR_H_

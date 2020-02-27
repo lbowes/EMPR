@@ -51,7 +51,6 @@ static void substepDelay();
 static void initAxes();
 static void neutraliseAxis(uint8_t axis);
 static void clampWithinAxis(Axis* axis, int* val);
-static void moveAxisToLimit(uint8_t axis);
 static void moveAxisToPos(uint8_t axis, int targetStepPos);
 static void initPlatform();
 
@@ -105,13 +104,13 @@ void Motion_home() {
     uint8_t axisIdx = 0;
 
     for(axisIdx = EMPR_X_AXIS; axisIdx <= EMPR_Z_AXIS; axisIdx++)
-        moveAxisToLimit(axisIdx);
+        Motion_moveAxisToLimit(axisIdx);
 
     Motion_neutraliseAllAxes();
 }
 
 
-static void moveAxisToLimit(uint8_t axis) {
+void Motion_moveAxisToLimit(uint8_t axis) {
     Axis* a = &axes[axis];
     LimitSwitch* lSwitch = &a->limitSwitch;
 

@@ -1,6 +1,6 @@
 #include <mbed/Constants.h>
 #include "Motion.h"
-#include "RGBC.h"
+#include "Colour.h"
 #include "PcSender.h"
 
 #include "stdbool.h"
@@ -8,6 +8,7 @@
 #include "lpc17xx_uart.h"
 #include "Vector3D.h"
 #include "lpc17xx_pinsel.h"
+#include "ColourSensor.h"
 
 
 
@@ -25,11 +26,11 @@ uint8_t command[2];
 
 Vector3D location ;
 
-RGBC scan_vals;
+Colour scan_vals;
 
 
 void UART_control_start(void){
-    RGBC_init();
+    ColourSensor_init();
     Motion_init();
     i2c_init();
     serial_init();
@@ -55,15 +56,15 @@ void move(int x, int y){
 
 
 
-void UART0_IRQHandler(void){
-    NVIC_DisableIRQ(UART0_IRQn);
-    memset(command, 0, sizeof(command));
-    serial_read(&command , sizeof(command));
+// void UART0_IRQHandler(void){
+//     NVIC_DisableIRQ(UART0_IRQn);
+//     memset(command, 0, sizeof(command));
+//     serial_read(&command , sizeof(command));
 
-    move(command[0],command[1]);
+//     move(command[0],command[1]);
 
-    scan_vals = RGBC_SCAN();
-    PCSender_sendRGBAndPos (0,0,0,scan_vals.r, scan_vals.g, scan_vals.b, scan_vals.c);
-    Motion_neutraliseAllAxes();
-    NVIC_EnableIRQ(UART0_IRQn);
-}
+//     scan_vals = ColourSensor_read();
+//     PCSender_sendRGBAndPos (0,0,0,scan_vals.r, scan_vals.g, scan_vals.b, scan_vals.clear);
+//     Motion_neutraliseAllAxes();
+//     NVIC_EnableIRQ(UART0_IRQn);
+// }

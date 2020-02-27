@@ -1,20 +1,37 @@
-#include "core_requirements/CoreRequirements.h"
+#include "scanner/QRSCAN.h"
+#include "scanner/Motion.h"
+
+#include <scanner/ColourSensor.h>
+#include <scanner/Motion.h>
+
+#include <stdio.h>
+
+
+//#include "scanner/UART_movement.h"
 
 
 int main() {
-    A1();
-    A2();
-    A3();
+    // Motion_init();
+    // Motion_moveTo(400,0,0);
+    // Motion_neutraliseAllAxes();
+    SetupScanning();
+    //UART_control_start();
 
-    B1();
-    B2();
-    B3();
 
-    C1();
+//lewis stuff
+    // Motion_init();
+    // ColourSensor_init();
+    // TextOutput_init();
 
-    D1();
-    D2();
-    D3();
+    // Motion_moveTo(100, 100, 0);
+    
+    // while(1) {
+    //     Colour c = ColourSensor_read();
+
+    //     char buf[64];
+    //     sprintf(buf, "R: %i, G: %i, B: %i", c.r, c.g, c.b);
+    //     TextOutput_print(buf);
+    // }
 
     return 0;
 }
