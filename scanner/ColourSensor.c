@@ -163,7 +163,7 @@ Colour ColourSensor_read() {
     reading.b = read16(TCS34725_BDATAL);
     reading.clear = read16(TCS34725_CDATAL); 
     
-    //postProcess(&reading);
+    postProcess(&reading);
 
     return reading;
 }
