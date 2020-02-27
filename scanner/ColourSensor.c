@@ -1,16 +1,8 @@
-#define IN_LAB 1
 #include "ColourSensor.h"
 
-#if IN_LAB
 #include <mbed/I2C.h>
 #include <mbed/Delay.h>
 #include <mbed/Constants.h>
-#else
-static void i2c_init(void) { }
-static void i2c_send_data(uint8_t address, uint8_t *dataSource, uint32_t dataLength) { }
-static void i2c_receiveDataFrom(uint8_t address, uint8_t *dataDest, uint32_t dataLength) { }
-static void Delay_ms() { }
-#endif
 
 #include <math.h>
 
@@ -66,6 +58,7 @@ static void postProcess(Colour* rawData);
 static void write16(uint8_t reg, uint8_t value);
 uint8_t * readAuto16(uint8_t reg);
 
+
 void ColourSensor_init() {
     i2c_init();
     Delay_ms(3);
@@ -84,14 +77,18 @@ void ColourSensor_init() {
 
 }
 
+
 static void initWait() {
     uint8_t WTIME = 0X03;
     write16(WTIME, 0XFF);
 }
+
+
 static void initIntegrationTime() {
     sIntegrationTime = 0XFF;
     write16(TCS34725_ATIME, 0XFF);
 }
+
 
 static void write16(uint8_t reg, uint8_t value) {
     uint8_t cmd = (TCS34725_COMMAND_BIT | reg);
@@ -100,6 +97,8 @@ static void write16(uint8_t reg, uint8_t value) {
     i2c_send_data(TCS34725_ADDRESS, &package, 2);
 
 }
+
+
 static void write8(uint8_t reg, uint8_t value) {
     uint8_t cmd = (TCS34725_COMMAND_BIT | reg);
     i2c_send_data(TCS34725_ADDRESS, &cmd, 1);
@@ -145,6 +144,7 @@ static void integrationDelay() {
     }
 }
 
+
 Colour ColourSensor_seq() {
     Colour seq_read;
     uint8_t *vals;
@@ -155,14 +155,16 @@ Colour ColourSensor_seq() {
     seq_read.b = ((*(vals+7)<<8) | *(vals+6));
     return seq_read;
 }
+
+
 Colour ColourSensor_read() {
     Colour reading;
-    
+
     reading.r = read16(TCS34725_RDATAL);
     reading.g = read16(TCS34725_GDATAL);
     reading.b = read16(TCS34725_BDATAL);
-    reading.clear = read16(TCS34725_CDATAL); 
-    
+    reading.clear = read16(TCS34725_CDATAL);
+
     postProcess(&reading);
 
     return reading;
@@ -184,13 +186,15 @@ static void postProcess(Colour* rawData) {
     rawData->b = (int)((float)rawData->b / max * 255);
 }
 
-uint8_t * readAuto16(uint8_t reg) { 
+
+uint8_t * readAuto16(uint8_t reg) {
     static uint8_t list_result[8];
     uint8_t writeData = TCS34725_COMMAND_BIT | 0x10 | reg; // 0X10 AUTO INC MODE
     i2c_send_data(TCS34725_ADDRESS, &writeData, 1);
     i2c_receiveDataFrom(TCS34725_ADDRESS, &list_result, 8);
     return list_result;
 }
+
 
 static uint16_t read16(uint8_t reg) {
     uint8_t writeData = TCS34725_COMMAND_BIT | reg;

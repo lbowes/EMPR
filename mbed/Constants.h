@@ -49,8 +49,7 @@
 #define GPIO_I2C_ADDRESS                  0x20
 #define RGBC_I2C_SENSOR_ADDRESS           0x29
 
-// Used to allow code compilation outside the hardware
-#define IN_LAB 0
-
+// A delay to add in a while loop sending the LCD menu to remove flickering
+#define EMPR_SMOOTH_MENU_DELAY_MS 50
 
 #endif // EMPR_CONSTANTS_H_

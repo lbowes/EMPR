@@ -19,7 +19,7 @@ int current_digits[4] = {99,99,99,99};
 
 void display_7seg(uint8_t* data, int datalength)
 {
-    Status sent = i2c_send_data(0x38,data,datalength);
+    i2c_send_data(0x38,data,datalength);
 }
 
 
