@@ -77,7 +77,8 @@ static void traceFullSizeCircle() {
 
 
 static void traceSquareBoundary() {
-    // TODO: This function is not technically correct
+    // TODO: This function is not technically correct (traces full range of motion, rather than the
+    // boundaries of the platform)
 
     // The requirement states:
     //    The X-Y functional test will include scan patterns:
