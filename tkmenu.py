@@ -10,12 +10,13 @@ def read_RGB():
      while run:
          try:
              readline = ser.readline().decode("utf-8")
-             readline.remove('\r')
+             #readline.remove('\r')
              if readline != 'start' and readline != 'running':
-                 #print(readline)
+
+
                  readline = readline.split(' ')
-                 for o in readline:
-                     int(o)
+                #  for o in readline:
+                #      int(o)
                  #print("R" + readline[3])
                  #print("G" + readline[4])
                 # print("B" + readline[5])
@@ -34,8 +35,8 @@ def read_RGB():
 
 class pixel:
     def __init__(self,pos,colour,canvas,size):
-        self.posy = (int(pos[0]))*size
-        self.posx = (int(pos[1]))*size
+        self.posy = (int(pos[0], 16))*size
+        self.posx = (int(pos[1], 16))*size
         self.size = size
         self.colour = colour
         self.canvas = canvas
@@ -79,19 +80,21 @@ class start_button:
 
 def run_now():
     col_val = read_RGB()
-    red = int(col_val[3])
+    red = int(col_val[3], 16)
     print(red)
-    green = int(col_val[4])
+    green = int(col_val[4], 16)
     print(green)
-    blue = int(col_val[5])
+    blue = int(col_val[5], 16)
     print(blue)
+
     col_string = '#%02x%02x%02x' %(red,green,blue)
-    pixel((col_val[0],(col_val[1])), col_string, pic_frame,10)
+    print(col_string)
+    pixel((col_val[0],(col_val[1])), col_string, pic_frame,4)
     
     root.after(1, run_now)
 
 
-ser = serial.Serial('/dev/ttyACM1')
+ser = serial.Serial('/dev/ttyACM0')
 
 root = Tk()
 root.minsize(750,750)
