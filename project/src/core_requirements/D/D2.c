@@ -2,16 +2,16 @@
 
 
 #include <mbed/Constants.h>
-#include "Motion.h"
-#include "Colour.h"
-#include "PcSender.h"
+#include "scanner/Motion.h"
+#include "scanner/Colour.h"
+#include "scanner/PcSender.h"
 
 #include "stdbool.h"
 #include "stdio.h"
 #include "lpc17xx_uart.h"
-#include "Vector3D.h"
+#include "scanner/Vector3D.h"
 #include "lpc17xx_pinsel.h"
-#include "ColourSensor.h"
+#include "scanner/ColourSensor.h"
 
 
 

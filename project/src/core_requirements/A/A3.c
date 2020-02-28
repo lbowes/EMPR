@@ -1,16 +1,16 @@
 #include "A3.h"
 
 #include <mbed/Constants.h>
-#include "Motion.h"
+#include "scanner/Motion.h"
 
-#include "PcSender.h"
+#include "scanner/PcSender.h"
 #include <mbed/LCDDisplay.h>
 #include <mbed/Keypad.h>
 
 
 #include "stdbool.h"
 #include "stdio.h"
-#include "Vector3D.h"
+#include "scanner/Vector3D.h"
 #include "lpc17xx_pinsel.h"
 #include <stdio.h>
 #include <string.h>
