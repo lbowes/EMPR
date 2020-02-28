@@ -2,6 +2,8 @@
 #include "LimitSwitch.h"
 #include "Vector3D.h"
 
+#include <scanner/Colour.h>
+#include <scanner/ColourSensor.h>
 #include <mbed/I2C.h>
 #include <mbed/Constants.h>
 #include <mbed/TextOutput.h>
@@ -318,73 +320,83 @@ static void clampWithinAxis(Axis* axis, int* val) {
 void Motion_localisePlatform() {
     ColourSensor_init();
 
-    // The number of samples taken along each axis (spec requires at least 16).
-    const uint8_t sampleCount = 16;
+    const uint8_t edgeDetectThreshold = 15;
 
-    // The minimum difference between two intensity values at positions, for there to be an edge detected
-    // between them. The highest threshold is 255 * 3 = 765 (but no edges would be detected).
-    const uint8_t edgeDetectThreshold = 200;
-
-    uint16_t intensityAtLastSample = 0;
-    uint16_t intensityAtCurrentSample = 0;
-
-    // These are the final stored edge locations
-    uint8_t edgeLocations[2];
-
-    // It should not be physically possible to detect more than 2 edges given that the platforms are solid.
-    // Realistically only one might be detected because the platform cannot move far enough under the
-    // scanner to allow both sides of the platform to be seen.
-    uint8_t edgesDetected = 0;
-
-    Colour colourReading;
-    const uint8_t stepSize_steps = EMPR_X_LIMIT / sampleCount;
-    uint8_t sampleIdx = 0;
-
-    // temp
-    //uint16_t fakeIntensities[16] = { 100, 100, 100, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 100, 100, 100 };
-    //
-
-    // X axis
-    Motion_moveTo(0, EMPR_Y_LIMIT / 2, 0);
-
-    for(sampleIdx = 0; sampleIdx < sampleCount; sampleIdx++) {
-        const uint8_t xPos = sampleIdx * stepSize_steps;
-        Motion_moveTo(xPos, EMPR_Y_LIMIT / 2, 0);
-
+    Motion_moveTo(EMPR_X_LIMIT/2,EMPR_Y_LIMIT/2,0);
+    Colour colourReading = ColourSensor_read();
+    const uint16_t platfromColourCenter = colourReading.clear;
+    // Move Left
+    while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
+        Motion_moveBy(-1,0,0);
         colourReading = ColourSensor_read();
-
-        intensityAtLastSample = intensityAtCurrentSample;
-        intensityAtCurrentSample = (colourReading.r + colourReading.g + colourReading.b) / (255 * 3);//fakeIntensities[sampleIdx];
-        int intensityDifference = sampleIdx > 0 ? abs(intensityAtCurrentSample - intensityAtLastSample) : 0;
-        printf(" last: %d, current: %d, diff: %d\n", intensityAtLastSample, intensityAtCurrentSample, intensityDifference);
-
-        if(intensityDifference > edgeDetectThreshold && edgesDetected < 2) {
-            edgeLocations[edgesDetected] = xPos;
-            edgesDetected++;
-        }
     }
+    // // The number of samples taken along each axis (spec requires at least 16).
+    // const uint8_t sampleCount = 16;
 
-    uint8_t xPlatformLeft = 0;
-    uint8_t xPlatformRight = 0;
+    // // The minimum difference between two intensity values at positions, for there to be an edge detected
+    // // between them. The highest threshold is 255 * 3 = 765 (but no edges would be detected).
+    // const uint8_t edgeDetectThreshold = 200;
 
-    switch(edgesDetected) {
-        case 0:
-            xPlatformLeft = 0;
-            xPlatformRight = EMPR_X_LIMIT;
-        break;
-        case 1:
-            xPlatformLeft = 0;
-            xPlatformRight = edgeLocations[0];
-        break;
-        case 2:
-            xPlatformLeft = edgeLocations[0];
-            xPlatformRight = edgeLocations[1];
-        break;
-    }
+    // uint16_t intensityAtLastSample = 0;
+    // uint16_t intensityAtCurrentSample = 0;
 
-    printf("xPlatformLeft: %d\n", xPlatformLeft);
-    printf("xPlatformRight: %d\n", xPlatformRight);
-    printf("platform size: %d\n", xPlatformRight - xPlatformLeft);
+    // // These are the final stored edge locations
+    // uint8_t edgeLocations[2];
+
+    // // It should not be physically possible to detect more than 2 edges given that the platforms are solid.
+    // // Realistically only one might be detected because the platform cannot move far enough under the
+    // // scanner to allow both sides of the platform to be seen.
+    // uint8_t edgesDetected = 0;
+
+    // Colour colourReading;
+    // const uint8_t stepSize_steps = EMPR_X_LIMIT / sampleCount;
+    // uint8_t sampleIdx = 0;
+
+    // // temp
+    // //uint16_t fakeIntensities[16] = { 100, 100, 100, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 100, 100, 100 };
+    // //
+
+    // // X axis
+    // Motion_moveTo(0, EMPR_Y_LIMIT / 2, 0);
+
+    // for(sampleIdx = 0; sampleIdx < sampleCount; sampleIdx++) {
+    //     const uint8_t xPos = sampleIdx * stepSize_steps;
+    //     Motion_moveTo(xPos, EMPR_Y_LIMIT / 2, 0);
+
+    //     colourReading = ColourSensor_read();
+
+    //     intensityAtLastSample = intensityAtCurrentSample;
+    //     intensityAtCurrentSample = (colourReading.r + colourReading.g + colourReading.b) / (255 * 3);//fakeIntensities[sampleIdx];
+    //     int intensityDifference = sampleIdx > 0 ? abs(intensityAtCurrentSample - intensityAtLastSample) : 0;
+    //     printf(" last: %d, current: %d, diff: %d\n", intensityAtLastSample, intensityAtCurrentSample, intensityDifference);
+
+    //     if(intensityDifference > edgeDetectThreshold && edgesDetected < 2) {
+    //         edgeLocations[edgesDetected] = xPos;
+    //         edgesDetected++;
+    //     }
+    // }
+
+    // uint8_t xPlatformLeft = 0;
+    // uint8_t xPlatformRight = 0;
+
+    // switch(edgesDetected) {
+    //     case 0:
+    //         xPlatformLeft = 0;
+    //         xPlatformRight = EMPR_X_LIMIT;
+    //     break;
+    //     case 1:
+    //         xPlatformLeft = 0;
+    //         xPlatformRight = edgeLocations[0];
+    //     break;
+    //     case 2:
+    //         xPlatformLeft = edgeLocations[0];
+    //         xPlatformRight = edgeLocations[1];
+    //     break;
+    // }
+
+    // printf("xPlatformLeft: %d\n", xPlatformLeft);
+    // printf("xPlatformRight: %d\n", xPlatformRight);
+    // printf("platform size: %d\n", xPlatformRight - xPlatformLeft);
 
     // Y axis
     // TODO: Do the same with Y axis
