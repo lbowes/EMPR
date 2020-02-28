@@ -1,13 +1,4 @@
-#include "scanner/QRSCAN.h"
-#include "scanner/Motion.h"
-
-#include <scanner/ColourSensor.h>
-#include <scanner/Motion.h>
-
-#include <stdio.h>
-
-
-//#include "scanner/UART_movement.h"
+#include "core_requirements/All.h"
 
 #include <mbed/LCDMenu.h>
 #include <mbed/LCDDisplay.h>
@@ -17,6 +8,7 @@
 #include <mbed/Keypad.h>
 #include <scanner/Motion.h>
 #include <scanner/ColourSensor.h>
+
 
 static void run();
 
@@ -28,10 +20,7 @@ int main() {
     LEDs_init();
     Motion_init();
 
-    ColourSensor_init();
-    ColourPointRecogniser_readPoints();
-
-    //run();
+    run();
 
     return 0;
 }

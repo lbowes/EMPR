@@ -45,11 +45,11 @@ void C1() {
             LCDDisplay_print("...", EMPR_LINE_2);
 
             //FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_errorFunc);
-
-            Delay_ms(4000);
             FlagId recognisedFlagId = 0;
 
-            //LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
+            Delay_ms(4000);
+
+            LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
         }
 
         // Move on to next requirement
