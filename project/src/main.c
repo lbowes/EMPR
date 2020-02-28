@@ -13,29 +13,36 @@
 
 
 int main() {
-    SetupScanning();
-    
+    // SetupScanning();
+    // LCDDisplay_init();
+    // LCDDisplay_print("main prog", 0);
+    A1();
     return 0;
 }
 
 
-// static void run() {
-//     LCDMenu mainMenu = LCDMenu_create();
+static void run() {
+    // LCDMenu mainMenu = LCDMenu_create();
 
-//     LCDMenu_addItem(&mainMenu, "A1 Core motion", &A1);
-//     LCDMenu_addItem(&mainMenu, "A2 Platf edges", &A2);
-//     LCDMenu_addItem(&mainMenu, "A3 Manual move", &A3);
-//     LCDMenu_addItem(&mainMenu, "B1 Display RGB", &B1);
-//     LCDMenu_addItem(&mainMenu, "B2 RGB to PC", &B2);
-//     LCDMenu_addItem(&mainMenu, "B3 Find colour", &B3);
-//     LCDMenu_addItem(&mainMenu, "C1 Which flag?", &C1);
-//     LCDMenu_addItem(&mainMenu, "D1 RGBXYZ-> PC", &D1);
-//     LCDMenu_addItem(&mainMenu, "D2 Cmd & read", &D2);
-//     LCDMenu_addItem(&mainMenu, "D3 Show scan", &D3);
+    // LCDMenu_addItem(&mainMenu, "A1 Core motion", &A1);
+    // LCDMenu_addItem(&mainMenu, "A2 Platf edges", &A2);
+    // // LCDMenu_addItem(&mainMenu, "A3 Manual move", &A3);
+    // // LCDMenu_addItem(&mainMenu, "B1 Display RGB", &B1);
+    // LCDMenu_addItem(&mainMenu, "B2 RGB to PC", &B2);
+    // LCDMenu_addItem(&mainMenu, "B3 Find colour", &B3);
+    // LCDMenu_addItem(&mainMenu, "C1 Which flag?", &C1);
+    // LCDMenu_addItem(&mainMenu, "D1 RGBXYZ-> PC", &D1);
+    // // LCDMenu_addItem(&mainMenu, "D2 Cmd & read", &D2);
+    // LCDMenu_addItem(&mainMenu, "D3 Show scan", &D3);
+    // A1();
+    // LCDMenu_run(&mainMenu);
 
-//     LCDMenu_run(&mainMenu);
+    // LCDDisplay_init();
+    // LCDDisplay_print("main prog", 0);
+    // Motion_init();
+    // Motion_moveTo(100,100,100);
+    // Motion_neutraliseAllAxes();
+    //LCDMenu_destroy(&mainMenu); // TODO: Work out why this is causing a crash
+    //LCDDisplay_print("main prog end", 1);
+}
 
-//     //LCDDisplay_print("main prog", 0);
-//     //LCDMenu_destroy(&mainMenu); // TODO: Work out why this is causing a crash
-//     //LCDDisplay_print("main prog end", 1);
-// }

@@ -318,6 +318,7 @@ static void clampWithinAxis(Axis* axis, int* val) {
 
 
 void Motion_localisePlatform() {
+    TextOutput_init();
     ColourSensor_init();
 
     const uint8_t edgeDetectThreshold = 15;
@@ -326,6 +327,31 @@ void Motion_localisePlatform() {
     Colour colourReading = ColourSensor_read();
     const uint16_t platfromColourCenter = colourReading.clear;
     // Move Left
+    // while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
+    //     Motion_moveBy(0,-1,0);
+    //     colourReading = ColourSensor_read();
+    // }
+
+    Motion_moveTo(EMPR_X_LIMIT/2,EMPR_Y_LIMIT/2,0);
+
+    // Right 
+    while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
+        Motion_moveBy(0,1,0);
+
+        colourReading = ColourSensor_read();
+        TextOutput_printInteger(colourReading.clear);
+        TextOutput_printInteger(platfromColourCenter);
+    }
+    
+    Motion_moveTo(EMPR_X_LIMIT/2,EMPR_Y_LIMIT/2,0);
+
+    // Up 
+    while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
+        Motion_moveBy(1,0,0);
+        colourReading = ColourSensor_read();
+    }
+    Motion_moveTo(EMPR_X_LIMIT/2,EMPR_Y_LIMIT/2,0);
+    // Down 
     while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
         Motion_moveBy(-1,0,0);
         colourReading = ColourSensor_read();

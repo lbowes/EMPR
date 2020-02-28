@@ -88,7 +88,7 @@ static void traceSquareBoundary() {
     // the limits of each axis. Quite similar to requirement A2.
 
     Motion_home();
-
+    Motion_localisePlatform();
     Motion_moveTo(0, EMPR_Y_LIMIT, 0);
     Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
     Motion_moveTo(EMPR_X_LIMIT, 0, 0);

@@ -61,7 +61,7 @@ void move(int x, int y){
 //     memset(command, 0, sizeof(command));
 //     serial_read(&command , sizeof(command));
 
-//     move(command[0],command[1]);
+//     Motion_moveTo(command[0],command[1], 0);
 
 //     scan_vals = ColourSensor_read();
 //     PCSender_sendRGBAndPos (0,0,0,scan_vals.r, scan_vals.g, scan_vals.b, scan_vals.clear);
