@@ -27,6 +27,11 @@
 #include <math.h>
 #include <stdio.h>
 
+// temp - These includes are only necessary while the flag data collection function is being implemented
+#include <mbed/LCDMenu.h>
+#include <mbed/TextOutput.h>
+//
+
 
 #define NUM_CRITICAL_POINTS_PER_FLAG 14
 
@@ -294,17 +299,20 @@ uint32_t ColourPointRecogniser_errorFunc(FlagId flagId) {
 }
 
 
-void ColourPointRecogniser_readPoints() {
+static void readPoints() {
     TextOutput_init();
 
     uint8_t pointIdx = 0;
+    const Vector3D platformDims = Motion_getPlatformDimensions();
+    const Vector3D platformOrigin = Motion_getPlatformOrigin();
+
     for(pointIdx = 0; pointIdx < NUM_CRITICAL_POINTS_PER_FLAG; pointIdx++) {
         // 1. Move the sensor to the critical point to be tested
         FlagPoint* criticalPoint = &criticalPoints[pointIdx];
 
         // Convert the flag point into platform coordinates
-        uint16_t x = (int)((criticalPoint->x + 1.0f) * 0.5f * EMPR_X_LIMIT);
-        uint16_t y = (int)((criticalPoint->y + 1.0f) * 0.5f * EMPR_Y_LIMIT);
+        uint16_t x = platformOrigin.x + (int)((criticalPoint->x + 1.0f) * 0.5f * platformDims.x);
+        uint16_t y = platformOrigin.y + (int)((criticalPoint->y + 1.0f) * 0.5f * platformDims.y);
         Motion_moveTo(x, y, 0);
 
         // 2. Read the colour there
@@ -313,5 +321,38 @@ void ColourPointRecogniser_readPoints() {
         char buf[64];
         sprintf(buf, "X: %i, Y: %i, R: %i, G: %i, B: %i\n", x, y, reading.r, reading.g, reading.b);
         TextOutput_print(buf);
+    }
+}
+
+
+
+
+
+void temp_gatherData() {
+    // This function should allow the user to collect all flag data necessary at the critical points
+
+    const char* flagNames[FLAG_COUNT];
+
+    flagNames[UNITED_KINGDOM] = "United Kingom";
+    flagNames[FRANCE] = "France";
+    flagNames[SYRIA] = "Syria";
+    flagNames[ICELAND] = "Iceland";
+    flagNames[SUDAN] = "Sudan";
+    flagNames[NORTH_MACEDONIA] = "North Macedonia";
+    flagNames[CZECHIA] = "Czechia";
+    flagNames[BURKINA_FASO] = "Burkina Faso";
+    flagNames[CENTRAL_AFRICAN_REBUBLIC] = "Cent.Africa.Rep.";
+    flagNames[BURUNDI] = "Burundi";
+
+    TextOutput_init();
+
+    FlagId flagId = 0;
+    for(flagId = FIRST_FLAG; flagId < LAST_FLAG; flagId++) {
+        char flagName[64];
+        sprintf(flagName, "Data for %s", flagNames[flagId]);
+        TextOutput_print(flagName);
+
+        readPoints();
+        TextOutput_println("");
     }
 }
