@@ -1,6 +1,6 @@
 from tkinter import *
 import serial
-
+import struct
 import time
 import random
 
@@ -10,6 +10,7 @@ def read_RGB():
      while run:
          try:
              readline = ser.readline().decode("utf-8")
+             print(readline)
              #readline.remove('\r')
              if readline != 'start' and readline != 'running':
 
@@ -42,7 +43,7 @@ class pixel:
         self.canvas = canvas
         
         self.canvas.create_rectangle(self.posx, self.posy, self.posx +self.size, self.posy +self.size,fill = self.colour, outline = self.colour)
-        #self.square = Frame(pic_frame, width = 5, height = 5, bg=self.colour)
+        #self.square = Frame(pic_frame, width = 5, height = 5, bg=self.colour) 
         #self.frame.grid(row = pos[0], column = pos[1])
     
 
@@ -65,7 +66,9 @@ class start_button:
   
 
     def start_press(self):
-        ser.write(1)
+        string = b''
+        string += struct.pack('!B', 0x02)
+        ser.write(string)
         pic_frame.delete('all')
         
         #run_timer = 0
@@ -89,12 +92,12 @@ def run_now():
 
     col_string = '#%02x%02x%02x' %(red,green,blue)
     print(col_string)
-    pixel((col_val[0],(col_val[1])), col_string, pic_frame,4)
+    pixel((col_val[0],(col_val[1])), col_string, pic_frame,5)
     
     root.after(1, run_now)
 
 
-ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('/dev/ttyACM1')
 
 root = Tk()
 root.minsize(750,750)

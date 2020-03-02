@@ -14,7 +14,8 @@
 
 int main() {
     SetupScanning();
-    
+    //i2c_init();
+    //Motion_init();
     return 0;
 }
 

@@ -1,4 +1,4 @@
 
 
 
-SetupScan(void);
+SetupScanner(void);
