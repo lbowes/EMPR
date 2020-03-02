@@ -1,6 +1,7 @@
 #include "A2.h"
 
 #include <scanner/Motion.h>
+#include <scanner/Vector3D.h>
 #include <mbed/LCDDisplay.h>
 #include <mbed/Constants.h>
 
@@ -25,18 +26,21 @@ void A2() {
 static void exploreEdgeBoundaries() {
     Motion_home();
     Motion_localisePlatform();
-
     Motion_neutraliseAllAxes();
-
-    // TODO: Trace the boundary of the platform once its been determined by the functions
 }
 
 
 static void displayBoundsOnLCD() {
     LCDDisplay_init();
 
-    // This function needs to display the information contained in the `Platform` struct in the `Motion` module.
+    char platformPos[16];
+    Vector3D platPos = Motion_getPlatformOrigin();
+    sprintf(platformPos, "Pos: %i, %i", platPos.x, platPos.y);
 
+    char platformDims[16];
+    Vector3D platDims = Motion_getPlatformDimensions();
+    sprintf(platformDims, "Dims: %i, %i", platDims.x, platDims.y);
 
-    // TODO: Display the boundaries of the platform on the LCD display
+    LCDDisplay_print(platformPos, EMPR_LINE_1);
+    LCDDisplay_print(platformDims, EMPR_LINE_2);
 }

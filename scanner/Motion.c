@@ -137,7 +137,6 @@ void Motion_moveAxisToLimit(uint8_t axis) {
             stepForwards(axis, 1);
     }
 
-
     a->currentPos_steps = 0;
 }
 
@@ -324,7 +323,7 @@ void Motion_localisePlatform() {
 
     // The minimum difference between two intensity values at positions, for there to be an edge detected
     // between them. The highest threshold is 255 * 3 = 765 (but no edges would be detected).
-    const uint8_t edgeDetectThreshold = 200;
+    const uint8_t edgeDetectThreshold = 30;
 
     uint16_t intensityAtLastSample = 0;
     uint16_t intensityAtCurrentSample = 0;
@@ -389,6 +388,17 @@ void Motion_localisePlatform() {
 
     // Y axis
     // TODO: Do the same with Y axis
+
+
+    // ========== HARDCODED ==========
+    // These values were obtained by manually stepping the platform and
+    // monitoring the `ColourSensor` readings __by hand__. For this requirement
+    // to be met, this should all be done automatically, but during development
+    // of flag recognition code, we need these to be accurate.
+    platform.xPos_steps = 29;
+    platform.yPos_steps = 0;
+    platform.xDims_steps = 236;
+    platform.yDims_steps = 233;
 }
 
 
@@ -413,4 +423,26 @@ Vector3D Motion_getCurrentPos() {
     output.z = axes[EMPR_Z_AXIS].currentPos_steps;
 
     return output;
+}
+
+
+Vector3D Motion_getPlatformOrigin() {
+    Vector3D origin;
+
+    origin.x = platform.xPos_steps;
+    origin.y = platform.yPos_steps;
+    origin.z = 0;
+
+    return origin;
+}
+
+
+Vector3D Motion_getPlatformDimensions() {
+    Vector3D dimensions;
+
+    dimensions.x = platform.xDims_steps;
+    dimensions.y = platform.yDims_steps;
+    dimensions.z = 0;
+
+    return dimensions;
 }
