@@ -1,3 +1,4 @@
+#include "ColourSensor.h"
 #include "Motion.h"
 #include "LimitSwitch.h"
 #include "Vector3D.h"
@@ -70,14 +71,14 @@ static void initAxes() {
     axes[EMPR_X_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_X_AXIS].motor.nibble = EMPR_LEFT;
     axes[EMPR_X_AXIS].limitSwitch.deviceAddress = 0x3c;
-    axes[EMPR_X_AXIS].limitSwitch.stateBitPos = 0;
+    axes[EMPR_X_AXIS].limitSwitch.stateBitPos = 1;
     axes[EMPR_X_AXIS].currentPos_steps = 0;
     axes[EMPR_X_AXIS].maxPos_steps = EMPR_X_LIMIT;
 
     axes[EMPR_Y_AXIS].motor.deviceAddress = 0x3e;
     axes[EMPR_Y_AXIS].motor.nibble = EMPR_RIGHT;
     axes[EMPR_Y_AXIS].limitSwitch.deviceAddress = 0x3c;
-    axes[EMPR_Y_AXIS].limitSwitch.stateBitPos = 1;
+    axes[EMPR_Y_AXIS].limitSwitch.stateBitPos = 0;
     axes[EMPR_Y_AXIS].currentPos_steps = 0;
     axes[EMPR_Y_AXIS].maxPos_steps = EMPR_Y_LIMIT;
 
