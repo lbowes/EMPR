@@ -6,6 +6,7 @@
 #include <mbed/LEDs.h>
 #include <mbed/TextOutput.h>
 #include <mbed/Keypad.h>
+#include <mbed/UART_Interrupt.h>
 #include <scanner/Motion.h>
 #include <scanner/QRSCAN.h>
 #include <scanner/ColourSensor.h>
@@ -13,7 +14,7 @@
 
 
 int main() {
-    SetupScanning();
+    UART_setup();
     //i2c_init();
     //Motion_init();
     return 0;

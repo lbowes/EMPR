@@ -154,6 +154,7 @@ Colour ColourSensor_seq() {
     seq_read.r = ((*(vals+3)<<8) | *(vals+2));
     seq_read.g = ((*(vals+5)<<8) | *(vals+4));
     seq_read.b = ((*(vals+7)<<8) | *(vals+6));
+    postProcess(&seq_read);
     return seq_read;
 }
 

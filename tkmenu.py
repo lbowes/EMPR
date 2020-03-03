@@ -33,6 +33,62 @@ def read_RGB():
 
 
 
+class command_entry:
+    def __init__(self, frame, pos):
+        self.box = Entry(frame, width = 8 )
+        self.box.place(x = pos[0], y = pos[1])
+        self.label = Label(frame, text = "x,y")
+        self.label.place(x = pos[0], y = pos[1]+20, bg = "clear")
+
+
+    def clear_placeholder(self):
+        self.box.delete(0, END)
+    
+
+
+
+class send_data_button:
+    def __init__(self, frame, pos, entry_box):
+        self.text = "send"
+        self.pos = pos
+        self.colour = 'blue'
+        self.button = Button(frame, text = self.text, bg = self.colour, command = lambda: self.press())
+        self.button.place(x = pos[0], y = pos[1])
+        self.entry_box = entry_box
+        
+    def press(self):
+        values = []
+        coord = self.entry_box.box.get()
+        self.entry_box.box.delete(0,END)
+        separated_coords = coord.split(',')
+        print(separated_coords)
+        for index in range (0,2):
+            try:
+                sent_val = int (separated_coords[index])
+            except ValueError:
+                print("numbers only you monster")
+                return 
+        
+            if sent_val > 200:
+                sent_val = 200
+            elif sent_val < 0:
+                sent_val = 0
+        
+            values.append(sent_val) 
+            print(sent_val)
+
+
+        string = b''
+        string += struct.pack('!B', 0x04)
+        for i in values:
+            string += struct.pack('!B',i)
+        print(string)
+
+        ser.write(string)
+
+
+
+
 
 class pixel:
     def __init__(self,pos,colour,canvas,size):
@@ -68,6 +124,8 @@ class start_button:
     def start_press(self):
         string = b''
         string += struct.pack('!B', 0x02)
+        string += struct.pack('!B', 0x00)
+        string += struct.pack('!B', 0x00)
         ser.write(string)
         pic_frame.delete('all')
         
@@ -97,10 +155,10 @@ def run_now():
     root.after(1, run_now)
 
 
-ser = serial.Serial('/dev/ttyACM1')
+#ser = serial.Serial('/dev/ttyACM0')
 
 root = Tk()
-root.minsize(750,750)
+root.minsize(900,500)
 root.title('TIME TO SCAN')
 
 
@@ -108,10 +166,11 @@ root.title('TIME TO SCAN')
 
 
 
-pic_frame = Canvas(root, width = 500, height = 500,
+pic_frame = Canvas(root, width = 450, height = 450,
                   bg = 'light grey', borderwidth = 5, relief = GROOVE )
 pic_frame.place(x = 0, y = 0, anchor = NW)
-
+uEntry = command_entry(root, (700,40))
+entry_button = send_data_button(root, (700,0), uEntry)
 #other_frame = Frame(root,width = 300, height = 300, bg = 'light grey')
 #other_frame.grid(row = 0, column = 1, sticky = 'nsew')
 

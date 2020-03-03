@@ -17,11 +17,11 @@
 //y is 230
 
 char buffer1[1000];
-uint8_t commanding[1];
+//uint8_t commanding[1];
 
 ////yayayayya
 
-void scan_start(void){
+void full_scan_start(void){
     int x_ax, y_ax;
     Colour col_vals;
     int col_line ;
@@ -33,10 +33,10 @@ void scan_start(void){
         Motion_moveAxisToLimit(EMPR_Y_AXIS);
         for (y_ax = y_offset; y_ax < 240; y_ax+=y_scale){
             LEDs_debugBinary(1);
-            Motion_moveTo(x_ax, y_ax, 100);
+            Motion_moveTo(x_ax, y_ax, 0);
             LEDs_debugBinary(2);
             //Delay_ms(5);   figure out what is going on here
-            col_vals = ColourSensor_read();
+            col_vals = ColourSensor_seq();
             LEDs_debugBinary(4);
             sprintf(buffer1,"r: %d   g: %d", col_vals.r, col_vals.g);
             
@@ -55,31 +55,16 @@ void scan_start(void){
 
 
 
-void SetupScanning(void)
-{   
-    Motion_init();
-    i2c_init();
-    LCDDisplay_init();
-    serial_init();
-    UART_IntConfig((LPC_UART_TypeDef *) LPC_UART0, UART_INTCFG_RBR, ENABLE);
-    NVIC_EnableIRQ(UART0_IRQn);
-    ColourSensor_init();
-    //Motion_init();
-    Motion_neutraliseAllAxes();
-    
-    
-}
 
 
-
-    void UART0_IRQHandler(void){
-        memset(commanding, 0, sizeof(commanding));
-        serial_read(&commanding, sizeof(commanding));
-        if (commanding[0] == 2){
-            scan_start();
-        }
-        memset(commanding, 0, sizeof(commanding));
+//     void UART0_IRQHandler(void){
+//         memset(commanding, 0, sizeof(commanding));
+//         serial_read(&commanding, sizeof(commanding));
+//         if (commanding[0] == 2){
+//             scan_start();
+//         }
+//         memset(commanding, 0, sizeof(commanding));
         
-}
+// }
 
 
