@@ -397,8 +397,8 @@ void Motion_localisePlatform() {
     // of flag recognition code, we need these to be accurate.
     platform.xPos_steps = 29;
     platform.yPos_steps = 0;
-    platform.xDims_steps = 236;
-    platform.yDims_steps = 233;
+    platform.xDims_steps = 235;
+    platform.yDims_steps = 235;
 }
 
 

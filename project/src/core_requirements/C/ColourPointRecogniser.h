@@ -5,9 +5,10 @@
 
 
 void ColourPointRecogniser_init();
+void ColourPointRecogniser_gatherData();
 uint32_t ColourPointRecogniser_errorFunc(FlagId flagId);
 
-void temp_gatherData();
+void temp_ColourSensor_gatherData();
 
 
 #endif // EMPR_COLOURPOINTRECOGNITION_H_

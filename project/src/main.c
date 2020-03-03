@@ -1,3 +1,7 @@
+#define DATA_GATHERING 0
+
+#if !DATA_GATHERING
+
 #include "core_requirements/All.h"
 
 #include <mbed/LCDMenu.h>
@@ -46,3 +50,17 @@ static void run() {
     //LCDMenu_destroy(&mainMenu); // TODO: Work out why this is causing a crash
     //LCDDisplay_print("main prog end", 1);
 }
+
+#else
+
+#include <scanner/ColourSensor.h>
+
+
+int main() {
+    ColourPointRecogniser_init();
+    temp_ColourSensor_gatherData();
+
+    return 0;
+}
+
+#endif

@@ -22,9 +22,9 @@ typedef enum {
 #define FLAG_COUNT (LAST_FLAG - FIRST_FLAG + 1)
 
 typedef uint32_t (*ErrorFunction)(FlagId);
+typedef void (*DataGatherFunction)(void);
 
-
-FlagId FlagRecogniser_run(ErrorFunction errorFunc);
+FlagId FlagRecogniser_run(DataGatherFunction dataGatherFunc, ErrorFunction errorFunc);
 
 
 #endif // EMPR_FLAGRECOGNISER_H_
