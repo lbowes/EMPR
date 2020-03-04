@@ -38,7 +38,7 @@ class command_entry:
         self.box = Entry(frame, width = 8 )
         self.box.place(x = pos[0], y = pos[1])
         self.label = Label(frame, text = "x,y")
-        self.label.place(x = pos[0], y = pos[1]+20, bg = "clear")
+        self.label.place(x = pos[0], y = pos[1]+30)
 
 
     def clear_placeholder(self):
@@ -106,6 +106,19 @@ class pixel:
 
 
 
+class quit_scan_button:
+    def __init__(self, pos):
+        self.text = 'Quit'
+        self.pos = pos
+        self.colour = 'red'
+        self.Button = Button(root,bg = self.colour, text = self.text, command = lambda: self.press())
+        self.Button.place (x = pos[0], y = pos[1])
+
+
+    def press(self):
+        pic_frame.delete('all')
+        default()
+
 
 
 class start_button:
@@ -131,7 +144,7 @@ class start_button:
         
         #run_timer = 0
         #resolution = 45 * 50
-        run_now()
+        draw()
 
 
 
@@ -151,11 +164,12 @@ def run_now():
     col_string = '#%02x%02x%02x' %(red,green,blue)
     print(col_string)
     pixel((col_val[0],(col_val[1])), col_string, pic_frame,5)
-    
-    root.after(1, run_now)
+
+    #root.update()
+    #root.after(1, run_now)
 
 
-#ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('/dev/ttyACM0', baudrate = 460800)
 
 root = Tk()
 root.minsize(900,500)
@@ -188,7 +202,22 @@ start_button = start_button(root, (600,0))
 #k1 = pixel((0,0), '#00ff00', 0)
 #k2 = pixel((1,0), '#ff0000', 0)
 #root.after(0, run)
-root.mainloop()
+#root.mainloop()
+#run_now()
+def default ():
+    while True:
+        root.update_idletasks()
+        root.update()
+
+def draw():
+    quit_button = quit_scan_button((600,50))
+    while True:
+
+        run_now()
+        root.update_idletasks()
+        root.update()
+
+default()
 #ser.close
 #70, 70, 70, 200 white
 #3,2,2,7  black

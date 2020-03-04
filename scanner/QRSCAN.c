@@ -1,4 +1,5 @@
 #include "Motion.h"
+#include "QRSCAN.h"
 #include "PcSender.h"
 #include "Scanners.h"
 #include <mbed/Constants.h>
@@ -19,9 +20,11 @@
 char buffer1[1000];
 //uint8_t commanding[1];
 
-////yayayayya
+
+
 
 void full_scan_start(void){
+   
     int x_ax, y_ax;
     Colour col_vals;
     int col_line ;
@@ -32,22 +35,26 @@ void full_scan_start(void){
     for (x_ax = x_offset; x_ax< 240; x_ax+=x_scale){
         Motion_moveAxisToLimit(EMPR_Y_AXIS);
         for (y_ax = y_offset; y_ax < 240; y_ax+=y_scale){
-            LEDs_debugBinary(1);
+            //LEDs_debugBinary(1);
             Motion_moveTo(x_ax, y_ax, 0);
-            LEDs_debugBinary(2);
+            //LEDs_debugBinary(2);
             //Delay_ms(5);   figure out what is going on here
+            
             col_vals = ColourSensor_seq();
-            LEDs_debugBinary(4);
+            //LEDs_debugBinary(4);
             sprintf(buffer1,"r: %d   g: %d", col_vals.r, col_vals.g);
             
             LCDDisplay_print(buffer1, 0);
             
-            PCSender_sendRGBAndPos(((x_ax)/x_scale),((y_ax)/y_scale),0, col_vals.r, col_vals.g, col_vals.b, col_vals.clear);
-            LEDs_debugBinary(8);
+            PCSender_quicksend(((x_ax)/x_scale),((y_ax)/y_scale),0, col_vals.r, col_vals.g, col_vals.b, col_vals.clear);
+            //LEDs_debugBinary(8);
+            
         Motion_neutraliseAllAxes();
-
         }
+        
+        
     }
+    
     LCDDisplay_print("done", 1);
     Motion_home();
     Motion_neutraliseAllAxes();

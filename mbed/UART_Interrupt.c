@@ -33,6 +33,7 @@ void UART0_IRQHandler(void){
     else if (commanding[0] == 4){
         uart_move(commanding[1], commanding[2]);
     }
+   
     memset(commanding, 0, sizeof(commanding));
     NVIC_EnableIRQ(UART0_IRQn);
 }
