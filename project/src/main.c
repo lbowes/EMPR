@@ -1,4 +1,4 @@
-#define DATA_GATHERING 0
+#define DATA_GATHERING 1
 
 #if !DATA_GATHERING
 
@@ -57,8 +57,7 @@ static void run() {
 
 
 int main() {
-    ColourPointRecogniser_init();
-    temp_ColourSensor_gatherData();
+    gatherImageHistogramData();
 
     return 0;
 }
