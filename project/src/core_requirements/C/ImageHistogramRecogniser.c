@@ -54,18 +54,20 @@ static void scanFlagFull(FlagId flagId) {
 
     uint16_t xi = 0;
     uint16_t yi = 0;
+    uint8_t zi = 0;
+    uint8_t horizontalLines = 0;
 
-#define FULL_RES 1
-#if FULL_RES
     for(xi = 0; xi < platformDims.x; xi++) {
+        horizontalLines++;
         for(yi = 0; yi < platformDims.y; yi++) {
-#else
-    for(xi = 0; xi < platformDims.x; xi += 29) {
-        for(yi = 0; yi < platformDims.y; yi += 29) {
-#endif
             Motion_moveTo(platformOrigin.x + xi, platformOrigin.y + yi, 0);
             Colour reading = ColourSensor_read();
             TextOutputUtils_printColour(reading);
+        }
+
+        if(horizontalLines > 5) {
+            zi += 10;
+            horizontalLines = 0;
         }
 
         Motion_moveAxisToLimit(EMPR_Y_AXIS);
