@@ -1,3 +1,4 @@
+#include "ColourSensor.h"
 #include "Motion.h"
 #include "LimitSwitch.h"
 #include "Vector3D.h"
@@ -63,6 +64,8 @@ void Motion_init() {
 
     initAxes();
     initPlatform();
+
+    Motion_localisePlatform();
 
     Motion_home();
 }
@@ -137,7 +140,6 @@ void Motion_moveAxisToLimit(uint8_t axis) {
         while(LimitSwitch_isDown(lSwitch))
             stepForwards(axis, 1);
     }
-
 
     a->currentPos_steps = 0;
 }
@@ -318,88 +320,96 @@ static void clampWithinAxis(Axis* axis, int* val) {
 
 
 void Motion_localisePlatform() {
+#if 0
     ColourSensor_init();
 
-    const uint8_t edgeDetectThreshold = 15;
+    // Start the sensor from some position near the centre of the platform, and move left and right,
+    // up and down until either an edge is detected or the platform limits are reached.
+    uint16_t edgeDetectionThreshold = 30;
+    uint16_t currentIntensityReading = 0;
+    uint16_t lastIntensityReading = 0;
+    Colour reading = ColourSensor_read();
+    const Vector3D platformCentre = (Vector3D){ EMPR_X_LIMIT / 2, EMPR_Y_LIMIT / 2, 0 };
 
-    Motion_moveTo(EMPR_X_LIMIT/2,EMPR_Y_LIMIT/2,0);
-    Colour colourReading = ColourSensor_read();
-    const uint16_t platfromColourCenter = colourReading.clear;
-    // Move Left
-    while (abs(colourReading.clear-platfromColourCenter)<edgeDetectThreshold){
-        Motion_moveBy(-1,0,0);
-        colourReading = ColourSensor_read();
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
+
+    uint8_t xEdge1 = 0;
+    while(1) {
+        Motion_moveBy(1, 0, 0);
+
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
+
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            xEdge1 = Motion_getCurrentPos().x;
+            break;
+        }
     }
-    // // The number of samples taken along each axis (spec requires at least 16).
-    // const uint8_t sampleCount = 16;
 
-    // // The minimum difference between two intensity values at positions, for there to be an edge detected
-    // // between them. The highest threshold is 255 * 3 = 765 (but no edges would be detected).
-    // const uint8_t edgeDetectThreshold = 200;
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
 
-    // uint16_t intensityAtLastSample = 0;
-    // uint16_t intensityAtCurrentSample = 0;
+    uint8_t xEdge2 = 0;
+    while(1) {
+        Motion_moveBy(-1, 0, 0);
 
-    // // These are the final stored edge locations
-    // uint8_t edgeLocations[2];
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
 
-    // // It should not be physically possible to detect more than 2 edges given that the platforms are solid.
-    // // Realistically only one might be detected because the platform cannot move far enough under the
-    // // scanner to allow both sides of the platform to be seen.
-    // uint8_t edgesDetected = 0;
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            xEdge2 = Motion_getCurrentPos().x;
+            break;
+        }
+    }
 
-    // Colour colourReading;
-    // const uint8_t stepSize_steps = EMPR_X_LIMIT / sampleCount;
-    // uint8_t sampleIdx = 0;
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
 
-    // // temp
-    // //uint16_t fakeIntensities[16] = { 100, 100, 100, 700, 700, 700, 700, 700, 700, 700, 700, 700, 700, 100, 100, 100 };
-    // //
+    uint8_t yEdge1 = 0;
+    while(1) {
+        Motion_moveBy(0, 1, 0);
 
-    // // X axis
-    // Motion_moveTo(0, EMPR_Y_LIMIT / 2, 0);
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
 
-    // for(sampleIdx = 0; sampleIdx < sampleCount; sampleIdx++) {
-    //     const uint8_t xPos = sampleIdx * stepSize_steps;
-    //     Motion_moveTo(xPos, EMPR_Y_LIMIT / 2, 0);
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            yEdge1 = Motion_getCurrentPos().y;
+            break;
+        }
+    }
 
-    //     colourReading = ColourSensor_read();
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
 
-    //     intensityAtLastSample = intensityAtCurrentSample;
-    //     intensityAtCurrentSample = (colourReading.r + colourReading.g + colourReading.b) / (255 * 3);//fakeIntensities[sampleIdx];
-    //     int intensityDifference = sampleIdx > 0 ? abs(intensityAtCurrentSample - intensityAtLastSample) : 0;
-    //     printf(" last: %d, current: %d, diff: %d\n", intensityAtLastSample, intensityAtCurrentSample, intensityDifference);
+    uint8_t yEdge2 = 0;
+    while(1) {
+        Motion_moveBy(0, -1, 0);
 
-    //     if(intensityDifference > edgeDetectThreshold && edgesDetected < 2) {
-    //         edgeLocations[edgesDetected] = xPos;
-    //         edgesDetected++;
-    //     }
-    // }
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
 
-    // uint8_t xPlatformLeft = 0;
-    // uint8_t xPlatformRight = 0;
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            yEdge2 = Motion_getCurrentPos().y;
+            break;
+        }
+    }
 
-    // switch(edgesDetected) {
-    //     case 0:
-    //         xPlatformLeft = 0;
-    //         xPlatformRight = EMPR_X_LIMIT;
-    //     break;
-    //     case 1:
-    //         xPlatformLeft = 0;
-    //         xPlatformRight = edgeLocations[0];
-    //     break;
-    //     case 2:
-    //         xPlatformLeft = edgeLocations[0];
-    //         xPlatformRight = edgeLocations[1];
-    //     break;
-    // }
+    platform.xPos_steps = xEdge1;
+    platform.yPos_steps = yEdge1;
+    platform.xDims_steps = xEdge2 - xEdge1;
+    platform.yDims_steps = yEdge2 - yEdge1;
+#endif
 
-    // printf("xPlatformLeft: %d\n", xPlatformLeft);
-    // printf("xPlatformRight: %d\n", xPlatformRight);
-    // printf("platform size: %d\n", xPlatformRight - xPlatformLeft);
-
-    // Y axis
-    // TODO: Do the same with Y axis
+    // ========== HARDCODED ==========
+    // These values were obtained by manually stepping the platform and
+    // monitoring the `ColourSensor` readings __by hand__. For this requirement
+    // to be met, this should all be done automatically, but during development
+    // of flag recognition code, we need these to be accurate.
+    platform.xPos_steps = 29;
+    platform.yPos_steps = 0;
+    platform.xDims_steps = 235;
+    platform.yDims_steps = 235;
 }
 
 
@@ -424,4 +434,26 @@ Vector3D Motion_getCurrentPos() {
     output.z = axes[EMPR_Z_AXIS].currentPos_steps;
 
     return output;
+}
+
+
+Vector3D Motion_getPlatformOrigin() {
+    Vector3D origin;
+
+    origin.x = platform.xPos_steps;
+    origin.y = platform.yPos_steps;
+    origin.z = 0;
+
+    return origin;
+}
+
+
+Vector3D Motion_getPlatformDimensions() {
+    Vector3D dimensions;
+
+    dimensions.x = platform.xDims_steps;
+    dimensions.y = platform.yDims_steps;
+    dimensions.z = 0;
+
+    return dimensions;
 }

@@ -11,7 +11,10 @@ void Motion_moveTo(int x, int y, int z);
 void Motion_moveBy(int deltaX, int deltaY, int deltaZ);
 void Motion_moveAxisToLimit(uint8_t axisId);
 Vector3D Motion_getCurrentPos();
+Vector3D Motion_getPlatformOrigin();
+Vector3D Motion_getPlatformDimensions();
 void Motion_home();
 void Motion_moveAxisToLimit(uint8_t axisId);
+
 
 #endif // EMPR_MOTION_H_
