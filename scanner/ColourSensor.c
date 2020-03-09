@@ -3,7 +3,7 @@
 #include <mbed/I2C.h>
 #include <mbed/Delay.h>
 #include <mbed/Constants.h>
-
+#include <stdio.h>
 #include <math.h>
 
 // CODE LIFTED FROM
@@ -103,7 +103,7 @@ static void write8(uint8_t reg, uint8_t value) {
     uint8_t cmd = (TCS34725_COMMAND_BIT | reg);
     i2c_send_data(TCS34725_ADDRESS, &cmd, 1);
 
-   // Very confused what the point of this is?
+   // Very confused what the point of this is?`
    uint8_t data = value; // & 0xFF;
    i2c_send_data(TCS34725_ADDRESS, &data, 1);
 }
@@ -153,6 +153,7 @@ Colour ColourSensor_seq() {
     seq_read.r = ((*(vals+3)<<8) | *(vals+2));
     seq_read.g = ((*(vals+5)<<8) | *(vals+4));
     seq_read.b = ((*(vals+7)<<8) | *(vals+6));
+    postProcess(&seq_read);
     return seq_read;
 }
 
@@ -172,7 +173,7 @@ Colour ColourSensor_read() {
 
 
 static void postProcess(Colour* rawData) {
-    uint16_t max = 100;
+    uint16_t max = 60;
 
     if(rawData->r > max)
         max = rawData->r;
@@ -181,9 +182,9 @@ static void postProcess(Colour* rawData) {
     if(rawData->b > max)
         max = rawData->b;
 
-    rawData->r = (int)((float)rawData->r / max * 255);
-    rawData->g = (int)((float)rawData->g / max * 255);
-    rawData->b = (int)((float)rawData->b / max * 255);
+    rawData->r = ((rawData->r * 255) / max);
+    rawData->g = ((rawData->g * 255) / max);
+    rawData->b = ((rawData->b * 255) / max);
 }
 
 
