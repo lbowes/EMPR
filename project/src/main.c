@@ -15,13 +15,14 @@
 
 static void run();
 
+
 int main() {
     Motion_init();
     ColourSensor_init();
 
-    getCriticalPointColours();
+    //ColourPointRecogniser_getCriticalPointColours();
 
-    //run();
+    run();
 
     return 0;
 }
