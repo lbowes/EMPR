@@ -32,6 +32,7 @@ void C1() {
     LCDDisplay_init();
     Keypad_init();
     ColourPointRecogniser_init();
+    Motion_init();
 
     populateFlagNames();
 

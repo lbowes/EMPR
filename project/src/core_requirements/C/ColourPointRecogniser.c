@@ -32,7 +32,7 @@
 
 
 
-#define NUM_CRITICAL_POINTS_PER_FLAG 3
+#define NUM_CRITICAL_POINTS_PER_FLAG 4
 
 typedef struct {
     float x;
@@ -62,18 +62,18 @@ void ColourPointRecogniser_init() {
 
 
 static void setCriticalPoints() {
-    //criticalPoints[0] = (FlagPoint){ -0.868, 0.276 };
+    criticalPoints[0] = (FlagPoint){ -0.868, 0.276 };
     //criticalPoints[0] = (FlagPoint){ -0.874, -0.278 };
     //criticalPoints[2] = (FlagPoint){ -0.294, -0.068 };
-    criticalPoints[0] = (FlagPoint){ -0.269, 0.412 };
+    criticalPoints[1] = (FlagPoint){ -0.269, 0.412 };
     //criticalPoints[4] = (FlagPoint){ -0.265, -0.422 };
     //criticalPoints[2] = (FlagPoint){ 0.003, 0.416 };
     //criticalPoints[6] = (FlagPoint){ 0.020, 0.043 };
-    criticalPoints[1] = (FlagPoint){ 0.001, -0.428 };
+    criticalPoints[2] = (FlagPoint){ 0.001, -0.428 };
     //criticalPoints[8] = (FlagPoint){ 0.106, -0.267 };
     //criticalPoints[4] = (FlagPoint){ 0.253, 0.421 };
     //criticalPoints[10] = (FlagPoint){ 0.251, -0.416 };
-    criticalPoints[2] = (FlagPoint){ 0.429, 0.438 };
+    criticalPoints[3] = (FlagPoint){ 0.429, 0.438 };
     //criticalPoints[12] = (FlagPoint){ 0.835, 0.278 };
     //criticalPoints[6] = (FlagPoint){ 0.842, -0.276 };
 }
@@ -86,182 +86,84 @@ static void loadFlagSignatureData() {
 
     // =================================== UNITED_KINGDOM ===================================
     flagSignatures[UNITED_KINGDOM] = (FlagSignature){
-        //(Colour) { 15, 17, 12 },
-        //(Colour) { 7, 7, 5 },
-        //(Colour) { 114, 58, 58 },
-        (Colour) { 225, 255, 221 },
-        //(Colour) { 79, 96, 94 },
-        //(Colour) { 228, 255, 223 },
-        //(Colour) { 114, 56, 56 },
-        (Colour) { 112, 56, 56 },
-        //(Colour) { 114, 66, 66 },
-        //(Colour) { 225, 255, 223 },
-        //(Colour) { 35, 56, 58 },
-        (Colour) { 224, 255, 221 }
-        //(Colour) { 153, 130, 119 },
-        //(Colour) { 142, 137, 127 }
+        (Colour){234, 255, 224},
+        (Colour){232, 255, 227},
+        (Colour){137, 60, 63},
+        (Colour){225, 255, 223}
     };
 
     // =================================== FRANCE ===================================
     flagSignatures[FRANCE] = (FlagSignature){
-        //(Colour){ 7, 7, 5 },
-        //(Colour){ 5, 5, 5 },
-        //(Colour){ 28, 48, 56 },
-        (Colour){ 33, 53, 66 },
-        //(Colour){ 28, 45, 53 },
-        //(Colour){ 223, 255, 221 },
-        //(Colour){ 224, 255, 224 },
-        (Colour){ 224, 255, 221 },
-        //(Colour){ 226, 255, 222 },
-        //(Colour){ 224, 255, 222 },
-        //(Colour){ 221, 249, 216 },
-        (Colour){ 165, 94, 89 }
-        //(Colour){ 163, 53, 58 },
-        //(Colour){ 163, 53, 58 }
+        (Colour){35, 60, 73},
+        (Colour){227, 255, 224},
+        (Colour){223, 255, 221},
+        (Colour){200, 66, 73}
     };
 
     // =================================== SYRIA ===================================
     flagSignatures[SYRIA] = (FlagSignature){
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 10, 10, 10 },
-        //(Colour){ 163, 214, 173 },
-        (Colour){ 33, 35, 28 },
-        //(Colour){ 117, 58, 58 },
-        //(Colour){ 40, 43, 35 },
-        //(Colour){ 114, 140, 119 },
-        (Colour){ 117, 56, 56 },
-        //(Colour){ 225, 255, 221 },
-        //(Colour){ 43, 45, 38 },
-        //(Colour){ 150, 86, 84 },
-        (Colour){ 66, 71, 61 }
-        //(Colour){ 28, 28, 22 },
-        //(Colour){ 219, 255, 220 }
+        (Colour){31, 31, 25},
+        (Colour){35, 35, 25},
+        (Colour){149, 60, 63},
+        (Colour){35, 35, 28}
     };
 
     // =================================== ICELAND ===================================
     flagSignatures[ICELAND] = (FlagSignature){
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 232, 224, 198 },
-        (Colour){ 255, 250, 222 },
-        //(Colour){ 198, 178, 158 },
-        //(Colour){ 43, 94, 127 },
-        //(Colour){ 35, 81, 107 },
-        (Colour){ 33, 71, 96 },
-        //(Colour){ 209, 214, 186 },
-        //(Colour){ 35, 84, 119 },
-        //(Colour){ 30, 66, 91 },
-        (Colour){ 35, 84, 117 }
-        //(Colour){ 30, 73, 102 },
-        //(Colour){ 211, 219, 196 }
+        (Colour){41, 105, 149},
+        (Colour){168, 70, 73},
+        (Colour){38, 89, 124},
+        (Colour){41, 102, 143}
     };
 
     // =================================== SUDAN ===================================
     flagSignatures[SUDAN] = (FlagSignature){
-        //(Colour){ 10, 10, 7 },
-        //(Colour){ 7, 7, 5 },
-        //(Colour){ 211, 234, 206 },
-        (Colour){ 221, 255, 221 },
-        //(Colour){ 102, 38, 40 },
-        //(Colour){ 223, 255, 223 },
-        //(Colour){ 28, 30, 25 },
-        (Colour){ 107, 40, 43 },
-        //(Colour){ 232, 255, 223 },
-        //(Colour){ 223, 255, 223 },
-        //(Colour){ 104, 40, 43 },
-        (Colour){ 224, 255, 222 }
-        //(Colour){ 71, 76, 68 },
-        //(Colour){ 229, 255, 221 }
+        (Colour){41, 70, 44},
+        (Colour){232, 255, 221},
+        (Colour){146, 51, 57},
+        (Colour){225, 255, 221}
     };
 
     // =================================== NORTH_MACEDONIA ===================================
     flagSignatures[NORTH_MACEDONIA] = (FlagSignature){
-        //(Colour){ 10, 10, 7},
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 124, 56, 51 },
-        (Colour){ 221, 255, 221 },
-        //(Colour){ 160, 104, 61 },
-        //(Colour){ 223, 255, 221 },
-        //(Colour){ 158, 91, 61 },
-        (Colour){ 153, 99, 58 },
-        //(Colour){ 173, 130, 66 },
-        //(Colour){ 224, 255, 222 },
-        //(Colour){ 104, 43, 43 },
-        (Colour){ 223, 255, 221 }
-        //(Colour){ 211, 183, 112 },
-        //(Colour){ 145, 79, 56 }
+        (Colour){165, 73, 70},
+        (Colour){255, 255, 226},
+        (Colour){255, 206, 94},
+        (Colour){234, 255, 221}
     };
 
     // =================================== CZECHIA ===================================
     flagSignatures[CZECHIA] = (FlagSignature){
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 5, 5, 5 },
-        //(Colour){ 28, 58, 73 },
-        (Colour){ 145, 61, 61 },
-        //(Colour){ 158, 193, 175 },
-        //(Colour){ 147, 68, 68 },
-        //(Colour){ 119, 45, 48 },
-        (Colour){ 225, 255, 223 },
-        //(Colour){ 228, 255, 223 },
-        //(Colour){ 142, 68, 66 },
-        //(Colour){ 216, 244, 214 },
-        (Colour){ 147, 89, 84 }
-        //(Colour){ 132, 51, 53 },
-        //(Colour){ 227, 255, 222 }
+        (Colour){35, 76, 95},
+        (Colour){153, 57, 60},
+        (Colour){222, 255, 220},
+        (Colour){175, 66, 70}
     };
 
     // =================================== BURKINA_FASO ===================================
     flagSignatures[BURKINA_FASO] = (FlagSignature){
-        //(Colour){ 10, 10, 7 },
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 58, 104, 63 },
-        (Colour){ 66, 122, 76 },
-        //(Colour){ 135, 43, 45 },
-        //(Colour){ 71, 122, 79 },
-        //(Colour){ 58, 104, 66 },
-        (Colour){ 137, 45, 48 },
-        //(Colour){ 158, 79, 56 },
-        //(Colour){ 68, 122, 84 },
-        //(Colour){ 130, 40, 45 },
-        (Colour){ 81, 130, 96 }
-        //(Colour){ 56, 104, 63 },
-        //(Colour){ 163, 56, 58 }
+        (Colour){63, 121, 73},
+(Colour){73, 137, 82},
+(Colour){184, 60, 63},
+(Colour){73, 143, 86}
+
     };
 
     // =================================== CENTRAL_AFRICAN_REBUBLIC ===================================
     flagSignatures[CENTRAL_AFRICAN_REBUBLIC] = (FlagSignature){
-        //(Colour){ 7, 7, 5 },
-        //(Colour){ 7, 10, 7 },
-        //(Colour){ 51, 96, 58 },
-        (Colour){ 255, 198, 91 },
-        //(Colour){ 224, 249, 216 },
-        //(Colour){ 140, 61, 63 },
-        //(Colour){ 107, 38, 40 },
-        (Colour){ 94, 33, 35 },
-        //(Colour){ 99, 35, 38 },
-        //(Colour){ 249, 191, 94 },
-        //(Colour){ 221, 239, 211 },
-        (Colour){ 237, 196, 107 }
-        //(Colour){ 209, 163, 71 },
-        //(Colour){ 227, 255, 222 }
+        (Colour){255, 197, 88},
+(Colour){255, 195, 86},
+(Colour){130, 44, 47},
+(Colour){255, 196, 85}
+
     };
 
     // =================================== BURUNDI ===================================
     flagSignatures[BURUNDI] = (FlagSignature){
-        //(Colour){ 7, 7, 7 },
-        //(Colour){ 5, 7, 5 },
-        //(Colour){ 68, 119, 76 },
-        (Colour){ 224, 198, 181 },
-        //(Colour){ 206, 216, 191 },
-        //(Colour){ 229, 221, 198 },
-        //(Colour){ 222, 255, 222 },
-        (Colour){ 221, 239, 209 },
-        //(Colour){ 226, 247, 214 },
-        //(Colour){ 229, 224, 198 },
-        //(Colour){ 191, 178, 158 },
-        (Colour){ 239, 252, 221 }
-        //(Colour){ 226, 255, 218 },
-        //(Colour){ 61, 109, 66 }
+        (Colour){98, 162, 105},
+(Colour){153, 63, 66},
+(Colour){239, 255, 221},
+(Colour){162, 79, 79}
     };
 }
 
@@ -377,6 +279,7 @@ void getCriticalPointColours() {
     // This function should allow the user to collect all flag data necessary at the critical points
     Motion_init();
     TextOutput_init();
+    ColourPointRecogniser_init();
 
     LCDMenu flagSelectMenu = LCDMenu_create();
 

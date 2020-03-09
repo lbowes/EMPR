@@ -13,8 +13,15 @@
 #include <mbed/UART_Interrupt.h>
 
 
+static void run();
+
 int main() {
-    run();
+    Motion_init();
+    ColourSensor_init();
+
+    getCriticalPointColours();
+
+    //run();
 
     return 0;
 }
