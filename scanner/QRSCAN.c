@@ -28,15 +28,17 @@ void full_scan_start(void){
     int x_ax, y_ax;
     Colour col_vals;
     int col_line ;
-    int x_scale = 3, y_scale = 3;
-    int x_offset = 20, y_offset = 0;
+    int x_scale = 4, y_scale = 3;
+    int x_offset = 30, y_offset = 0;
     Motion_home();
     LEDs_init();
-    for (x_ax = x_offset; x_ax< 240; x_ax+=x_scale){
+
+    //by default x_ax, y_ax < 240
+    for (x_ax = 0; x_ax< 240; x_ax+=x_scale){
         Motion_moveAxisToLimit(EMPR_Y_AXIS);
-        for (y_ax = y_offset; y_ax < 240; y_ax+=y_scale){
+        for (y_ax = 0; y_ax < 210; y_ax+=y_scale){
             //LEDs_debugBinary(1);
-            Motion_moveTo(x_ax, y_ax, 0);
+            Motion_moveTo(x_ax + x_offset, y_ax + y_offset, 0);
             //LEDs_debugBinary(2);
             //Delay_ms(5);   figure out what is going on here
             
@@ -53,8 +55,9 @@ void full_scan_start(void){
         }
         
         
+        
     }
-    
+    PCSender_quicksend(0,0,255, 0, 0, 0, 0);
     LCDDisplay_print("done", 1);
     Motion_home();
     Motion_neutraliseAllAxes();

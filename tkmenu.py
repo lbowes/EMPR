@@ -3,26 +3,32 @@ import serial
 import struct
 import time
 import random
-
+import numpy
+from PIL import Image, ImageOps
 
 def read_RGB():
      run  = True
      while run:
          try:
              readline = ser.readline().decode("utf-8")
-             print(readline)
+             
              #readline.remove('\r')
+
              if readline != 'start' and readline != 'running':
 
 
-                 readline = readline.split(' ')
+                 readline = readline.split()
+                 print(readline)
                 #  for o in readline:
                 #      int(o)
                  #print("R" + readline[3])
                  #print("G" + readline[4])
                 # print("B" + readline[5])
                  #print("C" + readline[6])    
-                 if len(readline) == 7:          
+                 if readline[2] == 'ff':
+                     print('done')
+                     return 'finished'
+                 elif len(readline) == 7:          
                      run = False
                      return readline
          except:
@@ -52,7 +58,7 @@ class send_data_button:
         self.text = "send"
         self.pos = pos
         self.colour = 'blue'
-        self.button = Button(frame, text = self.text, bg = self.colour, command = lambda: self.press())
+        self.button = Button(frame, text = self.text ,bg = self.colour, command = lambda: self.press())
         self.button.place(x = pos[0], y = pos[1])
         self.entry_box = entry_box
         
@@ -142,8 +148,6 @@ class start_button:
         ser.write(string)
         pic_frame.delete('all')
         
-        #run_timer = 0
-        #resolution = 45 * 50
         draw()
 
 
@@ -154,29 +158,52 @@ class start_button:
 
 def run_now():
     col_val = read_RGB()
+    if col_val == 'finished':
+        print(pic_arr)
+        im  = Image.fromarray(pic_arr)
+        im.save("QRPic.png")
+        im2  = ImageOps.grayscale(im)
+        im2.save('QRGrey.png')
+        default() 
     red = int(col_val[3], 16)
     print(red)
     green = int(col_val[4], 16)
     print(green)
     blue = int(col_val[5], 16)
     print(blue)
-
-    col_string = '#%02x%02x%02x' %(red,green,blue)
-    print(col_string)
+    clear_val = int(col_val[6], 16)
+    grey = int(((red + green + blue) / 3))
+    pic_arr[int(col_val[0],16), int(col_val[1],16), 0] = red
+    pic_arr[int(col_val[0],16), int(col_val[1],16), 1] = green
+    pic_arr[int(col_val[0],16), int(col_val[1],16), 2] = blue
+    col_string = '#%02x%02x%02x' %(grey,grey,grey)
+    print(grey)
     pixel((col_val[0],(col_val[1])), col_string, pic_frame,5)
-
+    
     #root.update()
     #root.after(1, run_now)
 
+try:
+    ser = serial.Serial('/dev/ttyACM0', baudrate = 460800)
+except:
+    try:
+        ser = serial.Serial('/dev/ttyACM1', baudrate = 460800)
+    except:
+        print('port error')
 
-ser = serial.Serial('/dev/ttyACM0', baudrate = 460800)
+
+
+
+
+
 
 root = Tk()
 root.minsize(900,500)
 root.title('TIME TO SCAN')
 
-
-
+pic_arr = numpy.zeros((60,70,3),dtype=numpy.uint8)
+pic_arr[0][0][0]=255
+print(pic_arr)
 
 
 
@@ -212,7 +239,7 @@ def default ():
 def draw():
     quit_button = quit_scan_button((600,50))
     while True:
-
+        
         run_now()
         root.update_idletasks()
         root.update()
