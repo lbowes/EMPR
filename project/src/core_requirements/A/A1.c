@@ -8,7 +8,7 @@
 #include <mbed/LCDDisplay.h>
 #include <scanner/Motion.h>
 #include <scanner/Vector3D.h>
-
+#include <scanner/Drawing.h>
 #include <math.h>
 
 
@@ -37,7 +37,8 @@ void A1() {
     LCDDisplay_init();
     TextOutput_init();
     Motion_init();
-
+    traceFullSizeCircle();
+    /*
     LCDMenu motionOptions = LCDMenu_create();
 
     LCDMenu_addItem(&motionOptions, "Trace circle", &traceFullSizeCircle);
@@ -45,7 +46,7 @@ void A1() {
     LCDMenu_addItem(&motionOptions, "Demo Z axis", &demoZAxis);
 
     LCDMenu_run(&motionOptions);
-
+*/
     // TODO: Work out why this is causing a crash
     //LCDDisplay_print("motion", 0);
     //LCDMenu_destroy(&motionOptions);
@@ -59,17 +60,20 @@ static void traceFullSizeCircle() {
 
     Vector3D pos;
     const uint16_t steps = 500;
-    const uint16_t padding = 0;
+    const uint16_t padding = 50;
     uint16_t i = 0;
-
+    uint8_t z = 300;
+    Drawing_penUp();
     for(i = 0; i < steps; i++) {
+
         float sinVal = sin(i / (float)steps * 2 * M_PI);
         float cosVal = cos(i / (float)steps * 2 * M_PI);
 
-        pos.x = padding + (sinVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
-        pos.y = padding + (cosVal + 1.0f) / 2.0f * (EMPR_X_LIMIT - padding);
-
-        Motion_moveTo(pos.x, pos.y, 0);
+        pos.x = padding + (sinVal + 1.0f) / 2.0f * (215 - padding);
+        pos.y = padding + (cosVal + 1.0f) / 2.0f * (215 - padding);
+        Motion_moveTo(pos.x - 10, pos.y + 20, z);
+        z = 0;
+        Drawing_penDownDark();
     }
 
     Motion_neutraliseAllAxes();
@@ -79,91 +83,10 @@ static void traceFullSizeCircle() {
 static void traceSquareBoundary() {
     Motion_home();
 
-
-    #if 0
-    ColourSensor_init();
-
-    // Start the sensor from some position near the centre of the platform, and move left and right,
-    // up and down until either an edge is detected or the platform limits are reached.
-    uint16_t edgeDetectionThreshold = 30;
-    uint16_t currentIntensityReading = 0;
-    uint16_t lastIntensityReading = 0;
-    Colour reading = ColourSensor_read();
-    const Vector3D platformCentre = (Vector3D){ EMPR_X_LIMIT / 2, EMPR_Y_LIMIT / 2, 0 };
-
-    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
-
-    uint8_t xEdge1 = 0;
-    while(1) {
-        Motion_moveBy(1, 0, 0);
-
-        reading = ColourSensor_read();
-        lastIntensityReading = currentIntensityReading;
-        currentIntensityReading = reading.r + reading.g + reading.b;
-
-        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
-            xEdge1 = Motion_getCurrentPos().x;
-            break;
-        }
-    }
-
-    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
-
-    uint8_t xEdge2 = 0;
-    while(1) {
-        Motion_moveBy(-1, 0, 0);
-
-        reading = ColourSensor_read();
-        lastIntensityReading = currentIntensityReading;
-        currentIntensityReading = reading.r + reading.g + reading.b;
-
-        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
-            xEdge2 = Motion_getCurrentPos().x;
-            break;
-        }
-    }
-
-    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
-
-    uint8_t yEdge1 = 0;
-    while(1) {
-        Motion_moveBy(0, 1, 0);
-
-        reading = ColourSensor_read();
-        lastIntensityReading = currentIntensityReading;
-        currentIntensityReading = reading.r + reading.g + reading.b;
-
-        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
-            yEdge1 = Motion_getCurrentPos().y;
-            break;
-        }
-    }
-
-    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
-
-    uint8_t yEdge2 = 0;
-    while(1) {
-        Motion_moveBy(0, -1, 0);
-
-        reading = ColourSensor_read();
-        lastIntensityReading = currentIntensityReading;
-        currentIntensityReading = reading.r + reading.g + reading.b;
-
-        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
-            yEdge2 = Motion_getCurrentPos().y;
-            break;
-        }
-    }
-    
-#endif
-
-
-
-
-    Motion_moveTo(0, EMPR_Y_LIMIT, 0);
-    Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
+    Motion_moveTo(29, 234, 0);
+    Motion_moveTo(EMPR_X_LIMIT, 234, 0);
     Motion_moveTo(EMPR_X_LIMIT, 0, 0);
-    Motion_moveTo(0, 0, 0);
+    Motion_moveTo(29, 0, 0);
 
     Motion_neutraliseAllAxes();
 }

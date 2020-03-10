@@ -19,10 +19,10 @@ static void run();
 int main() {
     Motion_init();
     ColourSensor_init();
-
+    TextOutput_init();
     //ColourPointRecogniser_getCriticalPointColours();
-
-    run();
+   A1();
+   // run();
 
     return 0;
 }
