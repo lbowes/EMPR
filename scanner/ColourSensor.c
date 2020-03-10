@@ -183,13 +183,6 @@ static void postProcess(Colour* rawData) {
     if(rawData->b > max)
         max = rawData->b;
 
-    // if(((2.5 * (sqrt(rawData->clear))) > max)){
-    // rawData->r = 0;
-    // rawData->b = 0;
-    // rawData->g = 0;
-    // max = 255;
-    // }
-
     rawData->r = ((rawData->r * 255) / max);
     rawData->g = ((rawData->g * 255) / max);
     rawData->b = ((rawData->b * 255) / max);
