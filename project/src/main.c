@@ -8,21 +8,22 @@
 #include <mbed/Keypad.h>
 #include <mbed/UART_Interrupt.h>
 #include <scanner/Motion.h>
+#include <scanner/raster_scan.h>
 #include <scanner/QRSCAN.h>
 #include <scanner/ColourSensor.h>
 #include <mbed/UART_Interrupt.h>
 
 
-static void run();
+//static void run();
 
 
 int main() {
-    Motion_init();
-    ColourSensor_init();
-    TextOutput_init();
+    D();
+    
+
     //ColourPointRecogniser_getCriticalPointColours();
-  // A1();
-   run();
+
+    
 
     return 0;
 }

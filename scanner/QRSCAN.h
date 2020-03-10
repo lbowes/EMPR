@@ -1,4 +1,4 @@
 
 
 
-void SetupScanner(void);
+void QR_scan_start(void);

@@ -23,7 +23,7 @@ char buffer1[1000];
 
 
 
-void QR_scan_start(void){
+void full_scan_start(void){
    
     int x_ax, y_ax;
     Colour col_vals;
@@ -34,9 +34,9 @@ void QR_scan_start(void){
     LEDs_init();
 
     //by default x_ax, y_ax < 240
-    for (x_ax = 0; x_ax< 240; x_ax+=x_scale){
+    for (x_ax = 0; x_ax< 250; x_ax+=x_scale){
         Motion_moveAxisToLimit(EMPR_Y_AXIS);
-        for (y_ax = 0; y_ax < 210; y_ax+=y_scale){
+        for (y_ax = 0; y_ax < 250; y_ax+=y_scale){
             //LEDs_debugBinary(1);
             Motion_moveTo(x_ax + x_offset, y_ax + y_offset, 0);
             //LEDs_debugBinary(2);
