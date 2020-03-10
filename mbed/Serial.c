@@ -42,7 +42,8 @@ void serial_init(void){
     PINSEL_ConfigPin(&PinCfg);
 
     UART_ConfigStructInit(&UARTConfigStruct);
-    //baudrate 9600
+    UARTConfigStruct.Baud_rate=460800;
+   
     
     UART_FIFOConfigStructInit(&UARTFIFOConfigStruct);
     

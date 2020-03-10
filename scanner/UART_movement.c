@@ -36,16 +36,18 @@ void UART_control_start(void){
     serial_init();
     UART_IntConfig((LPC_UART_TypeDef *) LPC_UART0, UART_INTCFG_RBR, ENABLE);
     NVIC_EnableIRQ(UART0_IRQn);
-    Motion_home();
     Motion_neutraliseAllAxes();
 }
 
 
 
+//Working on implementing IRQ for multiple c files.
 
-
-void move(int x, int y){
+void uart_move(int x, int y){
     Motion_moveTo(x,y,0);
+    scan_vals = ColourSensor_read();
+    PCSender_sendRGBAndPos (0,0,0,scan_vals.r, scan_vals.g, scan_vals.b, scan_vals.clear);
+    Motion_neutraliseAllAxes();
 
 }
 

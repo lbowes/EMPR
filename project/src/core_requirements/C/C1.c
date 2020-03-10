@@ -32,6 +32,7 @@ void C1() {
     LCDDisplay_init();
     Keypad_init();
     ColourPointRecogniser_init();
+    Motion_init();
 
     populateFlagNames();
 
@@ -44,10 +45,7 @@ void C1() {
 
             LCDDisplay_print("...", EMPR_LINE_2);
 
-            //FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_errorFunc);
-            FlagId recognisedFlagId = 0;
-
-            Delay_ms(4000);
+            FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_gatherData, &ColourPointRecogniser_errorFunc);
 
             LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
         }
@@ -59,7 +57,10 @@ void C1() {
         }
 
         Delay_ms(EMPR_SMOOTH_MENU_DELAY_MS);
+
+        Motion_neutraliseAllAxes();
     }
+
 }
 
 

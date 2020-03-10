@@ -1,5 +1,5 @@
 import serial
-serialLine = serial.Serial("/dev/ttyACM0",baudrate=460800)
+serialLine = serial.Serial("/dev/ttyACM2",baudrate=460800)
 log=open("log.txt","a")
 while (1):
     # print()

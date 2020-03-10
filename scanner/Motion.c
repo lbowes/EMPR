@@ -1,7 +1,10 @@
+#include "ColourSensor.h"
 #include "Motion.h"
 #include "LimitSwitch.h"
 #include "Vector3D.h"
 
+#include <scanner/Colour.h>
+#include <scanner/ColourSensor.h>
 #include <mbed/I2C.h>
 #include <mbed/Constants.h>
 #include <mbed/TextOutput.h>
@@ -61,6 +64,8 @@ void Motion_init() {
 
     initAxes();
     initPlatform();
+
+    Motion_localisePlatform();
 
     Motion_home();
 }
@@ -135,7 +140,6 @@ void Motion_moveAxisToLimit(uint8_t axis) {
         while(LimitSwitch_isDown(lSwitch))
             stepForwards(axis, 1);
     }
-
 
     a->currentPos_steps = 0;
 }
@@ -316,19 +320,10 @@ static void clampWithinAxis(Axis* axis, int* val) {
 
 
 void Motion_localisePlatform() {
-    // 1. Move the scan head to a position roughly in the centre of the platform (keep hold of this position)
-
-    // 2. Move the scan head in one direction along one axis until either:
-    //  - a platform edge is detected (when the distance between the colour currently under the cursor
-    //    and the colour under the sensor during the last step is greater than some threshold), keeping
-    //    track of the number of steps moved.
-    //  - the internal limit of the motion range along this axis reached.
-
-    // 3. If an edge is detected, somehow the number of steps it took to reach this edge in this direction
-    //    from the (roughly) central start position and repeat this process in the other direction, returning
-    //    to the original start position.
-
-    // 4. Repeat the process outlined above for the other axis.
+    platform.xPos_steps = 29;
+    platform.yPos_steps = 0;
+    platform.xDims_steps = 235;
+    platform.yDims_steps = 235;
 }
 
 
@@ -353,4 +348,26 @@ Vector3D Motion_getCurrentPos() {
     output.z = axes[EMPR_Z_AXIS].currentPos_steps;
 
     return output;
+}
+
+
+Vector3D Motion_getPlatformOrigin() {
+    Vector3D origin;
+
+    origin.x = platform.xPos_steps;
+    origin.y = platform.yPos_steps;
+    origin.z = 0;
+
+    return origin;
+}
+
+
+Vector3D Motion_getPlatformDimensions() {
+    Vector3D dimensions;
+
+    dimensions.x = platform.xDims_steps;
+    dimensions.y = platform.yDims_steps;
+    dimensions.z = 0;
+
+    return dimensions;
 }

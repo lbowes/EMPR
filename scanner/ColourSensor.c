@@ -116,6 +116,7 @@ static void initGain() {
 
 
 static void enable() {
+    //write16(TCS34725_ENABLE, 0b01011);
     write16(TCS34725_ENABLE, TCS34725_ENABLE_PON | TCS34725_ENABLE_AEN);
     //integrationDelay();
 }
@@ -173,7 +174,7 @@ Colour ColourSensor_read() {
 
 
 static void postProcess(Colour* rawData) {
-    uint16_t max = 60;
+    uint16_t max = 80;
 
     if(rawData->r > max)
         max = rawData->r;

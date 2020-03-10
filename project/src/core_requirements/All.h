@@ -5,6 +5,4 @@
 #include "B/B2.h"
 #include "B/B3.h"
 #include "C/C1.h"
-#include "D/D1.h"
-#include "D/D2.h"
-#include "D/D3.h"
+#include "mbed/UART_Interrupt.h"

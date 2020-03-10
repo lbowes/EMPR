@@ -77,17 +77,88 @@ static void traceFullSizeCircle() {
 
 
 static void traceSquareBoundary() {
-    // TODO: This function is not technically correct (traces full range of motion, rather than the
-    // boundaries of the platform)
-
-    // The requirement states:
-    //    The X-Y functional test will include scan patterns:
-    //    • (b) A square at the __boundaries of the platform__
-
-    // If there's time, the scan head should trace the platform boundaries, rather
-    // the limits of each axis. Quite similar to requirement A2.
-
     Motion_home();
+
+
+    #if 0
+    ColourSensor_init();
+
+    // Start the sensor from some position near the centre of the platform, and move left and right,
+    // up and down until either an edge is detected or the platform limits are reached.
+    uint16_t edgeDetectionThreshold = 30;
+    uint16_t currentIntensityReading = 0;
+    uint16_t lastIntensityReading = 0;
+    Colour reading = ColourSensor_read();
+    const Vector3D platformCentre = (Vector3D){ EMPR_X_LIMIT / 2, EMPR_Y_LIMIT / 2, 0 };
+
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
+
+    uint8_t xEdge1 = 0;
+    while(1) {
+        Motion_moveBy(1, 0, 0);
+
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
+
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            xEdge1 = Motion_getCurrentPos().x;
+            break;
+        }
+    }
+
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
+
+    uint8_t xEdge2 = 0;
+    while(1) {
+        Motion_moveBy(-1, 0, 0);
+
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
+
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            xEdge2 = Motion_getCurrentPos().x;
+            break;
+        }
+    }
+
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
+
+    uint8_t yEdge1 = 0;
+    while(1) {
+        Motion_moveBy(0, 1, 0);
+
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
+
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            yEdge1 = Motion_getCurrentPos().y;
+            break;
+        }
+    }
+
+    Motion_moveTo(platformCentre.x, platformCentre.y, platformCentre.z);
+
+    uint8_t yEdge2 = 0;
+    while(1) {
+        Motion_moveBy(0, -1, 0);
+
+        reading = ColourSensor_read();
+        lastIntensityReading = currentIntensityReading;
+        currentIntensityReading = reading.r + reading.g + reading.b;
+
+        if(abs(currentIntensityReading - lastIntensityReading) > edgeDetectionThreshold) {
+            yEdge2 = Motion_getCurrentPos().y;
+            break;
+        }
+    }
+    
+#endif
+
+
+
 
     Motion_moveTo(0, EMPR_Y_LIMIT, 0);
     Motion_moveTo(EMPR_X_LIMIT, EMPR_Y_LIMIT, 0);
