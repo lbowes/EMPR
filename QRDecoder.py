@@ -48,6 +48,7 @@ def process_flag(flag_name):
         
     word = word[::-1]
     url = [".com",".org",".onion",".co.uk",".jp"]
+    end = ""
     for col in range(0,5):
         if (output_pixel_data[(70* 6) + (col*7) + 3])[0] < 100 :
                 end = url[col]
