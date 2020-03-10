@@ -41,13 +41,13 @@ int Shading_readBlock(local* curPos) {
 
 uint8_t Shading_calc(Colour Point) {
     uint16_t grayScale = Point.clear;
-    if(grayScale < 80){
+    if(grayScale < 100){
         return 1;
     }
-    else if(grayScale < 100) {
+    else if(grayScale < 120) {
         return 2;
     }
-    else  if(grayScale < 120) {
+    else  if(grayScale < 140) {
         return 4;
     }
     else if(grayScale < 150) {
@@ -96,8 +96,8 @@ void Shading_scanGrid(local* gridPos) {
             Motion_moveBy(3, 0, 0);
             Motion_neutraliseAllAxes();
             Shade = ColourSensor_seq(); // Must be repeated after every movement.
-            if ((sum/5) > Shade.clear) {
-                Shade.clear = (Shade.clear/4);
+            if ((sum/4) > Shade.clear) {
+                Shade.clear = (Shade.clear/2);
             }
             Shading_writeBlock(Shading_calc(Shade), gridPos);
             Shading_displayBlock(gridPos);
