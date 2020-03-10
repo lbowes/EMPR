@@ -21,8 +21,8 @@ int main() {
     ColourSensor_init();
     TextOutput_init();
     //ColourPointRecogniser_getCriticalPointColours();
-   A1();
-   // run();
+  // A1();
+   run();
 
     return 0;
 }
