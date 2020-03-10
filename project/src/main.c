@@ -19,9 +19,8 @@ int main() {
     Motion_init();
     ColourSensor_init();
 
-    getCriticalPointColours();
-
-    //run();
+    //getCriticalPointColours();
+    run();
 
     return 0;
 }
