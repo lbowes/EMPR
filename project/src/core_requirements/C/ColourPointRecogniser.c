@@ -31,7 +31,6 @@
 #include <stdio.h>
 
 
-
 #define NUM_CRITICAL_POINTS_PER_FLAG 4
 
 typedef struct {
@@ -45,7 +44,6 @@ typedef struct {
 
 // This is the data required by this flag recognition method
 static FlagPoint criticalPoints[NUM_CRITICAL_POINTS_PER_FLAG];
-
 static FlagSignature flagSignatures[FLAG_COUNT];
 static FlagSignature platformReading;
 // ==========================================================
@@ -53,9 +51,13 @@ static FlagSignature platformReading;
 
 static void setCriticalPoints();
 static void loadFlagSignatureData();
+static void scanCriticalPoints();
 
 
 void ColourPointRecogniser_init() {
+    Motion_init();
+    ColourSensor_init();
+
     setCriticalPoints();
     loadFlagSignatureData();
 }
@@ -63,19 +65,9 @@ void ColourPointRecogniser_init() {
 
 static void setCriticalPoints() {
     criticalPoints[0] = (FlagPoint){ -0.868, 0.276 };
-    //criticalPoints[0] = (FlagPoint){ -0.874, -0.278 };
-    //criticalPoints[2] = (FlagPoint){ -0.294, -0.068 };
     criticalPoints[1] = (FlagPoint){ -0.269, 0.412 };
-    //criticalPoints[4] = (FlagPoint){ -0.265, -0.422 };
-    //criticalPoints[2] = (FlagPoint){ 0.003, 0.416 };
-    //criticalPoints[6] = (FlagPoint){ 0.020, 0.043 };
     criticalPoints[2] = (FlagPoint){ 0.001, -0.428 };
-    //criticalPoints[8] = (FlagPoint){ 0.106, -0.267 };
-    //criticalPoints[4] = (FlagPoint){ 0.253, 0.421 };
-    //criticalPoints[10] = (FlagPoint){ 0.251, -0.416 };
     criticalPoints[3] = (FlagPoint){ 0.429, 0.438 };
-    //criticalPoints[12] = (FlagPoint){ 0.835, 0.278 };
-    //criticalPoints[6] = (FlagPoint){ 0.842, -0.276 };
 }
 
 
@@ -84,7 +76,6 @@ static void loadFlagSignatureData() {
     // The colours entered for each flag should be the colours under the
     // respective points when the flag is under the scanner.
 
-    // =================================== UNITED_KINGDOM ===================================
     flagSignatures[UNITED_KINGDOM] = (FlagSignature){
         (Colour){234, 255, 224},
         (Colour){232, 255, 227},
@@ -92,7 +83,6 @@ static void loadFlagSignatureData() {
         (Colour){225, 255, 223}
     };
 
-    // =================================== FRANCE ===================================
     flagSignatures[FRANCE] = (FlagSignature){
         (Colour){35, 60, 73},
         (Colour){227, 255, 224},
@@ -100,7 +90,6 @@ static void loadFlagSignatureData() {
         (Colour){200, 66, 73}
     };
 
-    // =================================== SYRIA ===================================
     flagSignatures[SYRIA] = (FlagSignature){
         (Colour){31, 31, 25},
         (Colour){35, 35, 25},
@@ -108,7 +97,6 @@ static void loadFlagSignatureData() {
         (Colour){35, 35, 28}
     };
 
-    // =================================== ICELAND ===================================
     flagSignatures[ICELAND] = (FlagSignature){
         (Colour){41, 105, 149},
         (Colour){168, 70, 73},
@@ -116,7 +104,6 @@ static void loadFlagSignatureData() {
         (Colour){41, 102, 143}
     };
 
-    // =================================== SUDAN ===================================
     flagSignatures[SUDAN] = (FlagSignature){
         (Colour){41, 70, 44},
         (Colour){232, 255, 221},
@@ -124,7 +111,6 @@ static void loadFlagSignatureData() {
         (Colour){225, 255, 221}
     };
 
-    // =================================== NORTH_MACEDONIA ===================================
     flagSignatures[NORTH_MACEDONIA] = (FlagSignature){
         (Colour){165, 73, 70},
         (Colour){255, 255, 226},
@@ -132,7 +118,6 @@ static void loadFlagSignatureData() {
         (Colour){234, 255, 221}
     };
 
-    // =================================== CZECHIA ===================================
     flagSignatures[CZECHIA] = (FlagSignature){
         (Colour){35, 76, 95},
         (Colour){153, 57, 60},
@@ -140,30 +125,25 @@ static void loadFlagSignatureData() {
         (Colour){175, 66, 70}
     };
 
-    // =================================== BURKINA_FASO ===================================
     flagSignatures[BURKINA_FASO] = (FlagSignature){
         (Colour){63, 121, 73},
-(Colour){73, 137, 82},
-(Colour){184, 60, 63},
-(Colour){73, 143, 86}
-
+        (Colour){73, 137, 82},
+        (Colour){184, 60, 63},
+        (Colour){73, 143, 86}
     };
 
-    // =================================== CENTRAL_AFRICAN_REBUBLIC ===================================
     flagSignatures[CENTRAL_AFRICAN_REBUBLIC] = (FlagSignature){
         (Colour){255, 197, 88},
-(Colour){255, 195, 86},
-(Colour){130, 44, 47},
-(Colour){255, 196, 85}
-
+        (Colour){255, 195, 86},
+        (Colour){130, 44, 47},
+        (Colour){255, 196, 85}
     };
 
-    // =================================== BURUNDI ===================================
     flagSignatures[BURUNDI] = (FlagSignature){
         (Colour){98, 162, 105},
-(Colour){153, 63, 66},
-(Colour){239, 255, 221},
-(Colour){162, 79, 79}
+        (Colour){153, 63, 66},
+        (Colour){239, 255, 221},
+        (Colour){162, 79, 79}
     };
 }
 
@@ -213,30 +193,23 @@ uint32_t ColourPointRecogniser_errorFunc(FlagId flagId) {
 }
 
 
-
-
-
-
 // =================== DATA GATHERING UTILITY FUNCTIONS ======================
-static void scanCriticalPoints(FlagId flagId) {
+void ColourPointRecogniser_getCriticalPointColours() {
+    ColourPointRecogniser_init();
+    TextOutput_init();
+
+    LCDMenu flagSelectMenu = LCDMenu_create();
+    LCDMenu_addItem(&flagSelectMenu, "Get flag data", &scanCriticalPoints);
+    LCDMenu_run(&flagSelectMenu);
+}
+
+
+static void scanCriticalPoints() {
+    ColourPointRecogniser_init();
+
     Motion_home();
 
-    const char* flagNames[FLAG_COUNT];
-
-    flagNames[UNITED_KINGDOM] = "United Kingom";
-    flagNames[FRANCE] = "France";
-    flagNames[SYRIA] = "Syria";
-    flagNames[ICELAND] = "Iceland";
-    flagNames[SUDAN] = "Sudan";
-    flagNames[NORTH_MACEDONIA] = "North Macedonia";
-    flagNames[CZECHIA] = "Czechia";
-    flagNames[BURKINA_FASO] = "Burkina Faso";
-    flagNames[CENTRAL_AFRICAN_REBUBLIC] = "Cent.Africa.Rep.";
-    flagNames[BURUNDI] = "Burundi";
-
-    char flagNameMenuLabel[64];
-    sprintf(flagNameMenuLabel, "Data for %s", flagNames[flagId]);
-    TextOutput_print(flagNameMenuLabel);
+    TextOutput_print("Flag critical point colour data");
 
     uint8_t pointIdx = 0;
     const Vector3D platformDims = Motion_getPlatformDimensions();
@@ -260,39 +233,4 @@ static void scanCriticalPoints(FlagId flagId) {
     TextOutput_println("");
 
     Motion_neutraliseAllAxes();
-}
-
-
-static void scanUnitedKingdom() { scanCriticalPoints(UNITED_KINGDOM); }
-static void scanFrance() { scanCriticalPoints(FRANCE); }
-static void scanSyria() { scanCriticalPoints(SYRIA); }
-static void scanIceland() { scanCriticalPoints(ICELAND); }
-static void scanSudan() { scanCriticalPoints(SUDAN); }
-static void scanNorthMacedonia() { scanCriticalPoints(NORTH_MACEDONIA); }
-static void scanCzechia() { scanCriticalPoints(CZECHIA); }
-static void scanBurkinaFaso() { scanCriticalPoints(BURKINA_FASO); }
-static void scanAfricanRepublic() { scanCriticalPoints(CENTRAL_AFRICAN_REBUBLIC); }
-static void scanBurundi() { scanCriticalPoints(BURUNDI); }
-
-
-void getCriticalPointColours() {
-    // This function should allow the user to collect all flag data necessary at the critical points
-    Motion_init();
-    TextOutput_init();
-    ColourPointRecogniser_init();
-
-    LCDMenu flagSelectMenu = LCDMenu_create();
-
-    LCDMenu_addItem(&flagSelectMenu, "United Kingom", &scanUnitedKingdom);
-    LCDMenu_addItem(&flagSelectMenu, "France", &scanFrance);
-    LCDMenu_addItem(&flagSelectMenu, "Syria", &scanSyria);
-    LCDMenu_addItem(&flagSelectMenu, "Iceland", &scanIceland);
-    LCDMenu_addItem(&flagSelectMenu, "Sudan", &scanSudan);
-    LCDMenu_addItem(&flagSelectMenu, "North Macedonia", &scanNorthMacedonia);
-    LCDMenu_addItem(&flagSelectMenu, "Czechia", &scanCzechia);
-    LCDMenu_addItem(&flagSelectMenu, "Burkina Faso", &scanBurkinaFaso);
-    LCDMenu_addItem(&flagSelectMenu, "Cent.Africa.Rep.", &scanAfricanRepublic);
-    LCDMenu_addItem(&flagSelectMenu, "Burundi", &scanBurundi);
-
-    LCDMenu_run(&flagSelectMenu);
 }
