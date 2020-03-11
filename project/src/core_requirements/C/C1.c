@@ -1,20 +1,10 @@
 #include "C1.h"
-
 #include "FlagRecogniser.h"
-#include "ColourPointRecogniser.h"
-#include "ImageHistogramRecogniser.h"
 
 #include <mbed/LCDDisplay.h>
 #include <mbed/Constants.h>
 #include <mbed/Keypad.h>
 #include <mbed/Delay.h>
-
-#include <stddef.h>
-
-
-static const char* flagNames[FLAG_COUNT];
-
-static void populateFlagNames();
 
 
 /*
@@ -30,29 +20,29 @@ static void populateFlagNames();
 */
 void C1() {
     LCDDisplay_init();
-    Keypad_init();
-    ColourPointRecogniser_init();
-    Motion_init();
 
-    populateFlagNames();
-
-    LCDDisplay_print("Flag Recognition", EMPR_LINE_1);
+    LCDDisplay_print("Flag Recogniser", EMPR_LINE_1);
 
     while(1) {
         // Perform flag recognition
         if(Keypad_isKeyDown(EMPR_KEY_HASH)) {
             while(Keypad_isKeyDown(EMPR_KEY_HASH)) { }
 
+            LCDDisplay_print("Flag Recogniser", EMPR_LINE_1);
+
+            LCDDisplay_clear(EMPR_LINE_2);
             LCDDisplay_print("...", EMPR_LINE_2);
 
-            FlagId recognisedFlagId = FlagRecogniser_run(&ColourPointRecogniser_gatherData, &ColourPointRecogniser_errorFunc);
+            const char* recognisedFlagName = FlagRecogniser_getClosestFlagName();
 
-            LCDDisplay_print(flagNames[recognisedFlagId], EMPR_LINE_2);
+            LCDDisplay_clear(EMPR_LINE_2);
+            LCDDisplay_print(recognisedFlagName, EMPR_LINE_2);
         }
 
         // Move on to next requirement
         if(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) {
             while(Keypad_isKeyDown(EMPR_KEY_ASTERISK)) { }
+
             break;
         }
 
@@ -60,19 +50,4 @@ void C1() {
 
         Motion_neutraliseAllAxes();
     }
-
-}
-
-
-static void populateFlagNames() {
-    flagNames[UNITED_KINGDOM] = "United Kingom";
-    flagNames[FRANCE] = "France";
-    flagNames[SYRIA] = "Syria";
-    flagNames[ICELAND] = "Iceland";
-    flagNames[SUDAN] = "Sudan";
-    flagNames[NORTH_MACEDONIA] = "North Macedonia";
-    flagNames[CZECHIA] = "Czechia";
-    flagNames[BURKINA_FASO] = "Burkina Faso";
-    flagNames[CENTRAL_AFRICAN_REBUBLIC] = "Cent.Africa.Rep.";
-    flagNames[BURUNDI] = "Burundi";
 }
