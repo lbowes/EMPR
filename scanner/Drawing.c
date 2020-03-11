@@ -44,7 +44,7 @@ void Drawing_penDownLight() {
     //}
     //Motion_moveBy(0, 0, 70);
     ScanPos = Motion_getCurrentPos();
-    Motion_moveTo(ScanPos.x, ScanPos.y, 150);
+    Motion_moveTo(ScanPos.x, ScanPos.y, 100);
 }
 
 void Drawing_penDownDark() {

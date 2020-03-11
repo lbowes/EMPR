@@ -13,9 +13,6 @@ static void run();
 
 
 int main() {
-    Motion_init();
-    ColourSensor_init();
-
     run();
 
     return 0;

@@ -3,8 +3,7 @@ import serial
 import struct
 import time
 import random
-import numpy
-from PIL import Image, ImageOps
+
 
 def read_RGB():
      run  = True
@@ -25,8 +24,13 @@ def read_RGB():
                  #print("G" + readline[4])
                 # print("B" + readline[5])
                  #print("C" + readline[6])    
+                 
+                 p = "(%s, %s), (%s, %s, %s, %s)" %(readline[0],readline[1],readline[3],readline[4],readline[5],readline[6])
+                 file1.write(p + '\n')
+                 
                  if readline[2] == 'ff':
                      print('done')
+                     file1.close()
                      return 'finished'
                  elif len(readline) == 7:          
                      run = False
@@ -159,11 +163,6 @@ class start_button:
 def run_now():
     col_val = read_RGB()
     if col_val == 'finished':
-        print(pic_arr)
-        im  = Image.fromarray(pic_arr)
-        im.save("QRPic.png")
-        im2  = ImageOps.grayscale(im)
-        im2.save('QRGrey.png')
         default() 
     red = int(col_val[3], 16)
     print(red)
@@ -173,10 +172,8 @@ def run_now():
     print(blue)
     clear_val = int(col_val[6], 16)
     grey = int(((red + green + blue) / 3))
-    pic_arr[int(col_val[0],16), int(col_val[1],16), 0] = red
-    pic_arr[int(col_val[0],16), int(col_val[1],16), 1] = green
-    pic_arr[int(col_val[0],16), int(col_val[1],16), 2] = blue
-    col_string = '#%02x%02x%02x' %(grey,grey,grey)
+    
+    col_string = '#%02x%02x%02x' %(red, green ,blue )
     print(grey)
     pixel((col_val[0],(col_val[1])), col_string, pic_frame,5)
     
@@ -201,9 +198,7 @@ root = Tk()
 root.minsize(900,500)
 root.title('TIME TO SCAN')
 
-pic_arr = numpy.zeros((60,70,3),dtype=numpy.uint8)
-pic_arr[0][0][0]=255
-print(pic_arr)
+file1 = open("Coord_data.txt", "w")
 
 
 

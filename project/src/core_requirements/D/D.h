@@ -2,7 +2,7 @@
 #define EMPR_REQ_D1_H_
 
 
-void D1();
+void D();
 
 
 #endif // EMPR_REQ_D1_H_

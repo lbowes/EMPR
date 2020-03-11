@@ -6,7 +6,7 @@
 #include "scanner/QRSCAN.h"
 #include "scanner/UART_movement.h"
 #include <stdio.h>
-uint8_t commanding[3];
+//uint8_t commanding[3];
 
 
 
@@ -23,17 +23,20 @@ void UART_setup(){
 }
 
 
-void UART0_IRQHandler(void){
-    NVIC_DisableIRQ(UART0_IRQn);
-    memset(commanding, 0, sizeof(commanding));
-    serial_read(&commanding, sizeof(commanding));
-    if (commanding[0] == 2){
-        full_scan_start();
-    }
-    else if (commanding[0] == 4){
-        uart_move(commanding[1], commanding[2]);
-    }
+// void UART0_IRQHandler(void){
+//     NVIC_DisableIRQ(UART0_IRQn);
+//     memset(commanding, 0, sizeof(commanding));
+//     serial_read(&commanding, sizeof(commanding));
+//     if (commanding[0] == 2){
+//         full_scan_start();
+//     }
+//     else if (commanding[0] == 4){
+//         uart_move(commanding[1], commanding[2]);
+//     }
+//     else if (commanding[0] == 6){
+//         QR_scan_start();
+//     }
    
-    memset(commanding, 0, sizeof(commanding));
-    NVIC_EnableIRQ(UART0_IRQn);
-}
+//     memset(commanding, 0, sizeof(commanding));
+//     NVIC_EnableIRQ(UART0_IRQn);
+// }
