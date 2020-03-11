@@ -37,8 +37,7 @@ void A1() {
     LCDDisplay_init();
     TextOutput_init();
     Motion_init();
-    traceFullSizeCircle();
-    /*
+
     LCDMenu motionOptions = LCDMenu_create();
 
     LCDMenu_addItem(&motionOptions, "Trace circle", &traceFullSizeCircle);
@@ -46,11 +45,6 @@ void A1() {
     LCDMenu_addItem(&motionOptions, "Demo Z axis", &demoZAxis);
 
     LCDMenu_run(&motionOptions);
-*/
-    // TODO: Work out why this is causing a crash
-    //LCDDisplay_print("motion", 0);
-    //LCDMenu_destroy(&motionOptions);
-    //LCDDisplay_print("motion end", 1);
 }
 
 
