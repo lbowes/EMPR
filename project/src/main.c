@@ -1,9 +1,9 @@
 #define LEWIS_INDIVIDUAL_TASK true
 
 #include "core_requirements/All.h"
-#if LEWIS_INDIVIDUAL_TASK
+//#if LEWIS_INDIVIDUAL_TASK
 #include "individuals/lewis/EmojiRecogniser.h"
-#endif
+//#endif
 
 #include <mbed/LCDMenu.h>
 #include <mbed/UART_Interrupt.h>
@@ -31,9 +31,9 @@ static void run() {
     LCDMenu_addItem(&mainMenu, "C1 Which flag?", &C1);
     LCDMenu_addItem(&mainMenu, "D PC i.facing", &UART_setup);
 
-#if LEWIS_INDIVIDUAL_TASK
+//#if LEWIS_INDIVIDUAL_TASK
     LCDMenu_addItem(&mainMenu, "Recognise emojis", &EmojiRecogniser_run);
-#endif
+//#endif
 
     LCDMenu_run(&mainMenu);
 }

@@ -7,6 +7,8 @@
 #include <mbed/TextOutput.h>
 #include <mbed/LCDMenu.h>
 
+#include <math.h>
+
 
 typedef enum {
     UNITED_KINGDOM = 0,
@@ -184,6 +186,8 @@ static void getDataFromPlatform() {
     const Vector3D platformDims = Motion_getPlatformDimensions();
     const Vector3D platformOrigin = Motion_getPlatformOrigin();
 
+    TextOutput_init();
+
     uint8_t pointIdx = 0;
     for(pointIdx = 0; pointIdx < NUM_CRITICAL_POINTS_PER_FLAG; pointIdx++) {
         // 1. Fetch the flag-space (-1.0, 1.0) critical point to be tested
@@ -196,6 +200,8 @@ static void getDataFromPlatform() {
 
         // 3. Store the colour at this point
         platformReading.criticalPointColours[pointIdx] = ColourSensor_read();
+
+        TextOutputUtils_printColour(platformReading.criticalPointColours[pointIdx]);
     }
 }
 

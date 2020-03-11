@@ -7,6 +7,8 @@
 #include <mbed/TextOutput.h>
 #include <mbed/LCDMenu.h>
 
+#include <math.h>
+
 
 typedef enum {
     CRYING_LAUGHTER_UP = 0,
